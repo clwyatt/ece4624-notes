@@ -1,0 +1,2319 @@
+[
+  {
+    "objectID": "lecture-20-slides.html#section",
+    "href": "lecture-20-slides.html#section",
+    "title": "ECE 4624: Meeting 20",
+    "section": "",
+    "text": "Today we review fixed-point number representation, the effects of quantization of filter coefficeints, and discuss round-off effects in filters. We discuss how to use scaling to prevent underflow and overflow during filter computations.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-20-notes.html",
+    "href": "lecture-20-notes.html",
+    "title": "ECE 4624: Meeting 20",
+    "section": "",
+    "text": "Today we review fixed-point number representation, the effects of quantization of filter coefficeints, and discuss round-off effects in filters. We discuss how to use scaling to prevent underflow and overflow during filter computations.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-20-notes.html#section",
+    "href": "lecture-20-notes.html#section",
+    "title": "ECE 4624: Meeting 20",
+    "section": "",
+    "text": "Today we review fixed-point number representation, the effects of quantization of filter coefficeints, and discuss round-off effects in filters. We discuss how to use scaling to prevent underflow and overflow during filter computations.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-14-slides.html#section",
+    "href": "lecture-14-slides.html#section",
+    "title": "ECE 4624: Meeting 14",
+    "section": "",
+    "text": "Today we review the Discrete Fourier Transform (DFT) and its relation to the DT FS.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-14-notes.html",
+    "href": "lecture-14-notes.html",
+    "title": "ECE 4624: Meeting 14",
+    "section": "",
+    "text": "Today we review the Discrete Fourier Transform (DFT) and its relation to the DT FS.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-14-notes.html#section",
+    "href": "lecture-14-notes.html#section",
+    "title": "ECE 4624: Meeting 14",
+    "section": "",
+    "text": "Today we review the Discrete Fourier Transform (DFT) and its relation to the DT FS.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-02-slides.html#section",
+    "href": "lecture-02-slides.html#section",
+    "title": "ECE 4624: Meeting 2",
+    "section": "",
+    "text": "Today we define CT and DT Signals and how to characterize them. Then we review the basic notion of a system as a transformation between signals.\nReadings:\n\nPM 2.1 and 2.2\nChapter 2 ECE 2714 Supplementary Notes\nChapter 3 ECE 2714 Supplementary Notes\n\nTopics:\n\n\n\nSignals as Functions\nPrimitive Models\nImpulse Function\nStep Function\nComplex Exponential\nBasic Signal Transformations\nCharacterization of Signals\n\n\n\n\n\nBasic Systems\nInput Signals\nOutput or Response Signals\nImpulse Response\nStep Response\nComplex Exponential Response"
+  },
+  {
+    "objectID": "lecture-02-slides.html#signals-as-functions",
+    "href": "lecture-02-slides.html#signals-as-functions",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Signals as Functions",
+    "text": "Signals as Functions\nIn order to reason about signals mathematically we need a representation or model. Signals are modeled as functions, mappings between sets \\[\nf: A \\rightarrow B\n\\] where \\(A\\) is a set called the domain and \\(B\\) is a set called the range.\nThe most basic classification of signals depends on the sets that makeup the domain and co-domain. We will be interested in two versions of the domain, the reals denoted \\(\\mathbb{R}\\) and the integers denoted \\(\\mathbb{Z}\\). We will be interested in two versions of the co-domain, the reals \\(\\mathbb{R}\\) and the set of complex numbers \\(\\mathbb{C}\\)."
+  },
+  {
+    "objectID": "lecture-02-slides.html#analog-signals",
+    "href": "lecture-02-slides.html#analog-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Analog Signals",
+    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds. Figure 1 shows some graphical representations, i.e. plots.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
+  },
+  {
+    "objectID": "lecture-02-slides.html#real-discrete-time-signal",
+    "href": "lecture-02-slides.html#real-discrete-time-signal",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Real, Discrete-time Signal",
+    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless. Figure 2 shows some graphical representations.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
+  },
+  {
+    "objectID": "lecture-02-slides.html#some-other-possibilities",
+    "href": "lecture-02-slides.html#some-other-possibilities",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Some other possibilities",
+    "text": "Some other possibilities\n\n\\(f: \\mathbb{R} \\rightarrow \\mathbb{Z}\\), discrete-valued, continuous-time signals\n\\(f: \\mathbb{Z} \\rightarrow \\mathbb{Z}\\), discrete-valued, discrete-time signals\n\nThe co-domain can also be complex.\n\n\\(f: \\mathbb{R} \\rightarrow \\mathbb{C}\\), complex-valued, continuous-time signals, e.g. \\[\nx(t) = e^{j\\omega t} = \\cos(\\omega t) + j\\sin(\\omega t)\n\\]\n\\(f: \\mathbb{Z} \\rightarrow \\mathbb{C}\\), complex-valued, discrete-time signals, e.g. \\[\nx[n] = e^{j\\omega n} = \\cos(\\omega n) + j\\sin(\\omega n)\n\\]\n\nSince the domains \\(\\mathbb{R}\\) and \\(\\mathbb{Z}\\) are usually interpreted as time, we call these time-domain signals. In the time-domain, when the co-domain is \\(\\mathbb{R}\\) we call these real signals. All physical signals are real. However pairs of complex signals are important mathematical models in linear systems theory."
+  },
+  {
+    "objectID": "lecture-02-slides.html#digital-signals",
+    "href": "lecture-02-slides.html#digital-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Digital Signals",
+    "text": "Digital Signals\nWe are ultimately interested in signals\n\\[\nf: \\mathbb{Z} \\rightarrow \\mathbb{Q}\n\\]\nwhere the range \\(\\mathbb{Q} \\subset \\mathbb{Z}^+\\) is the set of unsigned \\(N\\)-bit values\n\\[\n\\sum\\limits_{i = -A}^{B} b_i 2^{-i}\n\\]\n\n\\(b_i \\in\\{0,1\\}\\) it the ith bit\n\\(b_{-A}\\) is the most-signifigant bit (MSB)\n\\(b_{B}\\) is the least-signifigant bit (LSB)\nthe location of the decimal point is implied\nsigned values have various representations\n\nHowever, these functions are hard to work with mathematically, so we generally work with DT signals and look at practical consequencces separately."
+  },
+  {
+    "objectID": "lecture-02-slides.html#primitive-models",
+    "href": "lecture-02-slides.html#primitive-models",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Primitive Models",
+    "text": "Primitive Models\nWe mathematically model signals by combining elementary/primitive functions, for example:\n\npolynomials: \\(x(t) = t\\), \\(x(t) = t^2\\), etc.\ntransendental functions: \\(x(t) = e^t\\), \\(x(t) = \\sin(t)\\), \\(x(t) = \\cos(t)\\), etc.\npiecewise functions, e.g. \\[\n   x(t) = \\left\\{  \\begin{array}{cl}\n     f_1(t) & t &lt; 0\\\\\n     f_2(t) & t \\geq 0\\\\\n   \\end{array}\\right.\n\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#unit-step-function",
+    "href": "lecture-02-slides.html#unit-step-function",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Unit Step Function",
+    "text": "Unit Step Function\nTo model turning signals on we often use a piecewise function, the unit-step\nIn continuous-time:\n\\[\nu(t) = \\left\\{  \\begin{array}{cl}\n        0 & t &lt; 0\\\\\n        1 & t \\geq 0\\\\\n      \\end{array}\\right.\n\\]\nNote: some texts define the step function at \\(t=0\\) to be \\(0\\) or \\(\\frac{1}{2}\\).\nIn discrete-time:\n\\[\nu[n] = \\left\\{  \\begin{array}{cl}\n        0 & n &lt; 0\\\\\n        1 & n \\geq 0\\\\\n      \\end{array}\\right.\n\\]\nNote: there is no ambiguity about the value at \\(n=0\\)."
+  },
+  {
+    "objectID": "lecture-02-slides.html#unit-impulse-function",
+    "href": "lecture-02-slides.html#unit-impulse-function",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Unit Impulse Function",
+    "text": "Unit Impulse Function\nAn important signal in linear system theory is the impulse function:\nIt is easily defined in discrete-time:\n\\[\n\\delta[n] = \\left\\{  \\begin{array}{cl}\n        0 & n \\neq 0\\\\\n        1 & n = 0\\\\\n      \\end{array}\\right.\n\\]\nHowever in continuous-time it is defined using generalized functions. Two definitions:\n\\[\n\\delta(t) = \\lim_{\\epsilon \\rightarrow 0}\\left\\{\n\\begin{array}{ll}\n  \\frac{1}{2\\epsilon} & |t| &lt; \\epsilon\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\n\\]\n\\[\n\\delta(t) = \\lim_{\\epsilon \\rightarrow 0} \\frac{1}{\\sqrt{2\\pi}\\epsilon} e^{-\\frac{t^2}{2\\epsilon^2}}\n\\]\nNote the area under each definition is always one."
+  },
+  {
+    "objectID": "lecture-02-slides.html#ct-impulse-function-cont.",
+    "href": "lecture-02-slides.html#ct-impulse-function-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "CT Impulse Function cont.",
+    "text": "CT Impulse Function cont.\nIn practice we can often use the following heuristic definition and some properties, without worrying about the distribution functions. \\[\n\\delta(t) = \\left\\{\n\\begin{array}{ll}\n  0 & t \\neq 0\\\\\n  \\infty & t = 0\n\\end{array}\n\\right.\n\\]\n\nThe area under the unit impulse is unity since by definition \\[\n\\int\\limits_{-\\infty}^{\\infty} \\delta(t) \\; dt = 1\n\\]\nSampling property: \\(x(t)\\delta(t-t_0) = x(t_0)\\delta(t-t_0)\\)\nSifting Property: \\[\n\\int\\limits_{a}^{b} x(t)\\delta(t-t_0) \\; dt = x(t_0)\n\\] for any \\(a &lt; t_0 &lt; b\\)."
+  },
+  {
+    "objectID": "lecture-02-slides.html#relationships-between-the-unit-step-and-impulse-in-ct",
+    "href": "lecture-02-slides.html#relationships-between-the-unit-step-and-impulse-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Relationships between the unit step and impulse in CT",
+    "text": "Relationships between the unit step and impulse in CT\nWe previously defined the unit step function. The impulse can be defined in terms of the step: \\[\n\\delta(t) = \\frac{du}{dt}\n\\] and vice-versa \\[\nu(t) = \\int\\limits_{-\\infty}^{t} \\delta(\\tau) \\; d\\tau\n\\] using the notion of distributions, e.g.\n\\[\nu(t) = \\int\\limits_{-\\infty}^{t} \\delta(\\tau) \\; d\\tau = \\lim_{\\epsilon \\rightarrow 0} \\int\\limits_{-\\infty}^{t} \\frac{1}{\\sqrt{2\\pi}\\epsilon} e^{-\\frac{\\tau^2}{2\\epsilon^2}} \\; d\\tau = \\lim_{\\epsilon \\rightarrow 0} \\frac{1}{2}\\left(1+\\text{erf}\\left( \\frac{t}{\\sqrt{2}\\epsilon}\\right)\\right)\n\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#variations-on-the-step-and-impulse-in-ct",
+    "href": "lecture-02-slides.html#variations-on-the-step-and-impulse-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Variations on the step and impulse in CT",
+    "text": "Variations on the step and impulse in CT\nWe can apply additional transformations to the impulse and step functions to get other useful signals, e.g.\n\nramp \\[\nr(t) = \\int\\limits_{-\\infty}^{t} u(\\tau) \\; d\\tau = tu(t)\n\\]\ncausal pulse of width \\(\\epsilon\\) \\[\np(t) = u(t) - u(t-\\epsilon)\n\\]\nnon-causal pulse of width \\(2\\epsilon\\) \\[\n    p(t) = u(t+\\epsilon) - u(t-\\epsilon)\n\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#relationships-between-the-unit-step-and-impulse-in-dt",
+    "href": "lecture-02-slides.html#relationships-between-the-unit-step-and-impulse-in-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Relationships between the unit step and impulse in DT",
+    "text": "Relationships between the unit step and impulse in DT\nSome useful properties of the DT impulse function are:\n\nEnergy is 1: \\(\\sum\\limits_{n=-\\infty}^{\\infty} \\delta[n] = 1\\)\nSampling: \\(x[n]\\delta[n-n_0] = x[n_0]\\delta[n-n_0]\\)\nSifting: \\(\\sum\\limits_{n=-\\infty}^{\\infty} x[n]\\delta[n-n_0] = x[n_0]\\)\n\nThe impulse can be defined in terms of the step and vice-versa: \\[\\delta[n] = u[n] - u[n-1]\\]\n\\[u[n] = \\sum\\limits_{m=-\\infty}^{n} \\delta[m]\\] or\n\\[u[n] = \\sum\\limits_{k=0}^{\\infty} \\delta[n-k]\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#complex-exponential-in-ct",
+    "href": "lecture-02-slides.html#complex-exponential-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT",
+    "text": "Complex Exponential in CT\nOne of the most important signals in systems theory is the complex exponential: \\[\nx(t) = C\\, e^{a t}\n\\] where the parameters \\(C, a \\in \\mathbb{C}\\) in general.\n\nWhen \\(C\\) and \\(a\\) are both real (\\(\\Im(C) = \\Im(a) = 0\\)), we have the familiar exponential."
+  },
+  {
+    "objectID": "lecture-02-slides.html#complex-exponential-in-ct-cont.",
+    "href": "lecture-02-slides.html#complex-exponential-in-ct-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT cont.",
+    "text": "Complex Exponential in CT cont.\nTo get the pure sinusoidal case, let \\(C \\in \\mathbb{R}\\) and \\(a\\) be purely imaginary: \\(a = j\\omega_0\\): \\[\nx(t) = Ce^{j\\omega_0 t}\n\\] where \\(\\omega_0\\) is the frequency (in radians/sec). This is called the complex sinusoid.\nBy Euler’s identity: \\[\ne^{j\\omega_0 t} = \\cos(\\omega_0 t) + j\\sin(\\omega_0 t)\n\\] and \\[\n\\Re(x(t)) = \\cos(\\omega_0 t) = \\frac{1}{2}\\left( e^{j\\omega_0 t} + e^{-j\\omega_0 t} \\right)\n\\]\n\\[\n\\Im(x(t)) = \\sin(\\omega_0 t) = \\frac{1}{2j}\\left( e^{j\\omega_0 t} - e^{-j\\omega_0 t} \\right)\n\\] are both real sinusoids."
+  },
+  {
+    "objectID": "lecture-02-slides.html#complex-exponential-in-ct-cont.-1",
+    "href": "lecture-02-slides.html#complex-exponential-in-ct-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT cont.",
+    "text": "Complex Exponential in CT cont.\nWhen the parameter \\(C\\) is complex we get a phase shift. Again let \\(a = j\\omega_0\\). When \\(C\\) is complex we can write it as \\(C = Ae^{j\\phi}\\) where \\(A = |C|\\) and \\(\\phi = \\angle C\\). Then\n\\[\nx(t) = Ae^{j\\phi} e^{j\\omega_0 t} = Ae^{j(\\omega_0 t+\\phi)}\n\\] and \\[\n\\Re(x(t)) = A\\cos(\\omega_0 t+\\phi)\n\\]\n\\[\n\\Im(x(t)) = A\\sin(\\omega_0 t+\\phi)\n\\]\nSince \\(\\sin\\) is a special case of \\(\\cos\\), i.e. \\(\\cos(\\theta) = \\sin(\\theta + \\frac{\\pi}{2})\\), the general real sinusoid is\n\\[\nA\\cos(\\omega_0 t + \\phi)\n\\]\n\n\\(A\\) is called the amplitude\n\\(\\omega_0\\) is again the frequency in radians/sec.\n\\(\\phi\\) is called the phase shift and is related to a time shift \\(T_s\\) by \\[\n\\phi = \\omega_0T_s\n\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#complex-exponential-in-dt",
+    "href": "lecture-02-slides.html#complex-exponential-in-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in DT",
+    "text": "Complex Exponential in DT\nThe DT Complex Exponential is defined in a similar fashion the the CT version, but with some important differences.\nThe general DT complex exponential is given by the expression:\n\\[x[n] = Ce^{\\beta n}\\]\nwhere in general \\(C \\in \\mathbb{C}\\) and \\(\\beta \\in \\mathbb{C}\\).\nIt is usually more convenient to write this as\n\\[x[n] = C \\alpha^n\\]\nwhere \\(\\alpha = e^{j\\theta}\\) is a complex number \\(\\alpha = \\cos(\\theta) + j\\sin(\\theta)\\)."
+  },
+  {
+    "objectID": "lecture-02-slides.html#basic-transformations-focusing-on-dt",
+    "href": "lecture-02-slides.html#basic-transformations-focusing-on-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic Transformations (focusing on DT)",
+    "text": "Basic Transformations (focusing on DT)\nWe can also apply transformations to signals to increase their modeling flexibility.\n\nmagnitude scaling \\[x_2[n] = a x_1[n]\\] for \\(a \\in \\mathbb{R}\\).\ntime differences \\[x_2[n] = x_1[n] - x_1[n-1]\\]\nrunning sums \\[x_2[n] = \\sum\\limits_{m = -\\infty}^{n} x_1[m]\\]\nsums \\[y[n] = \\sum\\limits_{i} x_i[n]\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#basic-dt-transformations-cont.",
+    "href": "lecture-02-slides.html#basic-dt-transformations-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic DT Transformations cont.",
+    "text": "Basic DT Transformations cont.\n\nmultiplication (modulation) \\[y[n] = x_1[n] x_2[n]\\]\ntime index shift \\[x_2[n] = x_1[n+m]\\]\n\nif \\(m &lt; 0\\) it is called a delay\nif \\(m &gt; 0\\) it is called an advance\n\ntime reversal \\[x_2[n] = x_1[-n]\\]"
+  },
+  {
+    "objectID": "lecture-02-slides.html#basic-dt-transformations-cont.-1",
+    "href": "lecture-02-slides.html#basic-dt-transformations-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic DT Transformations cont.",
+    "text": "Basic DT Transformations cont.\n\ndecimation \\[y[n] = x[m n]\\] for \\(m \\in \\mathbb{Z}^+\\).\n\ne.g. for \\(m=2\\) only keep every other sample\ne.g. for \\(m=3\\) only keep every third sample\netc.\n\ninterpolation \\[y[n] = \\left\\{  \\begin{array}{cl}\nx\\left[ \\frac{n}{m}\\right] & n = 0\\; , \\; \\pm m, , \\; \\pm 2m \\cdots\\\\\n0 & \\mbox{else}\n\\end{array}\\right.\\] When \\(m = 2\\) this inserts a zero sample between every sample of the signal."
+  },
+  {
+    "objectID": "lecture-02-slides.html#characterization-of-ct-signals",
+    "href": "lecture-02-slides.html#characterization-of-ct-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of CT Signals",
+    "text": "Characterization of CT Signals\nThere are a few basic ways of characterizing signals.\n\nA CT signal is causal if \\(x(t) = 0\\) \\(\\forall t &lt; 0\\).\nA CT signal is anti-causal or acausal if \\(x(t) = 0\\) \\(\\forall t \\geq 0\\). A signal can be written as the sum of a causal and anti-causal signal.\nA CT signal is periodic if \\(x(t) = x(t + T)\\) \\(\\forall t\\) for a fixed parameter \\(T \\in \\mathbb{R}\\) called the . The simplest periodic signals are those based on the sinusoidal functions.\nA CT signal is even if \\(x(t) = x(-t)\\) \\(\\forall t\\).\nA CT signal is odd if \\(x(t) = -x(-t)\\) \\(\\forall t\\).\nAny CT signal can be written in terms of an even and odd component \\[\nx(t) = x_e(t) + x_o(t)\n\\] where \\(x_e(t) = \\frac{1}{2}\\left\\{x(t) + x(-t)\\right\\}\\) and \\(x_o(t) = \\frac{1}{2}\\left\\{x(t) - x(-t)\\right\\}\\)."
+  },
+  {
+    "objectID": "lecture-02-slides.html#characterization-of-ct-signals-cont.",
+    "href": "lecture-02-slides.html#characterization-of-ct-signals-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of CT Signals cont.",
+    "text": "Characterization of CT Signals cont.\n\nThe energy of a CT signal \\(x(t)\\) is defined as a measure of the function \\[\nE_x = \\lim_{T\\rightarrow\\infty} \\int\\limits_{-T}^T \\lvert x(t) \\rvert^2 dt \\; .\n\\]\nThe power of a CT signal is the energy averaged over an interval as that interval tends to infinity. \\[\nP_x = \\lim_{T\\rightarrow\\infty} \\frac{1}{2T} \\int_{-T}^T \\lvert x(t)\\rvert^2 dt \\; .\n\\]\n\nSignals can be characterized based on their energy or power:\n\nSignals with finite, non-zero energy and zero power are called energy signals.\nSignals with finite, non-zero power (and by implication infinite energy) are called power signals."
+  },
+  {
+    "objectID": "lecture-02-slides.html#characterization-of-dt-signals",
+    "href": "lecture-02-slides.html#characterization-of-dt-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of DT Signals",
+    "text": "Characterization of DT Signals\nSimilarly there are a few basic ways of characterizing DT signals.\n\nA DT signal is causal if \\(x[n] = 0\\) \\(\\forall n &lt; 0\\).\nA DT signal is anti-causal or acausal if \\(x[n] = 0\\) \\(\\forall n \\geq 0\\).\nA DT signal can be written as the sum of a causal and anti-causal signal.\nA DT signal is periodic if \\(x[n] = x[n + N] \\; \\forall n\\) for a fixed period \\(N \\in \\mathbb{Z}\\).\nA DT signal is even if \\(x[n] = x[-n] \\; \\forall n\\).\nA DT signal is odd if \\(x[n] = -x[-n] \\; \\forall n\\).\nAny DT signal can be written in terms of an even and odd component \\[x[n] = x_e[n] + x_o[n]\\] where \\(x_e[n] = \\frac{1}{2}\\left\\{x[n] + x[-n]\\right\\}\\) and \\(x_o[n] = \\frac{1}{2}\\left\\{x[n] - x[-n]\\right\\}\\)"
+  },
+  {
+    "objectID": "lecture-02-slides.html#characterization-of-dt-signals-cont.",
+    "href": "lecture-02-slides.html#characterization-of-dt-signals-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of DT Signals cont.",
+    "text": "Characterization of DT Signals cont.\nAnalogous to CT signals, the energy of a DT signal is \\[E_x = \\lim_{N\\rightarrow\\infty} \\sum\\limits_{-N}^N \\lvert x[n]\\rvert^2 \\; .\\]\nThe power of a DT signal is the energy averaged over an interval as that interval tends to infinity.\n\\[P_x = \\lim_{N\\rightarrow\\infty} \\frac{1}{2N+1} \\sum\\limits_{-N}^N \\lvert x[n]\\rvert^2 \\; .\\]\nDT Signals with finite, non-zero energy and zero power are called energy signals.\nDT Signals with finite, non-zero power (and by implication infinite energy) are called power signals."
+  },
+  {
+    "objectID": "lecture-02-slides.html#systems",
+    "href": "lecture-02-slides.html#systems",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems",
+    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+  },
+  {
+    "objectID": "lecture-02-slides.html#systems-cont.",
+    "href": "lecture-02-slides.html#systems-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems cont.",
+    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System\n\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
+  },
+  {
+    "objectID": "lecture-02-slides.html#system-input-and-output",
+    "href": "lecture-02-slides.html#system-input-and-output",
+    "title": "ECE 4624: Meeting 2",
+    "section": "System Input and Output",
+    "text": "System Input and Output\n\nThe input to a SISO system is a signal.\nThe output from a SISO system, or its response, is also a signal\nThere are three canonical responses considered:\n\nImpulse Response\nStep Response\nComplex Exponential or sinusoidal response\n\nFor LTI systems the last two can be derived from the first.\nThe impulse response for CT systems is denoted \\(h(t)\\).\n\n\n\nImpulse Response of CT System\n\n\nThe impulse response for DT systems is denoted \\(h[n]\\).\n\n\n\nImpulse Response of DT System"
+  },
+  {
+    "objectID": "lecture-02-slides.html#ct-system-representations",
+    "href": "lecture-02-slides.html#ct-system-representations",
+    "title": "ECE 4624: Meeting 2",
+    "section": "CT system representations",
+    "text": "CT system representations\nWe can mathematically represent, or model, systems multiple ways.\n\npurely mathematically - in time domain we generically use\n\nfor CT systems: differential equations e.g. \\[y^{\\prime\\prime} + ay^\\prime + by = x\\]\nfor DT systems: difference equations e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\n\ngraphically, using a mixture of math and block diagrams\n\nMathematical models:\n\nprovide abstraction, removing (often) irrelevant detail.\ncan be more or less detailed, an internal v.s. external (block box) description\nare not unique with respect to instantiation (implementation)\nare limited to the regime they were designed for"
+  },
+  {
+    "objectID": "lecture-02-slides.html#system-properties-and-classification",
+    "href": "lecture-02-slides.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 2",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity\n\nOur focus is on linear, time-invariant (LTI) systems. Such systems can be represented completely by:\n\nan LCCDE,\nan impulse response, or\na transfer function.\n\nWhen stable they can also be represented by thier frequency response."
+  },
+  {
+    "objectID": "lecture-02-slides.html#reminders-and-next-actions",
+    "href": "lecture-02-slides.html#reminders-and-next-actions",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Reminders and Next Actions",
+    "text": "Reminders and Next Actions\n\nRead PM 4.2\nRefer to as needed Chapters 14 and 16 of ECE 2714 Supplementary Notes\nReminder: PS #1 is due Sept. 10"
+  },
+  {
+    "objectID": "lecture-02-notes.html",
+    "href": "lecture-02-notes.html",
+    "title": "ECE 4624: Meeting 2",
+    "section": "",
+    "text": "Today we define CT and DT Signals and how to characterize them. Then we review the basic notion of a system as a transformation between signals.\nReadings:\n\nPM 2.1 and 2.2\nChapter 2 ECE 2714 Supplementary Notes\nChapter 3 ECE 2714 Supplementary Notes\n\nTopics:\n\n\n\nSignals as Functions\nPrimitive Models\nImpulse Function\nStep Function\nComplex Exponential\nBasic Signal Transformations\nCharacterization of Signals\n\n\n\n\n\nBasic Systems\nInput Signals\nOutput or Response Signals\nImpulse Response\nStep Response\nComplex Exponential Response"
+  },
+  {
+    "objectID": "lecture-02-notes.html#section",
+    "href": "lecture-02-notes.html#section",
+    "title": "ECE 4624: Meeting 2",
+    "section": "",
+    "text": "Today we define CT and DT Signals and how to characterize them. Then we review the basic notion of a system as a transformation between signals.\nReadings:\n\nPM 2.1 and 2.2\nChapter 2 ECE 2714 Supplementary Notes\nChapter 3 ECE 2714 Supplementary Notes\n\nTopics:\n\n\n\nSignals as Functions\nPrimitive Models\nImpulse Function\nStep Function\nComplex Exponential\nBasic Signal Transformations\nCharacterization of Signals\n\n\n\n\n\nBasic Systems\nInput Signals\nOutput or Response Signals\nImpulse Response\nStep Response\nComplex Exponential Response"
+  },
+  {
+    "objectID": "lecture-02-notes.html#signals-as-functions",
+    "href": "lecture-02-notes.html#signals-as-functions",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Signals as Functions",
+    "text": "Signals as Functions\nIn order to reason about signals mathematically we need a representation or model. Signals are modeled as functions, mappings between sets \\[\nf: A \\rightarrow B\n\\] where \\(A\\) is a set called the domain and \\(B\\) is a set called the range.\nThe most basic classification of signals depends on the sets that makeup the domain and co-domain. We will be interested in two versions of the domain, the reals denoted \\(\\mathbb{R}\\) and the integers denoted \\(\\mathbb{Z}\\). We will be interested in two versions of the co-domain, the reals \\(\\mathbb{R}\\) and the set of complex numbers \\(\\mathbb{C}\\)."
+  },
+  {
+    "objectID": "lecture-02-notes.html#analog-signals",
+    "href": "lecture-02-notes.html#analog-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Analog Signals",
+    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds. Figure 1 shows some graphical representations, i.e. plots.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
+  },
+  {
+    "objectID": "lecture-02-notes.html#real-discrete-time-signal",
+    "href": "lecture-02-notes.html#real-discrete-time-signal",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Real, Discrete-time Signal",
+    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless. Figure 2 shows some graphical representations.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
+  },
+  {
+    "objectID": "lecture-02-notes.html#some-other-possibilities",
+    "href": "lecture-02-notes.html#some-other-possibilities",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Some other possibilities",
+    "text": "Some other possibilities\n\n\\(f: \\mathbb{R} \\rightarrow \\mathbb{Z}\\), discrete-valued, continuous-time signals\n\\(f: \\mathbb{Z} \\rightarrow \\mathbb{Z}\\), discrete-valued, discrete-time signals\n\nThe co-domain can also be complex.\n\n\\(f: \\mathbb{R} \\rightarrow \\mathbb{C}\\), complex-valued, continuous-time signals, e.g. \\[\nx(t) = e^{j\\omega t} = \\cos(\\omega t) + j\\sin(\\omega t)\n\\]\n\\(f: \\mathbb{Z} \\rightarrow \\mathbb{C}\\), complex-valued, discrete-time signals, e.g. \\[\nx[n] = e^{j\\omega n} = \\cos(\\omega n) + j\\sin(\\omega n)\n\\]\n\nSince the domains \\(\\mathbb{R}\\) and \\(\\mathbb{Z}\\) are usually interpreted as time, we call these time-domain signals. In the time-domain, when the co-domain is \\(\\mathbb{R}\\) we call these real signals. All physical signals are real. However pairs of complex signals are important mathematical models in linear systems theory."
+  },
+  {
+    "objectID": "lecture-02-notes.html#digital-signals",
+    "href": "lecture-02-notes.html#digital-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Digital Signals",
+    "text": "Digital Signals\nWe are ultimately interested in signals\n\\[\nf: \\mathbb{Z} \\rightarrow \\mathbb{Q}\n\\]\nwhere the range \\(\\mathbb{Q} \\subset \\mathbb{Z}^+\\) is the set of unsigned \\(N\\)-bit values\n\\[\n\\sum\\limits_{i = -A}^{B} b_i 2^{-i}\n\\]\n\n\\(b_i \\in\\{0,1\\}\\) it the ith bit\n\\(b_{-A}\\) is the most-signifigant bit (MSB)\n\\(b_{B}\\) is the least-signifigant bit (LSB)\nthe location of the decimal point is implied\nsigned values have various representations\n\nHowever, these functions are hard to work with mathematically, so we generally work with DT signals and look at practical consequencces separately."
+  },
+  {
+    "objectID": "lecture-02-notes.html#primitive-models",
+    "href": "lecture-02-notes.html#primitive-models",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Primitive Models",
+    "text": "Primitive Models\nWe mathematically model signals by combining elementary/primitive functions, for example:\n\npolynomials: \\(x(t) = t\\), \\(x(t) = t^2\\), etc.\ntransendental functions: \\(x(t) = e^t\\), \\(x(t) = \\sin(t)\\), \\(x(t) = \\cos(t)\\), etc.\npiecewise functions, e.g. \\[\n   x(t) = \\left\\{  \\begin{array}{cl}\n     f_1(t) & t &lt; 0\\\\\n     f_2(t) & t \\geq 0\\\\\n   \\end{array}\\right.\n\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#unit-step-function",
+    "href": "lecture-02-notes.html#unit-step-function",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Unit Step Function",
+    "text": "Unit Step Function\nTo model turning signals on we often use a piecewise function, the unit-step\nIn continuous-time:\n\\[\nu(t) = \\left\\{  \\begin{array}{cl}\n        0 & t &lt; 0\\\\\n        1 & t \\geq 0\\\\\n      \\end{array}\\right.\n\\]\nNote: some texts define the step function at \\(t=0\\) to be \\(0\\) or \\(\\frac{1}{2}\\).\nIn discrete-time:\n\\[\nu[n] = \\left\\{  \\begin{array}{cl}\n        0 & n &lt; 0\\\\\n        1 & n \\geq 0\\\\\n      \\end{array}\\right.\n\\]\nNote: there is no ambiguity about the value at \\(n=0\\)."
+  },
+  {
+    "objectID": "lecture-02-notes.html#unit-impulse-function",
+    "href": "lecture-02-notes.html#unit-impulse-function",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Unit Impulse Function",
+    "text": "Unit Impulse Function\nAn important signal in linear system theory is the impulse function:\nIt is easily defined in discrete-time:\n\\[\n\\delta[n] = \\left\\{  \\begin{array}{cl}\n        0 & n \\neq 0\\\\\n        1 & n = 0\\\\\n      \\end{array}\\right.\n\\]\nHowever in continuous-time it is defined using generalized functions. Two definitions:\n\\[\n\\delta(t) = \\lim_{\\epsilon \\rightarrow 0}\\left\\{\n\\begin{array}{ll}\n  \\frac{1}{2\\epsilon} & |t| &lt; \\epsilon\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\n\\]\n\\[\n\\delta(t) = \\lim_{\\epsilon \\rightarrow 0} \\frac{1}{\\sqrt{2\\pi}\\epsilon} e^{-\\frac{t^2}{2\\epsilon^2}}\n\\]\nNote the area under each definition is always one."
+  },
+  {
+    "objectID": "lecture-02-notes.html#ct-impulse-function-cont.",
+    "href": "lecture-02-notes.html#ct-impulse-function-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "CT Impulse Function cont.",
+    "text": "CT Impulse Function cont.\nIn practice we can often use the following heuristic definition and some properties, without worrying about the distribution functions. \\[\n\\delta(t) = \\left\\{\n\\begin{array}{ll}\n  0 & t \\neq 0\\\\\n  \\infty & t = 0\n\\end{array}\n\\right.\n\\]\n\nThe area under the unit impulse is unity since by definition \\[\n\\int\\limits_{-\\infty}^{\\infty} \\delta(t) \\; dt = 1\n\\]\nSampling property: \\(x(t)\\delta(t-t_0) = x(t_0)\\delta(t-t_0)\\)\nSifting Property: \\[\n\\int\\limits_{a}^{b} x(t)\\delta(t-t_0) \\; dt = x(t_0)\n\\] for any \\(a &lt; t_0 &lt; b\\)."
+  },
+  {
+    "objectID": "lecture-02-notes.html#relationships-between-the-unit-step-and-impulse-in-ct",
+    "href": "lecture-02-notes.html#relationships-between-the-unit-step-and-impulse-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Relationships between the unit step and impulse in CT",
+    "text": "Relationships between the unit step and impulse in CT\nWe previously defined the unit step function. The impulse can be defined in terms of the step: \\[\n\\delta(t) = \\frac{du}{dt}\n\\] and vice-versa \\[\nu(t) = \\int\\limits_{-\\infty}^{t} \\delta(\\tau) \\; d\\tau\n\\] using the notion of distributions, e.g.\n\\[\nu(t) = \\int\\limits_{-\\infty}^{t} \\delta(\\tau) \\; d\\tau = \\lim_{\\epsilon \\rightarrow 0} \\int\\limits_{-\\infty}^{t} \\frac{1}{\\sqrt{2\\pi}\\epsilon} e^{-\\frac{\\tau^2}{2\\epsilon^2}} \\; d\\tau = \\lim_{\\epsilon \\rightarrow 0} \\frac{1}{2}\\left(1+\\text{erf}\\left( \\frac{t}{\\sqrt{2}\\epsilon}\\right)\\right)\n\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#variations-on-the-step-and-impulse-in-ct",
+    "href": "lecture-02-notes.html#variations-on-the-step-and-impulse-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Variations on the step and impulse in CT",
+    "text": "Variations on the step and impulse in CT\nWe can apply additional transformations to the impulse and step functions to get other useful signals, e.g.\n\nramp \\[\nr(t) = \\int\\limits_{-\\infty}^{t} u(\\tau) \\; d\\tau = tu(t)\n\\]\ncausal pulse of width \\(\\epsilon\\) \\[\np(t) = u(t) - u(t-\\epsilon)\n\\]\nnon-causal pulse of width \\(2\\epsilon\\) \\[\n    p(t) = u(t+\\epsilon) - u(t-\\epsilon)\n\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#relationships-between-the-unit-step-and-impulse-in-dt",
+    "href": "lecture-02-notes.html#relationships-between-the-unit-step-and-impulse-in-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Relationships between the unit step and impulse in DT",
+    "text": "Relationships between the unit step and impulse in DT\nSome useful properties of the DT impulse function are:\n\nEnergy is 1: \\(\\sum\\limits_{n=-\\infty}^{\\infty} \\delta[n] = 1\\)\nSampling: \\(x[n]\\delta[n-n_0] = x[n_0]\\delta[n-n_0]\\)\nSifting: \\(\\sum\\limits_{n=-\\infty}^{\\infty} x[n]\\delta[n-n_0] = x[n_0]\\)\n\nThe impulse can be defined in terms of the step and vice-versa: \\[\\delta[n] = u[n] - u[n-1]\\]\n\\[u[n] = \\sum\\limits_{m=-\\infty}^{n} \\delta[m]\\] or\n\\[u[n] = \\sum\\limits_{k=0}^{\\infty} \\delta[n-k]\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#complex-exponential-in-ct",
+    "href": "lecture-02-notes.html#complex-exponential-in-ct",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT",
+    "text": "Complex Exponential in CT\nOne of the most important signals in systems theory is the complex exponential: \\[\nx(t) = C\\, e^{a t}\n\\] where the parameters \\(C, a \\in \\mathbb{C}\\) in general.\n\nWhen \\(C\\) and \\(a\\) are both real (\\(\\Im(C) = \\Im(a) = 0\\)), we have the familiar exponential."
+  },
+  {
+    "objectID": "lecture-02-notes.html#complex-exponential-in-ct-cont.",
+    "href": "lecture-02-notes.html#complex-exponential-in-ct-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT cont.",
+    "text": "Complex Exponential in CT cont.\nTo get the pure sinusoidal case, let \\(C \\in \\mathbb{R}\\) and \\(a\\) be purely imaginary: \\(a = j\\omega_0\\): \\[\nx(t) = Ce^{j\\omega_0 t}\n\\] where \\(\\omega_0\\) is the frequency (in radians/sec). This is called the complex sinusoid.\nBy Euler’s identity: \\[\ne^{j\\omega_0 t} = \\cos(\\omega_0 t) + j\\sin(\\omega_0 t)\n\\] and \\[\n\\Re(x(t)) = \\cos(\\omega_0 t) = \\frac{1}{2}\\left( e^{j\\omega_0 t} + e^{-j\\omega_0 t} \\right)\n\\]\n\\[\n\\Im(x(t)) = \\sin(\\omega_0 t) = \\frac{1}{2j}\\left( e^{j\\omega_0 t} - e^{-j\\omega_0 t} \\right)\n\\] are both real sinusoids."
+  },
+  {
+    "objectID": "lecture-02-notes.html#complex-exponential-in-ct-cont.-1",
+    "href": "lecture-02-notes.html#complex-exponential-in-ct-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in CT cont.",
+    "text": "Complex Exponential in CT cont.\nWhen the parameter \\(C\\) is complex we get a phase shift. Again let \\(a = j\\omega_0\\). When \\(C\\) is complex we can write it as \\(C = Ae^{j\\phi}\\) where \\(A = |C|\\) and \\(\\phi = \\angle C\\). Then\n\\[\nx(t) = Ae^{j\\phi} e^{j\\omega_0 t} = Ae^{j(\\omega_0 t+\\phi)}\n\\] and \\[\n\\Re(x(t)) = A\\cos(\\omega_0 t+\\phi)\n\\]\n\\[\n\\Im(x(t)) = A\\sin(\\omega_0 t+\\phi)\n\\]\nSince \\(\\sin\\) is a special case of \\(\\cos\\), i.e. \\(\\cos(\\theta) = \\sin(\\theta + \\frac{\\pi}{2})\\), the general real sinusoid is\n\\[\nA\\cos(\\omega_0 t + \\phi)\n\\]\n\n\\(A\\) is called the amplitude\n\\(\\omega_0\\) is again the frequency in radians/sec.\n\\(\\phi\\) is called the phase shift and is related to a time shift \\(T_s\\) by \\[\n\\phi = \\omega_0T_s\n\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#complex-exponential-in-dt",
+    "href": "lecture-02-notes.html#complex-exponential-in-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Complex Exponential in DT",
+    "text": "Complex Exponential in DT\nThe DT Complex Exponential is defined in a similar fashion the the CT version, but with some important differences.\nThe general DT complex exponential is given by the expression:\n\\[x[n] = Ce^{\\beta n}\\]\nwhere in general \\(C \\in \\mathbb{C}\\) and \\(\\beta \\in \\mathbb{C}\\).\nIt is usually more convenient to write this as\n\\[x[n] = C \\alpha^n\\]\nwhere \\(\\alpha = e^{j\\theta}\\) is a complex number \\(\\alpha = \\cos(\\theta) + j\\sin(\\theta)\\)."
+  },
+  {
+    "objectID": "lecture-02-notes.html#basic-transformations-focusing-on-dt",
+    "href": "lecture-02-notes.html#basic-transformations-focusing-on-dt",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic Transformations (focusing on DT)",
+    "text": "Basic Transformations (focusing on DT)\nWe can also apply transformations to signals to increase their modeling flexibility.\n\nmagnitude scaling \\[x_2[n] = a x_1[n]\\] for \\(a \\in \\mathbb{R}\\).\ntime differences \\[x_2[n] = x_1[n] - x_1[n-1]\\]\nrunning sums \\[x_2[n] = \\sum\\limits_{m = -\\infty}^{n} x_1[m]\\]\nsums \\[y[n] = \\sum\\limits_{i} x_i[n]\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#basic-dt-transformations-cont.",
+    "href": "lecture-02-notes.html#basic-dt-transformations-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic DT Transformations cont.",
+    "text": "Basic DT Transformations cont.\n\nmultiplication (modulation) \\[y[n] = x_1[n] x_2[n]\\]\ntime index shift \\[x_2[n] = x_1[n+m]\\]\n\nif \\(m &lt; 0\\) it is called a delay\nif \\(m &gt; 0\\) it is called an advance\n\ntime reversal \\[x_2[n] = x_1[-n]\\]"
+  },
+  {
+    "objectID": "lecture-02-notes.html#basic-dt-transformations-cont.-1",
+    "href": "lecture-02-notes.html#basic-dt-transformations-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Basic DT Transformations cont.",
+    "text": "Basic DT Transformations cont.\n\ndecimation \\[y[n] = x[m n]\\] for \\(m \\in \\mathbb{Z}^+\\).\n\ne.g. for \\(m=2\\) only keep every other sample\ne.g. for \\(m=3\\) only keep every third sample\netc.\n\ninterpolation \\[y[n] = \\left\\{  \\begin{array}{cl}\nx\\left[ \\frac{n}{m}\\right] & n = 0\\; , \\; \\pm m, , \\; \\pm 2m \\cdots\\\\\n0 & \\mbox{else}\n\\end{array}\\right.\\] When \\(m = 2\\) this inserts a zero sample between every sample of the signal."
+  },
+  {
+    "objectID": "lecture-02-notes.html#characterization-of-ct-signals",
+    "href": "lecture-02-notes.html#characterization-of-ct-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of CT Signals",
+    "text": "Characterization of CT Signals\nThere are a few basic ways of characterizing signals.\n\nA CT signal is causal if \\(x(t) = 0\\) \\(\\forall t &lt; 0\\).\nA CT signal is anti-causal or acausal if \\(x(t) = 0\\) \\(\\forall t \\geq 0\\). A signal can be written as the sum of a causal and anti-causal signal.\nA CT signal is periodic if \\(x(t) = x(t + T)\\) \\(\\forall t\\) for a fixed parameter \\(T \\in \\mathbb{R}\\) called the . The simplest periodic signals are those based on the sinusoidal functions.\nA CT signal is even if \\(x(t) = x(-t)\\) \\(\\forall t\\).\nA CT signal is odd if \\(x(t) = -x(-t)\\) \\(\\forall t\\).\nAny CT signal can be written in terms of an even and odd component \\[\nx(t) = x_e(t) + x_o(t)\n\\] where \\(x_e(t) = \\frac{1}{2}\\left\\{x(t) + x(-t)\\right\\}\\) and \\(x_o(t) = \\frac{1}{2}\\left\\{x(t) - x(-t)\\right\\}\\)."
+  },
+  {
+    "objectID": "lecture-02-notes.html#characterization-of-ct-signals-cont.",
+    "href": "lecture-02-notes.html#characterization-of-ct-signals-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of CT Signals cont.",
+    "text": "Characterization of CT Signals cont.\n\nThe energy of a CT signal \\(x(t)\\) is defined as a measure of the function \\[\nE_x = \\lim_{T\\rightarrow\\infty} \\int\\limits_{-T}^T \\lvert x(t) \\rvert^2 dt \\; .\n\\]\nThe power of a CT signal is the energy averaged over an interval as that interval tends to infinity. \\[\nP_x = \\lim_{T\\rightarrow\\infty} \\frac{1}{2T} \\int_{-T}^T \\lvert x(t)\\rvert^2 dt \\; .\n\\]\n\nSignals can be characterized based on their energy or power:\n\nSignals with finite, non-zero energy and zero power are called energy signals.\nSignals with finite, non-zero power (and by implication infinite energy) are called power signals."
+  },
+  {
+    "objectID": "lecture-02-notes.html#characterization-of-dt-signals",
+    "href": "lecture-02-notes.html#characterization-of-dt-signals",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of DT Signals",
+    "text": "Characterization of DT Signals\nSimilarly there are a few basic ways of characterizing DT signals.\n\nA DT signal is causal if \\(x[n] = 0\\) \\(\\forall n &lt; 0\\).\nA DT signal is anti-causal or acausal if \\(x[n] = 0\\) \\(\\forall n \\geq 0\\).\nA DT signal can be written as the sum of a causal and anti-causal signal.\nA DT signal is periodic if \\(x[n] = x[n + N] \\; \\forall n\\) for a fixed period \\(N \\in \\mathbb{Z}\\).\nA DT signal is even if \\(x[n] = x[-n] \\; \\forall n\\).\nA DT signal is odd if \\(x[n] = -x[-n] \\; \\forall n\\).\nAny DT signal can be written in terms of an even and odd component \\[x[n] = x_e[n] + x_o[n]\\] where \\(x_e[n] = \\frac{1}{2}\\left\\{x[n] + x[-n]\\right\\}\\) and \\(x_o[n] = \\frac{1}{2}\\left\\{x[n] - x[-n]\\right\\}\\)"
+  },
+  {
+    "objectID": "lecture-02-notes.html#characterization-of-dt-signals-cont.",
+    "href": "lecture-02-notes.html#characterization-of-dt-signals-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Characterization of DT Signals cont.",
+    "text": "Characterization of DT Signals cont.\nAnalogous to CT signals, the energy of a DT signal is \\[E_x = \\lim_{N\\rightarrow\\infty} \\sum\\limits_{-N}^N \\lvert x[n]\\rvert^2 \\; .\\]\nThe power of a DT signal is the energy averaged over an interval as that interval tends to infinity.\n\\[P_x = \\lim_{N\\rightarrow\\infty} \\frac{1}{2N+1} \\sum\\limits_{-N}^N \\lvert x[n]\\rvert^2 \\; .\\]\nDT Signals with finite, non-zero energy and zero power are called energy signals.\nDT Signals with finite, non-zero power (and by implication infinite energy) are called power signals."
+  },
+  {
+    "objectID": "lecture-02-notes.html#systems",
+    "href": "lecture-02-notes.html#systems",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems",
+    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+  },
+  {
+    "objectID": "lecture-02-notes.html#systems-cont.",
+    "href": "lecture-02-notes.html#systems-cont.",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems cont.",
+    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System\n\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
+  },
+  {
+    "objectID": "lecture-02-notes.html#system-input-and-output",
+    "href": "lecture-02-notes.html#system-input-and-output",
+    "title": "ECE 4624: Meeting 2",
+    "section": "System Input and Output",
+    "text": "System Input and Output\n\nThe input to a SISO system is a signal.\nThe output from a SISO system, or its response, is also a signal\nThere are three canonical responses considered:\n\nImpulse Response\nStep Response\nComplex Exponential or sinusoidal response\n\nFor LTI systems the last two can be derived from the first.\nThe impulse response for CT systems is denoted \\(h(t)\\).\n\n\n\nImpulse Response of CT System\n\n\nThe impulse response for DT systems is denoted \\(h[n]\\).\n\n\n\nImpulse Response of DT System"
+  },
+  {
+    "objectID": "lecture-02-notes.html#ct-system-representations",
+    "href": "lecture-02-notes.html#ct-system-representations",
+    "title": "ECE 4624: Meeting 2",
+    "section": "CT system representations",
+    "text": "CT system representations\nWe can mathematically represent, or model, systems multiple ways.\n\npurely mathematically - in time domain we generically use\n\nfor CT systems: differential equations e.g. \\[y^{\\prime\\prime} + ay^\\prime + by = x\\]\nfor DT systems: difference equations e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\n\ngraphically, using a mixture of math and block diagrams\n\nMathematical models:\n\nprovide abstraction, removing (often) irrelevant detail.\ncan be more or less detailed, an internal v.s. external (block box) description\nare not unique with respect to instantiation (implementation)\nare limited to the regime they were designed for"
+  },
+  {
+    "objectID": "lecture-02-notes.html#system-properties-and-classification",
+    "href": "lecture-02-notes.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 2",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity\n\nOur focus is on linear, time-invariant (LTI) systems. Such systems can be represented completely by:\n\nan LCCDE,\nan impulse response, or\na transfer function.\n\nWhen stable they can also be represented by thier frequency response."
+  },
+  {
+    "objectID": "lecture-02-notes.html#reminders-and-next-actions",
+    "href": "lecture-02-notes.html#reminders-and-next-actions",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Reminders and Next Actions",
+    "text": "Reminders and Next Actions\n\nRead PM 4.2\nRefer to as needed Chapters 14 and 16 of ECE 2714 Supplementary Notes\nReminder: PS #1 is due Sept. 10"
+  },
+  {
+    "objectID": "lecture-01-slides.html#welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025",
+    "href": "lecture-01-slides.html#welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Welcome to ECE 4624, DSP and Filter Design, for Fall 2025!",
+    "text": "Welcome to ECE 4624, DSP and Filter Design, for Fall 2025!\nThe goal today is to introduce the course and administrative details.\n\nStaff Introductions\nCourse Overview\nLearning Objectives\nSchedule\nPrerequisites\nGrading\n\nCanvas URL: https://canvas.vt.edu/courses/215720"
+  },
+  {
+    "objectID": "lecture-01-slides.html#course-staff",
+    "href": "lecture-01-slides.html#course-staff",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Course Staff",
+    "text": "Course Staff\n\nInstructor\n\nChris Wyatt, clwyatt@vt.edu, Zoom and Phone: 540-231-6658\n\n\n\nThere is no TA for this course.\nSee the Canvas syllabus for my up-to-date office hours links and times.\n\nNote: if you need to see me outside office hours, send me an email with a selection of times over the following 2-3 days and I will get back to you with a time and location if possible."
+  },
+  {
+    "objectID": "lecture-01-slides.html#introduction-to-dsp",
+    "href": "lecture-01-slides.html#introduction-to-dsp",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Introduction to DSP",
+    "text": "Introduction to DSP\n\nBasic signal types\n\nCT\nDT\nDigital\n\nDefintion of DSP\n\ndigital representation of signals\nuse of digital systems to analyze, modify, store, or extract information\nreplacement of CT processing in many applications"
+  },
+  {
+    "objectID": "lecture-01-slides.html#advantages-of-dsp-over-ct-processing",
+    "href": "lecture-01-slides.html#advantages-of-dsp-over-ct-processing",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Advantages of DSP over CT processing",
+    "text": "Advantages of DSP over CT processing\n\nFlexibility\nReproducibility\nReliability\nComplexity"
+  },
+  {
+    "objectID": "lecture-01-slides.html#life-cycle-of-dsp-systems",
+    "href": "lecture-01-slides.html#life-cycle-of-dsp-systems",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Life cycle of DSP systems",
+    "text": "Life cycle of DSP systems\n\ndesign\ndevelopment\nanalyze\nsimulation\ntesting\nmaintenance"
+  },
+  {
+    "objectID": "lecture-01-slides.html#dsp-types",
+    "href": "lecture-01-slides.html#dsp-types",
+    "title": "ECE 4624: Meeting 1",
+    "section": "DSP types",
+    "text": "DSP types\n\noffline (non-real-time)\nreal-time\n\nMuch of our focus will be on real-time DSP."
+  },
+  {
+    "objectID": "lecture-01-slides.html#basic-elements-of-real-time-dsp-systems",
+    "href": "lecture-01-slides.html#basic-elements-of-real-time-dsp-systems",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Basic elements of real-time DSP systems",
+    "text": "Basic elements of real-time DSP systems\n\npre-amplifier to amplify and shift the DC level of the system\nanti-aliasing filter\nADC\nOther digital inputs\nDSP Hardware\nDAC\nreconstruction filter\nother digital outputs (storage, transmission, etc.)"
+  },
+  {
+    "objectID": "lecture-01-slides.html#overview-of-ece-4624-dsp-and-filter-design",
+    "href": "lecture-01-slides.html#overview-of-ece-4624-dsp-and-filter-design",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Overview of ECE 4624 DSP and Filter Design",
+    "text": "Overview of ECE 4624 DSP and Filter Design\n\nThis course covers the analysis, design, and realization of digital filters and their application to signal processing and control.\nIt uses the techniques and concepts from ECE 2714 and 3704. Those courses are the foundation of DSP, and we will review and use the theory of linear, time-invariant, discrete-time systems. However both courses focus mostly on analysis with only introductory coverage of design and implementation.\nIn addition those courses neglected the effect of quantization – the need to represent signal samples and filter coefficients as fixed-width integers for efficient implementation, rather than floating-point numbers. Knowing how to model and consider quantization effects is an important part of designing and implementing practical DSP systems.\nAt the end of the course we introduce stochastic, or random, signals. Learning about stochastic signals opens up a broader world of more sophisticated concepts, including the idea of adaptive filtering, and applications, such as noise cancellation."
+  },
+  {
+    "objectID": "lecture-01-slides.html#the-learning-objectives-for-the-course-are",
+    "href": "lecture-01-slides.html#the-learning-objectives-for-the-course-are",
+    "title": "ECE 4624: Meeting 1",
+    "section": "The learning objectives for the course are:",
+    "text": "The learning objectives for the course are:\nHaving successfully completed this course, the student will be able to:\n\nEvaluate the performance of a digital filter, in terms of its frequency response.\nUse Fast Fourier Transform techniques for the analysis of arbitrary signals.\nDemonstrate coefficient quantization effects in digital filters.\nDesign digital filters using transformation techniques from analog designs.\nDesign digital filters using windowing techniques.\nDesign digital filters meeting given specifications.\nOrganize and write technical reports.\nOrganize and make technical presentations."
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response",
+    "href": "lecture-01-slides.html#lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO1: Evaluate the performance of a digital filter, in terms of its frequency response",
+    "text": "LO1: Evaluate the performance of a digital filter, in terms of its frequency response\nExample Problem: Given a low-pass filter described by the difference equation \\[\n  y[n] = ay[n-1] + by[n-2] + cy[n-3] + dx[n] + ex[n-1] + fx[n-2]\n  \\] where the coefficients \\(a\\) through \\(f\\) are given and whose transition band is defined from -3dB to -40dB, determine the cutoff frequency and width of the transition band in samples/sec."
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals",
+    "href": "lecture-01-slides.html#lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals",
+    "text": "LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals\nExample Problem: Given samples of a real single-channel signal in the file sig.wav sampled at 18kHz determine the relative power between the frequency bands DC-500Hz and 1kHz-1.5kHz."
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo3-demonstrate-coefficient-quantization-effects-in-digital-filters",
+    "href": "lecture-01-slides.html#lo3-demonstrate-coefficient-quantization-effects-in-digital-filters",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO3: Demonstrate coefficient quantization effects in digital filters",
+    "text": "LO3: Demonstrate coefficient quantization effects in digital filters\nExample Problem: Given a 5th order IIR bandpass filter with coefficients limited to 8 bits, plot the frequency response with and without quantization. What is the maximum expected deviation in the bandwidth of the filter due to quantization?"
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo4-design-digital-filters-using-transformation-techniques-from-analog-designs",
+    "href": "lecture-01-slides.html#lo4-design-digital-filters-using-transformation-techniques-from-analog-designs",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO4: Design digital filters using transformation techniques from analog designs",
+    "text": "LO4: Design digital filters using transformation techniques from analog designs\nExample Problem: Consider an analog filter with transfer function \\[\n  H(s) = \\frac{K(s-a)}{(s+b)(s+c)(s+d)}\n  \\] Using the bilateral transform, derive an equivalent DT filter."
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo5-design-digital-filters-using-windowing-techniques",
+    "href": "lecture-01-slides.html#lo5-design-digital-filters-using-windowing-techniques",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO5: Design digital filters using windowing techniques",
+    "text": "LO5: Design digital filters using windowing techniques\nExample Problem: Given an IIR filter whose impulse response is given by \\(h[n]\\), design a comparable FIR filter using a Hamming window of length 61."
+  },
+  {
+    "objectID": "lecture-01-slides.html#lo6-design-digital-filters-meeting-given-specifications",
+    "href": "lecture-01-slides.html#lo6-design-digital-filters-meeting-given-specifications",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO6: Design digital filters meeting given specifications",
+    "text": "LO6: Design digital filters meeting given specifications\nExample Problem: Consider a low-pass DT filter whose -3dB frequency is \\(\\frac{\\pi}{8}\\) rad/sample with a transition band to -40dB less than \\(\\frac{\\pi}{12}\\), and pass-band ripple less than 3%. Design a Butterworth IIR filter meeting these specifications."
+  },
+  {
+    "objectID": "lecture-01-slides.html#tentative-schedule",
+    "href": "lecture-01-slides.html#tentative-schedule",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Tentative Schedule",
+    "text": "Tentative Schedule\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
+  },
+  {
+    "objectID": "lecture-01-slides.html#prerequisite-ece-3704",
+    "href": "lecture-01-slides.html#prerequisite-ece-3704",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Prerequisite: ECE 3704",
+    "text": "Prerequisite: ECE 3704\nYou should be able to:\n\nDescribe general systems with the use of block diagrams.\nSolve linear differential equations using Laplace-transforms.\nAnalyze stability and performance of continuous-time systems with Laplace-transforms and transfer functions.\nSolve linear difference equations using Z-transforms.\nAnalyze stability and performance of discrete-time systems with Z-transforms and transfer functions.\nSample continuous-time systems to create a discrete-time system model.\nMake experimental measurements on a continuous-time physical system and compare the results to time and frequency-domain analytical results.\nMake experimental measurements on a discrete-time physical system and compare the results to time and frequency-domain analytical results."
+  },
+  {
+    "objectID": "lecture-01-slides.html#transitive-prerequisites",
+    "href": "lecture-01-slides.html#transitive-prerequisites",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Transitive Prerequisites",
+    "text": "Transitive Prerequisites\nFrom ECE 2714:\n\nMathematically model continuous and discrete linear, time-invariant systems using differential and difference equations respectively\nAnalyze the use of filters and their interpretation in the time and frequency domains and implement standard filters in hardware and/or software.\nApply computations of the four fundamental Fourier transforms to the analysis and design of linear systems.\n\nFrom other base courses:\n\nModel and simulate physical systems using computational tools, and basic programming ability. (ECE 2514)\nDevelop microcontroller-based embedded system software that meets real-time specifications. (ECE 2564)\n\nImportant note for graduate students: If you have enrolled in this course via a force add and lack the equivalent prerequisite knowledge, please be advised that you may find the material particularly challenging."
+  },
+  {
+    "objectID": "lecture-01-slides.html#course-textbook-and-reference-material",
+    "href": "lecture-01-slides.html#course-textbook-and-reference-material",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Course Textbook and Reference Material",
+    "text": "Course Textbook and Reference Material\nThe official textbook is Proakis, John G. and Dimitris G. Manolakis, Digital Signal Processing Principles, Algorithms, and Applications, 4th edition (denoted PM).\nYou can find used copies at a reasonable price. Earlier (3rd) or later (5th) editions of the text can also be used.\nI also provide supplementary notes but they should not be considered a replacement for the textbook.\nThe following references will also be used, which are freely available:\n\nArduino UNO R4 Minima User Manual\nRenesas RA4M1 Group User’s Manual: Hardware\nRenesas Flexible Software Package (FSP) User’s Manual\nCortex-M4 Devices Generic User Guide"
+  },
+  {
+    "objectID": "lecture-01-slides.html#lab-material-requirements",
+    "href": "lecture-01-slides.html#lab-material-requirements",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Lab Material Requirements",
+    "text": "Lab Material Requirements\nYou need:\n\nMatlab or Octave for general computation, plotting, data analysis, and filter design tools. If you prefer you can also use Python with the SimPy, NumPy, SciPy, and Matplotlib packages.\nYou will also need a solderless breadboard, at least four LF356N op-amps or equivalent, as well as a selection of resistors, capacitors, and 22 AWG solid hookup wire and wire strippers (or a selection of pre-cut jumpers). The lab-in-a-box kit from ECE 1004 should include everything you need.\nYou will also need a power supply, two-channel oscilloscope, and function generator. Integrated USB devices and associated software are suitable, e.g. the Digilent Analog Discovery 2 (AD2). Loaners for the AD2 are available.\n\nIMPORTANT: You are required to purchase an Arduino UNO R4 Minima, the microcontroller development board we will be using this semester. It is widely available for about $20 USD. You will also need a USB C cable (and possibly an adapter) for flashing the board from your laptop. You will have to install a freely available development environment for this board, as well as a general C and C++ compiler for your host computer (MSVC, GCC, or Clang)."
+  },
+  {
+    "objectID": "lecture-01-slides.html#class-meetings",
+    "href": "lecture-01-slides.html#class-meetings",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Class Meetings",
+    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\nFilling out a weekly survey\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
+  },
+  {
+    "objectID": "lecture-01-slides.html#problem-sets",
+    "href": "lecture-01-slides.html#problem-sets",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Problem Sets",
+    "text": "Problem Sets\n\nProblems sets are released on Mondays and generally due the following Wednesday.\nThe first problem set covers CT/DT signals and the CT Fourier Transform. It is due Wed 9/10 through Canvas.\nYou should typeset your solutions, use an annotating program on the PDF, or scan work done with pencil and paper (the free Adobe Scan app works well).\nYou can insert pages if needed but maintain the question ordering.\nIllegible submissions will not be graded.\n\nYou are encouraged to work in small groups on the problem sets. However you must write up solutions in your own words and submit them individually."
+  },
+  {
+    "objectID": "lecture-01-slides.html#honor-code-policy-for-problem-sets",
+    "href": "lecture-01-slides.html#honor-code-policy-for-problem-sets",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Honor Code Policy for Problem Sets",
+    "text": "Honor Code Policy for Problem Sets\n\nThe problem sets must be completed individually. However, I strongly encourage you to discuss and work the problems with other students.\nA group of two or three works well. In these groups you are allowed to work through the problems together.\nTo write up your solutions, you may not refer to any jointly created notes.\nYour submitted solution should credit any student with whom you worked/discussed problems.\nYou must be able to explain and duplicate all the steps in any work you submit.\n\nSee the syllabus for full details."
+  },
+  {
+    "objectID": "lecture-01-slides.html#permissible-ai-use",
+    "href": "lecture-01-slides.html#permissible-ai-use",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Permissible AI Use",
+    "text": "Permissible AI Use\nIn this course, use of generative AI tools is permitted for all assignments, given that the student is using the AI tool to contribute to their learning of the course content, but not to replace original work.\n\nYou must properly acknowledge when and how AI tools have been used in your submissions.\nFailure to disclose AI use or submitting AI-generated work as entirely your own without critical engagement will constitute a violation of the Honor Code.\n\nIf you are ever uncertain about the use of AI, it is your responsibility to ask me before proceeding."
+  },
+  {
+    "objectID": "lecture-01-slides.html#labs",
+    "href": "lecture-01-slides.html#labs",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Labs",
+    "text": "Labs\nIn addition to problem sets you will have four labs:\n\nLab 1: Identity system with MCU, anti-aliasing and reconstruction filters\nLab 2: DFT based filters on a general-purpose computer\nLab 3: FIR implementation on MCU\nLab 4: IIR design and implementation on MCU with report and presentation\n\nYou will need:\n\nThe kit from ECE 1004/2024 or equivalent (solderless breadboard, components, power supply, oscilloscope, function generator, and associated software)\nAn Arduino Uno R4 Minima ($20 USD)\nMatlab (and the signal processing toolbox) or equivalent\nC++ Compiler (e.g. from ECE 2514)\nVSCode with the PlatformIO extension (freely available)\n\nLoaners for the AD2 will be available soon."
+  },
+  {
+    "objectID": "lecture-01-slides.html#exams",
+    "href": "lecture-01-slides.html#exams",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Exams",
+    "text": "Exams\n\nThere a midterm exam and a cumulative final exam, together making up 50% of the grade.\nThese will be in-person and closed-book.\nYou will be allowed one 8.5’’ x 11’’ sheet of crib notes for the midterm exam.\nYou will be allowed two 8.5’’ x 11’’ sheet of crib notes for the final exam.\nYou are allowed to bring a graphing, scientific, or basic calculator.\nOther electronic devices including cell phone, laptop, iPad, smart watch, etc. are prohibited.\nOnly foam ear-plugs are allowed (no earbuds or over the ear headphones)."
+  },
+  {
+    "objectID": "lecture-01-slides.html#grading",
+    "href": "lecture-01-slides.html#grading",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Grading",
+    "text": "Grading\nGrades are based on the following weights:\n\nHomework Problem Sets: 10% (weighted equally)\nLabs: 40% (not weighted equally)\nMidterm Exam: 25%\nFinal Exam: 25%\n\nSee the syllabus on the Canvas site for full policy and administrative details, including late work."
+  },
+  {
+    "objectID": "lecture-01-slides.html#reminders-and-next-actions",
+    "href": "lecture-01-slides.html#reminders-and-next-actions",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Reminders and Next Actions",
+    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nGet started on Problem Set #1.\nStart gathering what you need for the labs.\n\nQuestions?"
+  },
+  {
+    "objectID": "lecture-01-notes.html",
+    "href": "lecture-01-notes.html",
+    "title": "ECE 4624: Meeting 1",
+    "section": "",
+    "text": "The goal today is to introduce the course and administrative details.\n\nStaff Introductions\nCourse Overview\nLearning Objectives\nSchedule\nPrerequisites\nGrading\n\nCanvas URL: https://canvas.vt.edu/courses/215720"
+  },
+  {
+    "objectID": "lecture-01-notes.html#welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025",
+    "href": "lecture-01-notes.html#welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025",
+    "title": "ECE 4624: Meeting 1",
+    "section": "",
+    "text": "The goal today is to introduce the course and administrative details.\n\nStaff Introductions\nCourse Overview\nLearning Objectives\nSchedule\nPrerequisites\nGrading\n\nCanvas URL: https://canvas.vt.edu/courses/215720"
+  },
+  {
+    "objectID": "lecture-01-notes.html#course-staff",
+    "href": "lecture-01-notes.html#course-staff",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Course Staff",
+    "text": "Course Staff\n\nInstructor\n\nChris Wyatt, clwyatt@vt.edu, Zoom and Phone: 540-231-6658\n\n\n\nThere is no TA for this course.\nSee the Canvas syllabus for my up-to-date office hours links and times.\n\nNote: if you need to see me outside office hours, send me an email with a selection of times over the following 2-3 days and I will get back to you with a time and location if possible."
+  },
+  {
+    "objectID": "lecture-01-notes.html#introduction-to-dsp",
+    "href": "lecture-01-notes.html#introduction-to-dsp",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Introduction to DSP",
+    "text": "Introduction to DSP\n\nBasic signal types\n\nCT\nDT\nDigital\n\nDefintion of DSP\n\ndigital representation of signals\nuse of digital systems to analyze, modify, store, or extract information\nreplacement of CT processing in many applications"
+  },
+  {
+    "objectID": "lecture-01-notes.html#advantages-of-dsp-over-ct-processing",
+    "href": "lecture-01-notes.html#advantages-of-dsp-over-ct-processing",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Advantages of DSP over CT processing",
+    "text": "Advantages of DSP over CT processing\n\nFlexibility\nReproducibility\nReliability\nComplexity"
+  },
+  {
+    "objectID": "lecture-01-notes.html#life-cycle-of-dsp-systems",
+    "href": "lecture-01-notes.html#life-cycle-of-dsp-systems",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Life cycle of DSP systems",
+    "text": "Life cycle of DSP systems\n\ndesign\ndevelopment\nanalyze\nsimulation\ntesting\nmaintenance"
+  },
+  {
+    "objectID": "lecture-01-notes.html#dsp-types",
+    "href": "lecture-01-notes.html#dsp-types",
+    "title": "ECE 4624: Meeting 1",
+    "section": "DSP types",
+    "text": "DSP types\n\noffline (non-real-time)\nreal-time\n\nMuch of our focus will be on real-time DSP."
+  },
+  {
+    "objectID": "lecture-01-notes.html#basic-elements-of-real-time-dsp-systems",
+    "href": "lecture-01-notes.html#basic-elements-of-real-time-dsp-systems",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Basic elements of real-time DSP systems",
+    "text": "Basic elements of real-time DSP systems\n\npre-amplifier to amplify and shift the DC level of the system\nanti-aliasing filter\nADC\nOther digital inputs\nDSP Hardware\nDAC\nreconstruction filter\nother digital outputs (storage, transmission, etc.)"
+  },
+  {
+    "objectID": "lecture-01-notes.html#overview-of-ece-4624-dsp-and-filter-design",
+    "href": "lecture-01-notes.html#overview-of-ece-4624-dsp-and-filter-design",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Overview of ECE 4624 DSP and Filter Design",
+    "text": "Overview of ECE 4624 DSP and Filter Design\n\nThis course covers the analysis, design, and realization of digital filters and their application to signal processing and control.\nIt uses the techniques and concepts from ECE 2714 and 3704. Those courses are the foundation of DSP, and we will review and use the theory of linear, time-invariant, discrete-time systems. However both courses focus mostly on analysis with only introductory coverage of design and implementation.\nIn addition those courses neglected the effect of quantization – the need to represent signal samples and filter coefficients as fixed-width integers for efficient implementation, rather than floating-point numbers. Knowing how to model and consider quantization effects is an important part of designing and implementing practical DSP systems.\nAt the end of the course we introduce stochastic, or random, signals. Learning about stochastic signals opens up a broader world of more sophisticated concepts, including the idea of adaptive filtering, and applications, such as noise cancellation."
+  },
+  {
+    "objectID": "lecture-01-notes.html#the-learning-objectives-for-the-course-are",
+    "href": "lecture-01-notes.html#the-learning-objectives-for-the-course-are",
+    "title": "ECE 4624: Meeting 1",
+    "section": "The learning objectives for the course are:",
+    "text": "The learning objectives for the course are:\nHaving successfully completed this course, the student will be able to:\n\nEvaluate the performance of a digital filter, in terms of its frequency response.\nUse Fast Fourier Transform techniques for the analysis of arbitrary signals.\nDemonstrate coefficient quantization effects in digital filters.\nDesign digital filters using transformation techniques from analog designs.\nDesign digital filters using windowing techniques.\nDesign digital filters meeting given specifications.\nOrganize and write technical reports.\nOrganize and make technical presentations."
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response",
+    "href": "lecture-01-notes.html#lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO1: Evaluate the performance of a digital filter, in terms of its frequency response",
+    "text": "LO1: Evaluate the performance of a digital filter, in terms of its frequency response\nExample Problem: Given a low-pass filter described by the difference equation \\[\n  y[n] = ay[n-1] + by[n-2] + cy[n-3] + dx[n] + ex[n-1] + fx[n-2]\n  \\] where the coefficients \\(a\\) through \\(f\\) are given and whose transition band is defined from -3dB to -40dB, determine the cutoff frequency and width of the transition band in samples/sec."
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals",
+    "href": "lecture-01-notes.html#lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals",
+    "text": "LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals\nExample Problem: Given samples of a real single-channel signal in the file sig.wav sampled at 18kHz determine the relative power between the frequency bands DC-500Hz and 1kHz-1.5kHz."
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo3-demonstrate-coefficient-quantization-effects-in-digital-filters",
+    "href": "lecture-01-notes.html#lo3-demonstrate-coefficient-quantization-effects-in-digital-filters",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO3: Demonstrate coefficient quantization effects in digital filters",
+    "text": "LO3: Demonstrate coefficient quantization effects in digital filters\nExample Problem: Given a 5th order IIR bandpass filter with coefficients limited to 8 bits, plot the frequency response with and without quantization. What is the maximum expected deviation in the bandwidth of the filter due to quantization?"
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo4-design-digital-filters-using-transformation-techniques-from-analog-designs",
+    "href": "lecture-01-notes.html#lo4-design-digital-filters-using-transformation-techniques-from-analog-designs",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO4: Design digital filters using transformation techniques from analog designs",
+    "text": "LO4: Design digital filters using transformation techniques from analog designs\nExample Problem: Consider an analog filter with transfer function \\[\n  H(s) = \\frac{K(s-a)}{(s+b)(s+c)(s+d)}\n  \\] Using the bilateral transform, derive an equivalent DT filter."
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo5-design-digital-filters-using-windowing-techniques",
+    "href": "lecture-01-notes.html#lo5-design-digital-filters-using-windowing-techniques",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO5: Design digital filters using windowing techniques",
+    "text": "LO5: Design digital filters using windowing techniques\nExample Problem: Given an IIR filter whose impulse response is given by \\(h[n]\\), design a comparable FIR filter using a Hamming window of length 61."
+  },
+  {
+    "objectID": "lecture-01-notes.html#lo6-design-digital-filters-meeting-given-specifications",
+    "href": "lecture-01-notes.html#lo6-design-digital-filters-meeting-given-specifications",
+    "title": "ECE 4624: Meeting 1",
+    "section": "LO6: Design digital filters meeting given specifications",
+    "text": "LO6: Design digital filters meeting given specifications\nExample Problem: Consider a low-pass DT filter whose -3dB frequency is \\(\\frac{\\pi}{8}\\) rad/sample with a transition band to -40dB less than \\(\\frac{\\pi}{12}\\), and pass-band ripple less than 3%. Design a Butterworth IIR filter meeting these specifications."
+  },
+  {
+    "objectID": "lecture-01-notes.html#tentative-schedule",
+    "href": "lecture-01-notes.html#tentative-schedule",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Tentative Schedule",
+    "text": "Tentative Schedule\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
+  },
+  {
+    "objectID": "lecture-01-notes.html#prerequisite-ece-3704",
+    "href": "lecture-01-notes.html#prerequisite-ece-3704",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Prerequisite: ECE 3704",
+    "text": "Prerequisite: ECE 3704\nYou should be able to:\n\nDescribe general systems with the use of block diagrams.\nSolve linear differential equations using Laplace-transforms.\nAnalyze stability and performance of continuous-time systems with Laplace-transforms and transfer functions.\nSolve linear difference equations using Z-transforms.\nAnalyze stability and performance of discrete-time systems with Z-transforms and transfer functions.\nSample continuous-time systems to create a discrete-time system model.\nMake experimental measurements on a continuous-time physical system and compare the results to time and frequency-domain analytical results.\nMake experimental measurements on a discrete-time physical system and compare the results to time and frequency-domain analytical results."
+  },
+  {
+    "objectID": "lecture-01-notes.html#transitive-prerequisites",
+    "href": "lecture-01-notes.html#transitive-prerequisites",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Transitive Prerequisites",
+    "text": "Transitive Prerequisites\nFrom ECE 2714:\n\nMathematically model continuous and discrete linear, time-invariant systems using differential and difference equations respectively\nAnalyze the use of filters and their interpretation in the time and frequency domains and implement standard filters in hardware and/or software.\nApply computations of the four fundamental Fourier transforms to the analysis and design of linear systems.\n\nFrom other base courses:\n\nModel and simulate physical systems using computational tools, and basic programming ability. (ECE 2514)\nDevelop microcontroller-based embedded system software that meets real-time specifications. (ECE 2564)\n\nImportant note for graduate students: If you have enrolled in this course via a force add and lack the equivalent prerequisite knowledge, please be advised that you may find the material particularly challenging."
+  },
+  {
+    "objectID": "lecture-01-notes.html#course-textbook-and-reference-material",
+    "href": "lecture-01-notes.html#course-textbook-and-reference-material",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Course Textbook and Reference Material",
+    "text": "Course Textbook and Reference Material\nThe official textbook is Proakis, John G. and Dimitris G. Manolakis, Digital Signal Processing Principles, Algorithms, and Applications, 4th edition (denoted PM).\nYou can find used copies at a reasonable price. Earlier (3rd) or later (5th) editions of the text can also be used.\nI also provide supplementary notes but they should not be considered a replacement for the textbook.\nThe following references will also be used, which are freely available:\n\nArduino UNO R4 Minima User Manual\nRenesas RA4M1 Group User’s Manual: Hardware\nRenesas Flexible Software Package (FSP) User’s Manual\nCortex-M4 Devices Generic User Guide"
+  },
+  {
+    "objectID": "lecture-01-notes.html#lab-material-requirements",
+    "href": "lecture-01-notes.html#lab-material-requirements",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Lab Material Requirements",
+    "text": "Lab Material Requirements\nYou need:\n\nMatlab or Octave for general computation, plotting, data analysis, and filter design tools. If you prefer you can also use Python with the SimPy, NumPy, SciPy, and Matplotlib packages.\nYou will also need a solderless breadboard, at least four LF356N op-amps or equivalent, as well as a selection of resistors, capacitors, and 22 AWG solid hookup wire and wire strippers (or a selection of pre-cut jumpers). The lab-in-a-box kit from ECE 1004 should include everything you need.\nYou will also need a power supply, two-channel oscilloscope, and function generator. Integrated USB devices and associated software are suitable, e.g. the Digilent Analog Discovery 2 (AD2). Loaners for the AD2 are available.\n\nIMPORTANT: You are required to purchase an Arduino UNO R4 Minima, the microcontroller development board we will be using this semester. It is widely available for about $20 USD. You will also need a USB C cable (and possibly an adapter) for flashing the board from your laptop. You will have to install a freely available development environment for this board, as well as a general C and C++ compiler for your host computer (MSVC, GCC, or Clang)."
+  },
+  {
+    "objectID": "lecture-01-notes.html#class-meetings",
+    "href": "lecture-01-notes.html#class-meetings",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Class Meetings",
+    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\nFilling out a weekly survey\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
+  },
+  {
+    "objectID": "lecture-01-notes.html#problem-sets",
+    "href": "lecture-01-notes.html#problem-sets",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Problem Sets",
+    "text": "Problem Sets\n\nProblems sets are released on Mondays and generally due the following Wednesday.\nThe first problem set covers CT/DT signals and the CT Fourier Transform. It is due Wed 9/10 through Canvas.\nYou should typeset your solutions, use an annotating program on the PDF, or scan work done with pencil and paper (the free Adobe Scan app works well).\nYou can insert pages if needed but maintain the question ordering.\nIllegible submissions will not be graded.\n\nYou are encouraged to work in small groups on the problem sets. However you must write up solutions in your own words and submit them individually."
+  },
+  {
+    "objectID": "lecture-01-notes.html#honor-code-policy-for-problem-sets",
+    "href": "lecture-01-notes.html#honor-code-policy-for-problem-sets",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Honor Code Policy for Problem Sets",
+    "text": "Honor Code Policy for Problem Sets\n\nThe problem sets must be completed individually. However, I strongly encourage you to discuss and work the problems with other students.\nA group of two or three works well. In these groups you are allowed to work through the problems together.\nTo write up your solutions, you may not refer to any jointly created notes.\nYour submitted solution should credit any student with whom you worked/discussed problems.\nYou must be able to explain and duplicate all the steps in any work you submit.\n\nSee the syllabus for full details."
+  },
+  {
+    "objectID": "lecture-01-notes.html#permissible-ai-use",
+    "href": "lecture-01-notes.html#permissible-ai-use",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Permissible AI Use",
+    "text": "Permissible AI Use\nIn this course, use of generative AI tools is permitted for all assignments, given that the student is using the AI tool to contribute to their learning of the course content, but not to replace original work.\n\nYou must properly acknowledge when and how AI tools have been used in your submissions.\nFailure to disclose AI use or submitting AI-generated work as entirely your own without critical engagement will constitute a violation of the Honor Code.\n\nIf you are ever uncertain about the use of AI, it is your responsibility to ask me before proceeding."
+  },
+  {
+    "objectID": "lecture-01-notes.html#labs",
+    "href": "lecture-01-notes.html#labs",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Labs",
+    "text": "Labs\nIn addition to problem sets you will have four labs:\n\nLab 1: Identity system with MCU, anti-aliasing and reconstruction filters\nLab 2: DFT based filters on a general-purpose computer\nLab 3: FIR implementation on MCU\nLab 4: IIR design and implementation on MCU with report and presentation\n\nYou will need:\n\nThe kit from ECE 1004/2024 or equivalent (solderless breadboard, components, power supply, oscilloscope, function generator, and associated software)\nAn Arduino Uno R4 Minima ($20 USD)\nMatlab (and the signal processing toolbox) or equivalent\nC++ Compiler (e.g. from ECE 2514)\nVSCode with the PlatformIO extension (freely available)\n\nLoaners for the AD2 will be available soon."
+  },
+  {
+    "objectID": "lecture-01-notes.html#exams",
+    "href": "lecture-01-notes.html#exams",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Exams",
+    "text": "Exams\n\nThere a midterm exam and a cumulative final exam, together making up 50% of the grade.\nThese will be in-person and closed-book.\nYou will be allowed one 8.5’’ x 11’’ sheet of crib notes for the midterm exam.\nYou will be allowed two 8.5’’ x 11’’ sheet of crib notes for the final exam.\nYou are allowed to bring a graphing, scientific, or basic calculator.\nOther electronic devices including cell phone, laptop, iPad, smart watch, etc. are prohibited.\nOnly foam ear-plugs are allowed (no earbuds or over the ear headphones)."
+  },
+  {
+    "objectID": "lecture-01-notes.html#grading",
+    "href": "lecture-01-notes.html#grading",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Grading",
+    "text": "Grading\nGrades are based on the following weights:\n\nHomework Problem Sets: 10% (weighted equally)\nLabs: 40% (not weighted equally)\nMidterm Exam: 25%\nFinal Exam: 25%\n\nSee the syllabus on the Canvas site for full policy and administrative details, including late work."
+  },
+  {
+    "objectID": "lecture-01-notes.html#reminders-and-next-actions",
+    "href": "lecture-01-notes.html#reminders-and-next-actions",
+    "title": "ECE 4624: Meeting 1",
+    "section": "Reminders and Next Actions",
+    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nGet started on Problem Set #1.\nStart gathering what you need for the labs.\n\nQuestions?"
+  },
+  {
+    "objectID": "lecture-21-slides.html#section",
+    "href": "lecture-21-slides.html#section",
+    "title": "ECE 4624: Meeting 21",
+    "section": "",
+    "text": "Today we review the advantages and disadvantages of FIR filters, and examine FIR filter design techniques in detail.\nREADING: ?\nTake from old lecture 13"
+  },
+  {
+    "objectID": "lecture-21-notes.html",
+    "href": "lecture-21-notes.html",
+    "title": "ECE 4624: Meeting 21",
+    "section": "",
+    "text": "Today we review the advantages and disadvantages of FIR filters, and examine FIR filter design techniques in detail.\nREADING: ?\nTake from old lecture 13"
+  },
+  {
+    "objectID": "lecture-21-notes.html#section",
+    "href": "lecture-21-notes.html#section",
+    "title": "ECE 4624: Meeting 21",
+    "section": "",
+    "text": "Today we review the advantages and disadvantages of FIR filters, and examine FIR filter design techniques in detail.\nREADING: ?\nTake from old lecture 13"
+  },
+  {
+    "objectID": "lecture-04-slides.html#section",
+    "href": "lecture-04-slides.html#section",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-04-slides.html#sample-and-hold",
+    "href": "lecture-04-slides.html#sample-and-hold",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sample and Hold",
+    "text": "Sample and Hold"
+  },
+  {
+    "objectID": "lecture-04-slides.html#quantization",
+    "href": "lecture-04-slides.html#quantization",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization",
+    "text": "Quantization"
+  },
+  {
+    "objectID": "lecture-04-slides.html#anti-aliasing",
+    "href": "lecture-04-slides.html#anti-aliasing",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Anti-aliasing",
+    "text": "Anti-aliasing"
+  },
+  {
+    "objectID": "lecture-04-slides.html#zero-order-hold",
+    "href": "lecture-04-slides.html#zero-order-hold",
+    "title": "ECE 4624: Meeting 4",
+    "section": "zero-order hold",
+    "text": "zero-order hold"
+  },
+  {
+    "objectID": "lecture-04-slides.html#anti-imaging-filter",
+    "href": "lecture-04-slides.html#anti-imaging-filter",
+    "title": "ECE 4624: Meeting 4",
+    "section": "anti-imaging filter",
+    "text": "anti-imaging filter"
+  },
+  {
+    "objectID": "lecture-04-notes.html",
+    "href": "lecture-04-notes.html",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-04-notes.html#section",
+    "href": "lecture-04-notes.html#section",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-04-notes.html#sample-and-hold",
+    "href": "lecture-04-notes.html#sample-and-hold",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sample and Hold",
+    "text": "Sample and Hold"
+  },
+  {
+    "objectID": "lecture-04-notes.html#quantization",
+    "href": "lecture-04-notes.html#quantization",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization",
+    "text": "Quantization"
+  },
+  {
+    "objectID": "lecture-04-notes.html#anti-aliasing",
+    "href": "lecture-04-notes.html#anti-aliasing",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Anti-aliasing",
+    "text": "Anti-aliasing"
+  },
+  {
+    "objectID": "lecture-04-notes.html#zero-order-hold",
+    "href": "lecture-04-notes.html#zero-order-hold",
+    "title": "ECE 4624: Meeting 4",
+    "section": "zero-order hold",
+    "text": "zero-order hold"
+  },
+  {
+    "objectID": "lecture-04-notes.html#anti-imaging-filter",
+    "href": "lecture-04-notes.html#anti-imaging-filter",
+    "title": "ECE 4624: Meeting 4",
+    "section": "anti-imaging filter",
+    "text": "anti-imaging filter"
+  },
+  {
+    "objectID": "lecture-12-slides.html#section",
+    "href": "lecture-12-slides.html#section",
+    "title": "ECE 4624: Meeting 12",
+    "section": "",
+    "text": "Today we review how to use the Z Transform for analysis and how to represent FIR and IIR filters via thier transfer function.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-12-notes.html",
+    "href": "lecture-12-notes.html",
+    "title": "ECE 4624: Meeting 12",
+    "section": "",
+    "text": "Today we review how to use the Z Transform for analysis and how to represent FIR and IIR filters via thier transfer function.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-12-notes.html#section",
+    "href": "lecture-12-notes.html#section",
+    "title": "ECE 4624: Meeting 12",
+    "section": "",
+    "text": "Today we review how to use the Z Transform for analysis and how to represent FIR and IIR filters via thier transfer function.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-07-slides.html#section",
+    "href": "lecture-07-slides.html#section",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-07-notes.html",
+    "href": "lecture-07-notes.html",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-07-notes.html#section",
+    "href": "lecture-07-notes.html#section",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-13-slides.html#section",
+    "href": "lecture-13-slides.html#section",
+    "title": "ECE 4624: Meeting 13",
+    "section": "",
+    "text": "Today we review how to represent, create, and manipulate graphical representations of DT LTI systems using block diagrams and introduce a related technique called signal flow graphs which we will use extensively.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-13-slides.html#series",
+    "href": "lecture-13-slides.html#series",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Series",
+    "text": "Series"
+  },
+  {
+    "objectID": "lecture-13-slides.html#parallel",
+    "href": "lecture-13-slides.html#parallel",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Parallel",
+    "text": "Parallel"
+  },
+  {
+    "objectID": "lecture-13-slides.html#feedback",
+    "href": "lecture-13-slides.html#feedback",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Feedback",
+    "text": "Feedback"
+  },
+  {
+    "objectID": "lecture-13-slides.html#series-1",
+    "href": "lecture-13-slides.html#series-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Series",
+    "text": "Series"
+  },
+  {
+    "objectID": "lecture-13-slides.html#parallel-1",
+    "href": "lecture-13-slides.html#parallel-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Parallel",
+    "text": "Parallel"
+  },
+  {
+    "objectID": "lecture-13-slides.html#feedback-1",
+    "href": "lecture-13-slides.html#feedback-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Feedback",
+    "text": "Feedback"
+  },
+  {
+    "objectID": "lecture-13-notes.html",
+    "href": "lecture-13-notes.html",
+    "title": "ECE 4624: Meeting 13",
+    "section": "",
+    "text": "Today we review how to represent, create, and manipulate graphical representations of DT LTI systems using block diagrams and introduce a related technique called signal flow graphs which we will use extensively.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-13-notes.html#section",
+    "href": "lecture-13-notes.html#section",
+    "title": "ECE 4624: Meeting 13",
+    "section": "",
+    "text": "Today we review how to represent, create, and manipulate graphical representations of DT LTI systems using block diagrams and introduce a related technique called signal flow graphs which we will use extensively.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-13-notes.html#series",
+    "href": "lecture-13-notes.html#series",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Series",
+    "text": "Series"
+  },
+  {
+    "objectID": "lecture-13-notes.html#parallel",
+    "href": "lecture-13-notes.html#parallel",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Parallel",
+    "text": "Parallel"
+  },
+  {
+    "objectID": "lecture-13-notes.html#feedback",
+    "href": "lecture-13-notes.html#feedback",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Feedback",
+    "text": "Feedback"
+  },
+  {
+    "objectID": "lecture-13-notes.html#series-1",
+    "href": "lecture-13-notes.html#series-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Series",
+    "text": "Series"
+  },
+  {
+    "objectID": "lecture-13-notes.html#parallel-1",
+    "href": "lecture-13-notes.html#parallel-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Parallel",
+    "text": "Parallel"
+  },
+  {
+    "objectID": "lecture-13-notes.html#feedback-1",
+    "href": "lecture-13-notes.html#feedback-1",
+    "title": "ECE 4624: Meeting 13",
+    "section": "Feedback",
+    "text": "Feedback"
+  },
+  {
+    "objectID": "lecture-08-slides.html#section",
+    "href": "lecture-08-slides.html#section",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-08-notes.html",
+    "href": "lecture-08-notes.html",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-08-notes.html#section",
+    "href": "lecture-08-notes.html#section",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-06-slides.html#section",
+    "href": "lecture-06-slides.html#section",
+    "title": "ECE 4624: Meeting 6",
+    "section": "",
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-06-slides.html#memory",
+    "href": "lecture-06-slides.html#memory",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Memory",
+    "text": "Memory"
+  },
+  {
+    "objectID": "lecture-06-slides.html#invertability",
+    "href": "lecture-06-slides.html#invertability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Invertability",
+    "text": "Invertability"
+  },
+  {
+    "objectID": "lecture-06-slides.html#causality",
+    "href": "lecture-06-slides.html#causality",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Causality",
+    "text": "Causality"
+  },
+  {
+    "objectID": "lecture-06-slides.html#stability",
+    "href": "lecture-06-slides.html#stability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Stability",
+    "text": "Stability"
+  },
+  {
+    "objectID": "lecture-06-slides.html#time-invariance",
+    "href": "lecture-06-slides.html#time-invariance",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Time-invariance",
+    "text": "Time-invariance"
+  },
+  {
+    "objectID": "lecture-06-slides.html#linearity",
+    "href": "lecture-06-slides.html#linearity",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Linearity",
+    "text": "Linearity"
+  },
+  {
+    "objectID": "lecture-06-slides.html#recursive-form",
+    "href": "lecture-06-slides.html#recursive-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "recursive form",
+    "text": "recursive form"
+  },
+  {
+    "objectID": "lecture-06-slides.html#delay-form",
+    "href": "lecture-06-slides.html#delay-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "delay form",
+    "text": "delay form"
+  },
+  {
+    "objectID": "lecture-06-slides.html#advance-form",
+    "href": "lecture-06-slides.html#advance-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "advance form",
+    "text": "advance form"
+  },
+  {
+    "objectID": "lecture-06-notes.html",
+    "href": "lecture-06-notes.html",
+    "title": "ECE 4624: Meeting 6",
+    "section": "",
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-06-notes.html#section",
+    "href": "lecture-06-notes.html#section",
+    "title": "ECE 4624: Meeting 6",
+    "section": "",
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-06-notes.html#memory",
+    "href": "lecture-06-notes.html#memory",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Memory",
+    "text": "Memory"
+  },
+  {
+    "objectID": "lecture-06-notes.html#invertability",
+    "href": "lecture-06-notes.html#invertability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Invertability",
+    "text": "Invertability"
+  },
+  {
+    "objectID": "lecture-06-notes.html#causality",
+    "href": "lecture-06-notes.html#causality",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Causality",
+    "text": "Causality"
+  },
+  {
+    "objectID": "lecture-06-notes.html#stability",
+    "href": "lecture-06-notes.html#stability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Stability",
+    "text": "Stability"
+  },
+  {
+    "objectID": "lecture-06-notes.html#time-invariance",
+    "href": "lecture-06-notes.html#time-invariance",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Time-invariance",
+    "text": "Time-invariance"
+  },
+  {
+    "objectID": "lecture-06-notes.html#linearity",
+    "href": "lecture-06-notes.html#linearity",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Linearity",
+    "text": "Linearity"
+  },
+  {
+    "objectID": "lecture-06-notes.html#recursive-form",
+    "href": "lecture-06-notes.html#recursive-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "recursive form",
+    "text": "recursive form"
+  },
+  {
+    "objectID": "lecture-06-notes.html#delay-form",
+    "href": "lecture-06-notes.html#delay-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "delay form",
+    "text": "delay form"
+  },
+  {
+    "objectID": "lecture-06-notes.html#advance-form",
+    "href": "lecture-06-notes.html#advance-form",
+    "title": "ECE 4624: Meeting 6",
+    "section": "advance form",
+    "text": "advance form"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Table of Contents",
+    "section": "",
+    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nSoftware Design for DSP\nTime Domain Analysis of DT LTI Systems\nDT Fourier Series and Fourier Transform\nDT Frequency Response and Frequency Selective Filters\nZ Transform\nDT System Analysis using Z-Transform\nDT Block diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform\nApplications of DFT\nFast Fourier Transform\nFIR Filter Structures\nIIR Filter Structures\nQuantization and Round-Off Effects\nFIR Filter Design\nLowpass IIR Filter Design\nTransformations of IIR Filters\nProbability Primer\nStationary Random Processes\nWiener Filter\nAdaptive Filtering using LMS"
+  },
+  {
+    "objectID": "lecture-22-slides.html#section",
+    "href": "lecture-22-slides.html#section",
+    "title": "ECE 4624: Meeting 22",
+    "section": "",
+    "text": "Today we will discuss analog filter design and conversion to DT IIR filters with a focus on Lowpass filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-22-notes.html",
+    "href": "lecture-22-notes.html",
+    "title": "ECE 4624: Meeting 22",
+    "section": "",
+    "text": "Today we will discuss analog filter design and conversion to DT IIR filters with a focus on Lowpass filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-22-notes.html#section",
+    "href": "lecture-22-notes.html#section",
+    "title": "ECE 4624: Meeting 22",
+    "section": "",
+    "text": "Today we will discuss analog filter design and conversion to DT IIR filters with a focus on Lowpass filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-16-slides.html#section",
+    "href": "lecture-16-slides.html#section",
+    "title": "ECE 4624: Meeting 16",
+    "section": "",
+    "text": "Today we dive deeper into the FFT algorithms and examine the radix-2 decimation in time FFT in detail. We also discuss Lab 2.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-16-notes.html",
+    "href": "lecture-16-notes.html",
+    "title": "ECE 4624: Meeting 16",
+    "section": "",
+    "text": "Today we dive deeper into the FFT algorithms and examine the radix-2 decimation in time FFT in detail. We also discuss Lab 2.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-16-notes.html#section",
+    "href": "lecture-16-notes.html#section",
+    "title": "ECE 4624: Meeting 16",
+    "section": "",
+    "text": "Today we dive deeper into the FFT algorithms and examine the radix-2 decimation in time FFT in detail. We also discuss Lab 2.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-03-notes.html",
+    "href": "lecture-03-notes.html",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section",
+    "href": "lecture-03-notes.html#section",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+  },
+  {
+    "objectID": "lecture-03-notes.html#fourier-series-synthesis-and-analysis-equations",
+    "href": "lecture-03-notes.html#fourier-series-synthesis-and-analysis-equations",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Synthesis and Analysis Equations",
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[\\boxed{x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.}\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[\\boxed{a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt}\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+  },
+  {
+    "objectID": "lecture-03-notes.html#fourier-series-spectrum",
+    "href": "lecture-03-notes.html#fourier-series-spectrum",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Spectrum",
+    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
+  },
+  {
+    "objectID": "lecture-03-notes.html#example-of-the-fourier-series",
+    "href": "lecture-03-notes.html#example-of-the-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example of the Fourier series",
+    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\n\n\nPlot of the example signal."
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-1",
+    "href": "lecture-03-notes.html#section-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-2",
+    "href": "lecture-03-notes.html#section-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\\begin{aligned}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\underbrace{\\sin(k\\pi t)}_{\\text{always = 0}} \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt\\; \\mbox{ using an integration table }\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-3",
+    "href": "lecture-03-notes.html#section-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-4",
+    "href": "lecture-03-notes.html#section-4",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
+  },
+  {
+    "objectID": "lecture-03-notes.html#convergence-of-the-ct-fourier-series",
+    "href": "lecture-03-notes.html#convergence-of-the-ct-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Convergence of the CT Fourier Series",
+    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#ct-fourier-transform",
+    "href": "lecture-03-notes.html#ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CT Fourier Transform",
+    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-5",
+    "href": "lecture-03-notes.html#section-5",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[\\boxed{X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-6",
+    "href": "lecture-03-notes.html#section-6",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[\\boxed{x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-7",
+    "href": "lecture-03-notes.html#section-7",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
+  },
+  {
+    "objectID": "lecture-03-notes.html#fourier-transform-pair",
+    "href": "lecture-03-notes.html#fourier-transform-pair",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Transform Pair",
+    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
+  },
+  {
+    "objectID": "lecture-03-notes.html#example-fourier-transform-of-the-impulse.",
+    "href": "lecture-03-notes.html#example-fourier-transform-of-the-impulse.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier Transform of the impulse.",
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "href": "lecture-03-notes.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier transform of the causal real exponential.",
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{aligned}\\]\nThis converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#existence-of-the-ct-fourier-transform",
+    "href": "lecture-03-notes.html#existence-of-the-ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Existence of the CT Fourier Transform",
+    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
+  },
+  {
+    "objectID": "lecture-03-notes.html#properties-of-ctft",
+    "href": "lecture-03-notes.html#properties-of-ctft",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the Eigenvalue or frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the Eigenvalues/Frequency Response from a stable differential equation."
+  },
+  {
+    "objectID": "lecture-03-notes.html#properties-of-ctft-1",
+    "href": "lecture-03-notes.html#properties-of-ctft-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#properties-of-ctft-2",
+    "href": "lecture-03-notes.html#properties-of-ctft-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#properties-of-ctft-3",
+    "href": "lecture-03-notes.html#properties-of-ctft-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
+  },
+  {
+    "objectID": "lecture-03-notes.html#frequency-response-of-ct-lti-systems",
+    "href": "lecture-03-notes.html#frequency-response-of-ct-lti-systems",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Frequency Response of CT LTI Systems",
+    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-8",
+    "href": "lecture-03-notes.html#section-8",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
+  },
+  {
+    "objectID": "lecture-03-notes.html#magnitude-phase-representation-of-the-ctfr",
+    "href": "lecture-03-notes.html#magnitude-phase-representation-of-the-ctfr",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Magnitude-phase representation of the CTFR",
+    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#ctfr-acting-on-sinusoids",
+    "href": "lecture-03-notes.html#ctfr-acting-on-sinusoids",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CTFR acting on sinusoids",
+    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
+  },
+  {
+    "objectID": "lecture-03-notes.html#section-9",
+    "href": "lecture-03-notes.html#section-9",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j \\omega) X(j \\omega) \\, e^{j \\omega t}\\; d\\omega = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
+  },
+  {
+    "objectID": "lecture-03-notes.html#bode-plots",
+    "href": "lecture-03-notes.html#bode-plots",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Bode plots",
+    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
+  },
+  {
+    "objectID": "lecture-03-notes.html#example",
+    "href": "lecture-03-notes.html#example",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example",
+    "text": "Example\nConsider a frequency response given by \\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]\n\nimport scipy.signal as signal\nimport matplotlib.pyplot as plt\n\nnum = [20000]\nden = [1,300,20000]\n\nsystem = signal.TransferFunction(num, den)\n\n# Calculate Bode data\nw, mag, phase = signal.bode(system)\n\n# Plotting\nplt.figure()\nplt.subplot(2, 1, 1)\nplt.semilogx(w, mag)  # Magnitude plot\nplt.title('Bode Plot')\nplt.ylabel('Magnitude (dB)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.subplot(2, 1, 2)\nplt.semilogx(w, phase*3.1459/180)  # Phase plot\nplt.xlabel('Frequency (rad/s)')\nplt.ylabel('Phase (rad)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "lecture-03-notes.html#filters-in-ct",
+    "href": "lecture-03-notes.html#filters-in-ct",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Filters in CT",
+    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
+  },
+  {
+    "objectID": "lecture-03-notes.html#lowpass-ct-filters",
+    "href": "lecture-03-notes.html#lowpass-ct-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass CT Filters",
+    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
+  },
+  {
+    "objectID": "lecture-03-notes.html#practical-lowpass-filters",
+    "href": "lecture-03-notes.html#practical-lowpass-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Practical Lowpass Filters",
+    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
+  },
+  {
+    "objectID": "lecture-03-notes.html#lowpass-filter-specification",
+    "href": "lecture-03-notes.html#lowpass-filter-specification",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
+  },
+  {
+    "objectID": "lecture-03-notes.html#lowpass-filter-specification-1",
+    "href": "lecture-03-notes.html#lowpass-filter-specification-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification\n\nimport scipy.signal as signal\nimport matplotlib.pyplot as plt\n\nnum = [0.0, 0.0, 0.0, 0.2506]\nden = [1.0, 0.5972, 0.9283, 0.2506]\n\nsystem = signal.TransferFunction(num, den)\n\n# Calculate Bode data\nw, mag, phase = signal.bode(system)\n\nplt.figure()\nplt.subplot(2, 1, 1)\nplt.semilogx(w, mag)\nplt.title('Bode Plot for a Prototype Lowpass Filter')\nplt.ylabel('Magnitude (dB)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.subplot(2, 1, 2)\nplt.semilogx(w, phase*3.1459/180)\nplt.xlabel('Frequency (rad/s)')\nplt.ylabel('Phase (rad)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.tight_layout()\nplt.show()\n\n/home/clwyatt/.local/lib/python3.10/site-packages/scipy/signal/_ltisys.py:599: BadCoefficients: Badly conditioned filter coefficients (numerator): the results may be meaningless\n  self.num, self.den = normalize(*system)"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section",
+    "href": "lecture-03-slides.html#section",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Synthesis and Analysis Equations",
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[\\boxed{x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.}\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[\\boxed{a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt}\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-series-spectrum",
+    "href": "lecture-03-slides.html#fourier-series-spectrum",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Spectrum",
+    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-of-the-fourier-series",
+    "href": "lecture-03-slides.html#example-of-the-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example of the Fourier series",
+    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\nPlot of the example signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-1",
+    "href": "lecture-03-slides.html#section-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-2",
+    "href": "lecture-03-slides.html#section-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\\begin{aligned}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\underbrace{\\sin(k\\pi t)}_{\\text{always = 0}} \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt\\; \\mbox{ using an integration table }\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-3",
+    "href": "lecture-03-slides.html#section-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-4",
+    "href": "lecture-03-slides.html#section-4",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
+  },
+  {
+    "objectID": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "href": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Convergence of the CT Fourier Series",
+    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#ct-fourier-transform",
+    "href": "lecture-03-slides.html#ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CT Fourier Transform",
+    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-5",
+    "href": "lecture-03-slides.html#section-5",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[\\boxed{X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-6",
+    "href": "lecture-03-slides.html#section-6",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[\\boxed{x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-7",
+    "href": "lecture-03-slides.html#section-7",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-transform-pair",
+    "href": "lecture-03-slides.html#fourier-transform-pair",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Transform Pair",
+    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier Transform of the impulse.",
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier transform of the causal real exponential.",
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{aligned}\\]\nThis converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "href": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Existence of the CT Fourier Transform",
+    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft",
+    "href": "lecture-03-slides.html#properties-of-ctft",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the Eigenvalue or frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the Eigenvalues/Frequency Response from a stable differential equation."
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-1",
+    "href": "lecture-03-slides.html#properties-of-ctft-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-2",
+    "href": "lecture-03-slides.html#properties-of-ctft-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-3",
+    "href": "lecture-03-slides.html#properties-of-ctft-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "href": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Frequency Response of CT LTI Systems",
+    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-8",
+    "href": "lecture-03-slides.html#section-8",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
+  },
+  {
+    "objectID": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "href": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Magnitude-phase representation of the CTFR",
+    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "href": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CTFR acting on sinusoids",
+    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-9",
+    "href": "lecture-03-slides.html#section-9",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j \\omega) X(j \\omega) \\, e^{j \\omega t}\\; d\\omega = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
+  },
+  {
+    "objectID": "lecture-03-slides.html#bode-plots",
+    "href": "lecture-03-slides.html#bode-plots",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Bode plots",
+    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example",
+    "href": "lecture-03-slides.html#example",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example",
+    "text": "Example\nConsider a frequency response given by \\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#filters-in-ct",
+    "href": "lecture-03-slides.html#filters-in-ct",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Filters in CT",
+    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-ct-filters",
+    "href": "lecture-03-slides.html#lowpass-ct-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass CT Filters",
+    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
+  },
+  {
+    "objectID": "lecture-03-slides.html#practical-lowpass-filters",
+    "href": "lecture-03-slides.html#practical-lowpass-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Practical Lowpass Filters",
+    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification",
+    "href": "lecture-03-slides.html#lowpass-filter-specification",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "href": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification"
+  },
+  {
+    "objectID": "lecture-26-notes.html",
+    "href": "lecture-26-notes.html",
+    "title": "ECE 4624: Meeting 26",
+    "section": "",
+    "text": "Today we look at the Wiener filter, a classic approach to filtering noise from signals modeled using stationary random processes.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-26-notes.html#section",
+    "href": "lecture-26-notes.html#section",
+    "title": "ECE 4624: Meeting 26",
+    "section": "",
+    "text": "Today we look at the Wiener filter, a classic approach to filtering noise from signals modeled using stationary random processes.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-26-slides.html#section",
+    "href": "lecture-26-slides.html#section",
+    "title": "ECE 4624: Meeting 26",
+    "section": "",
+    "text": "Today we look at the Wiener filter, a classic approach to filtering noise from signals modeled using stationary random processes.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-09-notes.html",
+    "href": "lecture-09-notes.html",
+    "title": "ECE 4624: Meeting 9",
+    "section": "",
+    "text": "Today we review the Fourier Transforms for DT Signals.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-09-notes.html#section",
+    "href": "lecture-09-notes.html#section",
+    "title": "ECE 4624: Meeting 9",
+    "section": "",
+    "text": "Today we review the Fourier Transforms for DT Signals.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-09-notes.html#synthesis-and-analysis-equation",
+    "href": "lecture-09-notes.html#synthesis-and-analysis-equation",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Synthesis and Analysis Equation",
+    "text": "Synthesis and Analysis Equation"
+  },
+  {
+    "objectID": "lecture-09-notes.html#properties-of-the-dt-fourier-series",
+    "href": "lecture-09-notes.html#properties-of-the-dt-fourier-series",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series"
+  },
+  {
+    "objectID": "lecture-09-notes.html#comparison-of-ct-and-dt-fourier-series",
+    "href": "lecture-09-notes.html#comparison-of-ct-and-dt-fourier-series",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Comparison of CT and DT Fourier Series",
+    "text": "Comparison of CT and DT Fourier Series"
+  },
+  {
+    "objectID": "lecture-09-notes.html#synthesis-and-analysis-equation-1",
+    "href": "lecture-09-notes.html#synthesis-and-analysis-equation-1",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Synthesis and Analysis Equation",
+    "text": "Synthesis and Analysis Equation"
+  },
+  {
+    "objectID": "lecture-09-notes.html#properties-of-the-dt-fourier-transform",
+    "href": "lecture-09-notes.html#properties-of-the-dt-fourier-transform",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Properties of the DT Fourier Transform",
+    "text": "Properties of the DT Fourier Transform"
+  },
+  {
+    "objectID": "lecture-09-slides.html#section",
+    "href": "lecture-09-slides.html#section",
+    "title": "ECE 4624: Meeting 9",
+    "section": "",
+    "text": "Today we review the Fourier Transforms for DT Signals.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-09-slides.html#synthesis-and-analysis-equation",
+    "href": "lecture-09-slides.html#synthesis-and-analysis-equation",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Synthesis and Analysis Equation",
+    "text": "Synthesis and Analysis Equation"
+  },
+  {
+    "objectID": "lecture-09-slides.html#properties-of-the-dt-fourier-series",
+    "href": "lecture-09-slides.html#properties-of-the-dt-fourier-series",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series"
+  },
+  {
+    "objectID": "lecture-09-slides.html#comparison-of-ct-and-dt-fourier-series",
+    "href": "lecture-09-slides.html#comparison-of-ct-and-dt-fourier-series",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Comparison of CT and DT Fourier Series",
+    "text": "Comparison of CT and DT Fourier Series"
+  },
+  {
+    "objectID": "lecture-09-slides.html#synthesis-and-analysis-equation-1",
+    "href": "lecture-09-slides.html#synthesis-and-analysis-equation-1",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Synthesis and Analysis Equation",
+    "text": "Synthesis and Analysis Equation"
+  },
+  {
+    "objectID": "lecture-09-slides.html#properties-of-the-dt-fourier-transform",
+    "href": "lecture-09-slides.html#properties-of-the-dt-fourier-transform",
+    "title": "ECE 4624: Meeting 9",
+    "section": "Properties of the DT Fourier Transform",
+    "text": "Properties of the DT Fourier Transform"
+  },
+  {
+    "objectID": "lecture-05-notes.html",
+    "href": "lecture-05-notes.html",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-05-notes.html#section",
+    "href": "lecture-05-notes.html#section",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-05-notes.html#board-description",
+    "href": "lecture-05-notes.html#board-description",
+    "title": "ECE 4624: Meeting 5",
+    "section": "board description",
+    "text": "board description"
+  },
+  {
+    "objectID": "lecture-05-notes.html#platformio-ide",
+    "href": "lecture-05-notes.html#platformio-ide",
+    "title": "ECE 4624: Meeting 5",
+    "section": "PlatformIO IDE",
+    "text": "PlatformIO IDE"
+  },
+  {
+    "objectID": "lecture-05-notes.html#event-loop",
+    "href": "lecture-05-notes.html#event-loop",
+    "title": "ECE 4624: Meeting 5",
+    "section": "event loop",
+    "text": "event loop"
+  },
+  {
+    "objectID": "lecture-05-notes.html#adc-setup",
+    "href": "lecture-05-notes.html#adc-setup",
+    "title": "ECE 4624: Meeting 5",
+    "section": "ADC Setup",
+    "text": "ADC Setup"
+  },
+  {
+    "objectID": "lecture-05-notes.html#dac-setup",
+    "href": "lecture-05-notes.html#dac-setup",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DAC Setup",
+    "text": "DAC Setup"
+  },
+  {
+    "objectID": "lecture-05-notes.html#resources",
+    "href": "lecture-05-notes.html#resources",
+    "title": "ECE 4624: Meeting 5",
+    "section": "resources",
+    "text": "resources"
+  },
+  {
+    "objectID": "lecture-05-slides.html#section",
+    "href": "lecture-05-slides.html#section",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-05-slides.html#board-description",
+    "href": "lecture-05-slides.html#board-description",
+    "title": "ECE 4624: Meeting 5",
+    "section": "board description",
+    "text": "board description"
+  },
+  {
+    "objectID": "lecture-05-slides.html#platformio-ide",
+    "href": "lecture-05-slides.html#platformio-ide",
+    "title": "ECE 4624: Meeting 5",
+    "section": "PlatformIO IDE",
+    "text": "PlatformIO IDE"
+  },
+  {
+    "objectID": "lecture-05-slides.html#event-loop",
+    "href": "lecture-05-slides.html#event-loop",
+    "title": "ECE 4624: Meeting 5",
+    "section": "event loop",
+    "text": "event loop"
+  },
+  {
+    "objectID": "lecture-05-slides.html#adc-setup",
+    "href": "lecture-05-slides.html#adc-setup",
+    "title": "ECE 4624: Meeting 5",
+    "section": "ADC Setup",
+    "text": "ADC Setup"
+  },
+  {
+    "objectID": "lecture-05-slides.html#dac-setup",
+    "href": "lecture-05-slides.html#dac-setup",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DAC Setup",
+    "text": "DAC Setup"
+  },
+  {
+    "objectID": "lecture-05-slides.html#resources",
+    "href": "lecture-05-slides.html#resources",
+    "title": "ECE 4624: Meeting 5",
+    "section": "resources",
+    "text": "resources"
+  },
+  {
+    "objectID": "lecture-15-notes.html",
+    "href": "lecture-15-notes.html",
+    "title": "ECE 4624: Meeting 15",
+    "section": "",
+    "text": "Today we look at applications of the DFT including the implementation of filters and spectral analysis. We use this to motivate the need to efficient implementation of the DFT via the FFT algorithm.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-15-notes.html#section",
+    "href": "lecture-15-notes.html#section",
+    "title": "ECE 4624: Meeting 15",
+    "section": "",
+    "text": "Today we look at applications of the DFT including the implementation of filters and spectral analysis. We use this to motivate the need to efficient implementation of the DFT via the FFT algorithm.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-15-slides.html#section",
+    "href": "lecture-15-slides.html#section",
+    "title": "ECE 4624: Meeting 15",
+    "section": "",
+    "text": "Today we look at applications of the DFT including the implementation of filters and spectral analysis. We use this to motivate the need to efficient implementation of the DFT via the FFT algorithm.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-27-notes.html",
+    "href": "lecture-27-notes.html",
+    "title": "ECE 4624: Meeting 27",
+    "section": "",
+    "text": "Today we cover our last topic of the semester, adaptive filtering using the least-mean-square (LMS) algorithm. This serves as a bridge to more advanced DSP applications such as adaptive noise cancellation.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-27-notes.html#section",
+    "href": "lecture-27-notes.html#section",
+    "title": "ECE 4624: Meeting 27",
+    "section": "",
+    "text": "Today we cover our last topic of the semester, adaptive filtering using the least-mean-square (LMS) algorithm. This serves as a bridge to more advanced DSP applications such as adaptive noise cancellation.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-27-slides.html#section",
+    "href": "lecture-27-slides.html#section",
+    "title": "ECE 4624: Meeting 27",
+    "section": "",
+    "text": "Today we cover our last topic of the semester, adaptive filtering using the least-mean-square (LMS) algorithm. This serves as a bridge to more advanced DSP applications such as adaptive noise cancellation.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-11-notes.html",
+    "href": "lecture-11-notes.html",
+    "title": "ECE 4624: Meeting 11",
+    "section": "",
+    "text": "Today we review the Z-transform.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-11-notes.html#section",
+    "href": "lecture-11-notes.html#section",
+    "title": "ECE 4624: Meeting 11",
+    "section": "",
+    "text": "Today we review the Z-transform.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-11-notes.html#definition",
+    "href": "lecture-11-notes.html#definition",
+    "title": "ECE 4624: Meeting 11",
+    "section": "Definition",
+    "text": "Definition"
+  },
+  {
+    "objectID": "lecture-11-notes.html#using-pfe-and-tables",
+    "href": "lecture-11-notes.html#using-pfe-and-tables",
+    "title": "ECE 4624: Meeting 11",
+    "section": "Using PFE and tables",
+    "text": "Using PFE and tables"
+  },
+  {
+    "objectID": "lecture-11-slides.html#section",
+    "href": "lecture-11-slides.html#section",
+    "title": "ECE 4624: Meeting 11",
+    "section": "",
+    "text": "Today we review the Z-transform.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-11-slides.html#definition",
+    "href": "lecture-11-slides.html#definition",
+    "title": "ECE 4624: Meeting 11",
+    "section": "Definition",
+    "text": "Definition"
+  },
+  {
+    "objectID": "lecture-11-slides.html#using-pfe-and-tables",
+    "href": "lecture-11-slides.html#using-pfe-and-tables",
+    "title": "ECE 4624: Meeting 11",
+    "section": "Using PFE and tables",
+    "text": "Using PFE and tables"
+  },
+  {
+    "objectID": "lecture-23-notes.html",
+    "href": "lecture-23-notes.html",
+    "title": "ECE 4624: Meeting 23",
+    "section": "",
+    "text": "Today we will see how to transform a lowpass filter prototype into the other frequency-selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-23-notes.html#section",
+    "href": "lecture-23-notes.html#section",
+    "title": "ECE 4624: Meeting 23",
+    "section": "",
+    "text": "Today we will see how to transform a lowpass filter prototype into the other frequency-selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-23-slides.html#section",
+    "href": "lecture-23-slides.html#section",
+    "title": "ECE 4624: Meeting 23",
+    "section": "",
+    "text": "Today we will see how to transform a lowpass filter prototype into the other frequency-selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "readme.html",
+    "href": "readme.html",
+    "title": "Notes for ECE 4624",
+    "section": "",
+    "text": "This is a set of supplementary notes and examples for ECE 4624 in the Bradley Department of Electrical and Computer Engineering at Virginia Tech.\nWritten using Quarto.\nThe published version of these notes is at:\nclwyatt.github.io/ece4624-notes.\n\n\nThis work is licensed under a Creative Commons Attribution 4.0 International License."
+  },
+  {
+    "objectID": "readme.html#license",
+    "href": "readme.html#license",
+    "title": "Notes for ECE 4624",
+    "section": "",
+    "text": "This work is licensed under a Creative Commons Attribution 4.0 International License."
+  },
+  {
+    "objectID": "lecture-18-notes.html",
+    "href": "lecture-18-notes.html",
+    "title": "ECE 4624: Meeting 18",
+    "section": "",
+    "text": "Today we introduce FIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-18-notes.html#section",
+    "href": "lecture-18-notes.html#section",
+    "title": "ECE 4624: Meeting 18",
+    "section": "",
+    "text": "Today we introduce FIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-18-slides.html#section",
+    "href": "lecture-18-slides.html#section",
+    "title": "ECE 4624: Meeting 18",
+    "section": "",
+    "text": "Today we introduce FIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-25-notes.html",
+    "href": "lecture-25-notes.html",
+    "title": "ECE 4624: Meeting 25",
+    "section": "",
+    "text": "Today we introduce the concept of stationary random processes and thier use in signal processing.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-25-notes.html#section",
+    "href": "lecture-25-notes.html#section",
+    "title": "ECE 4624: Meeting 25",
+    "section": "",
+    "text": "Today we introduce the concept of stationary random processes and thier use in signal processing.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-25-slides.html#section",
+    "href": "lecture-25-slides.html#section",
+    "title": "ECE 4624: Meeting 25",
+    "section": "",
+    "text": "Today we introduce the concept of stationary random processes and thier use in signal processing.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-19-notes.html",
+    "href": "lecture-19-notes.html",
+    "title": "ECE 4624: Meeting 19",
+    "section": "",
+    "text": "Today we introduce IIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-19-notes.html#section",
+    "href": "lecture-19-notes.html#section",
+    "title": "ECE 4624: Meeting 19",
+    "section": "",
+    "text": "Today we introduce IIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-19-slides.html#section",
+    "href": "lecture-19-slides.html#section",
+    "title": "ECE 4624: Meeting 19",
+    "section": "",
+    "text": "Today we introduce IIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-24-notes.html",
+    "href": "lecture-24-notes.html",
+    "title": "ECE 4624: Meeting 24",
+    "section": "",
+    "text": "Today we review the concepts from probability to set the stage for our discussion of random processes.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-24-notes.html#section",
+    "href": "lecture-24-notes.html#section",
+    "title": "ECE 4624: Meeting 24",
+    "section": "",
+    "text": "Today we review the concepts from probability to set the stage for our discussion of random processes.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-24-slides.html#section",
+    "href": "lecture-24-slides.html#section",
+    "title": "ECE 4624: Meeting 24",
+    "section": "",
+    "text": "Today we review the concepts from probability to set the stage for our discussion of random processes.\nREADING: ?\nTake from old notes"
+  },
+  {
+    "objectID": "lecture-10-notes.html",
+    "href": "lecture-10-notes.html",
+    "title": "ECE 4624: Meeting 10",
+    "section": "",
+    "text": "Today we review the frequency response of DT LTI systems and the four basic frequency selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-10-notes.html#section",
+    "href": "lecture-10-notes.html#section",
+    "title": "ECE 4624: Meeting 10",
+    "section": "",
+    "text": "Today we review the frequency response of DT LTI systems and the four basic frequency selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-10-notes.html#lowpass",
+    "href": "lecture-10-notes.html#lowpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Lowpass",
+    "text": "Lowpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-notes.html#highpass",
+    "href": "lecture-10-notes.html#highpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Highpass",
+    "text": "Highpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-notes.html#bandpass",
+    "href": "lecture-10-notes.html#bandpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Bandpass",
+    "text": "Bandpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-notes.html#bandstop",
+    "href": "lecture-10-notes.html#bandstop",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Bandstop",
+    "text": "Bandstop\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-slides.html#section",
+    "href": "lecture-10-slides.html#section",
+    "title": "ECE 4624: Meeting 10",
+    "section": "",
+    "text": "Today we review the frequency response of DT LTI systems and the four basic frequency selective filters.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-10-slides.html#lowpass",
+    "href": "lecture-10-slides.html#lowpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Lowpass",
+    "text": "Lowpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-slides.html#highpass",
+    "href": "lecture-10-slides.html#highpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Highpass",
+    "text": "Highpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-slides.html#bandpass",
+    "href": "lecture-10-slides.html#bandpass",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Bandpass",
+    "text": "Bandpass\nideal and practical"
+  },
+  {
+    "objectID": "lecture-10-slides.html#bandstop",
+    "href": "lecture-10-slides.html#bandstop",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Bandstop",
+    "text": "Bandstop\nideal and practical"
+  }
+]

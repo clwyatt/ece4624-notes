@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Chris Wyatt">
+<meta name="dcterms.date" content="2025-08-26">
+
+<title>ECE 4624: Meeting 1 – ECE 4624: DSP and Filter Design – Fall 2025</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-55322a9a5c253ea6db55cdc93d44609f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">ECE 4624: DSP and Filter Design – Fall 2025</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-01-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ECE 4624: Meeting 1</h1>
+<p class="subtitle lead">Course Introduction</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Chris Wyatt <a href="mailto:clwyatt@vt.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            ECE@Virginia Tech
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 26, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-ece-4624-dsp-and-filter-design-for-fall-2025">Welcome to ECE 4624, DSP and Filter Design, for Fall 2025!</h2>
+<p>The goal today is to introduce the course and administrative details.</p>
+<ul>
+<li>Staff Introductions</li>
+<li>Course Overview</li>
+<li>Learning Objectives</li>
+<li>Schedule</li>
+<li>Prerequisites</li>
+<li>Grading</li>
+</ul>
+<p>Canvas URL: <a href="https://canvas.vt.edu/courses/215720" class="uri">https://canvas.vt.edu/courses/215720</a></p>
+</section>
+<section id="course-staff" class="level2">
+<h2 class="anchored" data-anchor-id="course-staff">Course Staff</h2>
+<dl>
+<dt>Instructor</dt>
+<dd>
+Chris Wyatt, clwyatt@vt.edu, Zoom and Phone: 540-231-6658
+</dd>
+</dl>
+<ul>
+<li>There is no TA for this course.</li>
+<li>See the Canvas syllabus for my up-to-date office hours links and times.</li>
+</ul>
+<p><span class="alert">Note:</span> if you need to see me outside office hours, send me an email with a selection of times over the following 2-3 days and I will get back to you with a time and location if possible.</p>
+</section>
+<section id="introduction-to-dsp" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-dsp">Introduction to DSP</h2>
+<ul>
+<li>Basic signal types
+<ul>
+<li>CT</li>
+<li>DT</li>
+<li>Digital</li>
+</ul></li>
+<li>Defintion of DSP
+<ul>
+<li>digital representation of signals</li>
+<li>use of digital systems to analyze, modify, store, or extract information</li>
+<li>replacement of CT processing in many applications</li>
+</ul></li>
+</ul>
+</section>
+<section id="advantages-of-dsp-over-ct-processing" class="level2">
+<h2 class="anchored" data-anchor-id="advantages-of-dsp-over-ct-processing">Advantages of DSP over CT processing</h2>
+<ul>
+<li>Flexibility</li>
+<li>Reproducibility</li>
+<li>Reliability</li>
+<li>Complexity</li>
+</ul>
+</section>
+<section id="life-cycle-of-dsp-systems" class="level2">
+<h2 class="anchored" data-anchor-id="life-cycle-of-dsp-systems">Life cycle of DSP systems</h2>
+<ul>
+<li>design</li>
+<li>development</li>
+<li>analyze</li>
+<li>simulation</li>
+<li>testing</li>
+<li>maintenance</li>
+</ul>
+</section>
+<section id="dsp-types" class="level2">
+<h2 class="anchored" data-anchor-id="dsp-types">DSP types</h2>
+<ul>
+<li>offline (non-real-time)</li>
+<li>real-time</li>
+</ul>
+<p>Much of our focus will be on real-time DSP.</p>
+</section>
+<section id="basic-elements-of-real-time-dsp-systems" class="level2">
+<h2 class="anchored" data-anchor-id="basic-elements-of-real-time-dsp-systems">Basic elements of real-time DSP systems</h2>
+<ul>
+<li>pre-amplifier to amplify and shift the DC level of the system</li>
+<li>anti-aliasing filter</li>
+<li>ADC</li>
+<li>Other digital inputs</li>
+<li>DSP Hardware</li>
+<li>DAC</li>
+<li>reconstruction filter</li>
+<li>other digital outputs (storage, transmission, etc.)</li>
+</ul>
+</section>
+<section id="overview-of-ece-4624-dsp-and-filter-design" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-ece-4624-dsp-and-filter-design">Overview of ECE 4624 DSP and Filter Design</h2>
+<ul>
+<li>This course covers the analysis, design, and realization of digital filters and their application to signal processing and control.</li>
+<li>It uses the techniques and concepts from ECE 2714 and 3704. Those courses are the foundation of DSP, and we will review and use the theory of linear, time-invariant, discrete-time systems. However both courses focus mostly on analysis with only introductory coverage of design and implementation.</li>
+<li>In addition those courses neglected the effect of quantization – the need to represent signal samples and filter coefficients as fixed-width integers for efficient implementation, rather than floating-point numbers. Knowing how to model and consider quantization effects is an important part of designing and implementing practical DSP systems.</li>
+<li>At the end of the course we introduce stochastic, or random, signals. Learning about stochastic signals opens up a broader world of more sophisticated concepts, including the idea of adaptive filtering, and applications, such as noise cancellation.</li>
+</ul>
+</section>
+<section id="the-learning-objectives-for-the-course-are" class="level2">
+<h2 class="anchored" data-anchor-id="the-learning-objectives-for-the-course-are">The learning objectives for the course are:</h2>
+<p>Having successfully completed this course, the student will be able to:</p>
+<ol type="1">
+<li>Evaluate the performance of a digital filter, in terms of its frequency response.</li>
+<li>Use Fast Fourier Transform techniques for the analysis of arbitrary signals.</li>
+<li>Demonstrate coefficient quantization effects in digital filters.</li>
+<li>Design digital filters using transformation techniques from analog designs.</li>
+<li>Design digital filters using windowing techniques.</li>
+<li>Design digital filters meeting given specifications.</li>
+<li>Organize and write technical reports.</li>
+<li>Organize and make technical presentations.</li>
+</ol>
+</section>
+<section id="lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response" class="level2">
+<h2 class="anchored" data-anchor-id="lo1-evaluate-the-performance-of-a-digital-filter-in-terms-of-its-frequency-response">LO1: Evaluate the performance of a digital filter, in terms of its frequency response</h2>
+<p>Example Problem: Given a low-pass filter described by the difference equation <span class="math display">\[
+  y[n] = ay[n-1] + by[n-2] + cy[n-3] + dx[n] + ex[n-1] + fx[n-2]
+  \]</span> where the coefficients <span class="math inline">\(a\)</span> through <span class="math inline">\(f\)</span> are given and whose transition band is defined from -3dB to -40dB, determine the cutoff frequency and width of the transition band in samples/sec.</p>
+</section>
+<section id="lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals" class="level2">
+<h2 class="anchored" data-anchor-id="lo2-use-fast-fourier-transform-techniques-for-the-analysis-of-arbitrary-signals">LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals</h2>
+<p>Example Problem: Given samples of a real single-channel signal in the file <code>sig.wav</code> sampled at 18kHz determine the relative power between the frequency bands DC-500Hz and 1kHz-1.5kHz.</p>
+</section>
+<section id="lo3-demonstrate-coefficient-quantization-effects-in-digital-filters" class="level2">
+<h2 class="anchored" data-anchor-id="lo3-demonstrate-coefficient-quantization-effects-in-digital-filters">LO3: Demonstrate coefficient quantization effects in digital filters</h2>
+<p>Example Problem: Given a 5th order IIR bandpass filter with coefficients limited to 8 bits, plot the frequency response with and without quantization. What is the maximum expected deviation in the bandwidth of the filter due to quantization?</p>
+</section>
+<section id="lo4-design-digital-filters-using-transformation-techniques-from-analog-designs" class="level2">
+<h2 class="anchored" data-anchor-id="lo4-design-digital-filters-using-transformation-techniques-from-analog-designs">LO4: Design digital filters using transformation techniques from analog designs</h2>
+<p>Example Problem: Consider an analog filter with transfer function <span class="math display">\[
+  H(s) = \frac{K(s-a)}{(s+b)(s+c)(s+d)}
+  \]</span> Using the bilateral transform, derive an equivalent DT filter.</p>
+</section>
+<section id="lo5-design-digital-filters-using-windowing-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="lo5-design-digital-filters-using-windowing-techniques">LO5: Design digital filters using windowing techniques</h2>
+<p>Example Problem: Given an IIR filter whose impulse response is given by <span class="math inline">\(h[n]\)</span>, design a comparable FIR filter using a Hamming window of length 61.</p>
+</section>
+<section id="lo6-design-digital-filters-meeting-given-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="lo6-design-digital-filters-meeting-given-specifications">LO6: Design digital filters meeting given specifications</h2>
+<p>Example Problem: Consider a low-pass DT filter whose -3dB frequency is <span class="math inline">\(\frac{\pi}{8}\)</span> rad/sample with a transition band to -40dB less than <span class="math inline">\(\frac{\pi}{12}\)</span>, and pass-band ripple less than 3%. Design a Butterworth IIR filter meeting these specifications.</p>
+</section>
+<section id="tentative-schedule" class="level2">
+<h2 class="anchored" data-anchor-id="tentative-schedule">Tentative Schedule</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th style="text-align: center;">Date</th>
+<th style="text-align: left;">Topic</th>
+<th style="text-align: center;">#</th>
+<th style="text-align: center;">Date</th>
+<th style="text-align: left;">Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">8/25</td>
+<td style="text-align: left;">Course Introduction</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">10/20</td>
+<td style="text-align: left;">Fast Fourier Transform</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">8/27</td>
+<td style="text-align: left;">CT and DT Signals</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">10/22</td>
+<td style="text-align: left;"><strong>Midterm Exam</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">9/3</td>
+<td style="text-align: left;">CT Fourier Transform</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">10/27</td>
+<td style="text-align: left;">FIR Filter Structures</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">9/8</td>
+<td style="text-align: left;">Sampling and Reconstruction</td>
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">10/29</td>
+<td style="text-align: left;">IIR Filter Structures</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">9/10</td>
+<td style="text-align: left;">Microcontroller Programming for DSP</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">11/3</td>
+<td style="text-align: left;">Quantization and Round-Off Effects</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">9/15</td>
+<td style="text-align: left;">DT Systems as LCCDE and Impulse Response</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">11/5</td>
+<td style="text-align: left;">FIR Filter Design</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">9/17</td>
+<td style="text-align: left;">Software Design for DSP</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">11/10</td>
+<td style="text-align: left;">Lowpass IIR Filter Design</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">9/22</td>
+<td style="text-align: left;">Time Domain Analysis of DT LTI Systems</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">11/12</td>
+<td style="text-align: left;">Transformations of IIR Filters</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">9/24</td>
+<td style="text-align: left;">DT Block diagrams and Signal Flow Graphs</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">11/17</td>
+<td style="text-align: left;">Probability Primer</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">9/29</td>
+<td style="text-align: left;">DT Fourier Series and Fourier Transform</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">11/19</td>
+<td style="text-align: left;">Stationary Random Processes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">10/1</td>
+<td style="text-align: left;">DT Frequency Response and Filters</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">12/1</td>
+<td style="text-align: left;">Wiener Filter</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">10/6</td>
+<td style="text-align: left;">Z Transform</td>
+<td style="text-align: center;">27</td>
+<td style="text-align: center;">12/4</td>
+<td style="text-align: left;">Adaptive Filtering using LMS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">10/8</td>
+<td style="text-align: left;">DT System Analysis using Z-Transform</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">12/8</td>
+<td style="text-align: left;">Open</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">10/13</td>
+<td style="text-align: left;">The Discrete Fourier Transform</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">12/10</td>
+<td style="text-align: left;">Course Review</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">10/15</td>
+<td style="text-align: left;">Applications of DFT</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">12/16</td>
+<td style="text-align: left;"><strong>Final Exam</strong></td>
+</tr>
+</tbody>
+</table>
+<p>See the Canvas site for the up-to-date, detailed schedule.</p>
+</section>
+<section id="prerequisite-ece-3704" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisite-ece-3704">Prerequisite: ECE 3704</h2>
+<p>You should be able to:</p>
+<ol type="1">
+<li><strong>Describe general systems with the use of block diagrams.</strong></li>
+<li>Solve linear differential equations using Laplace-transforms.</li>
+<li>Analyze stability and performance of continuous-time systems with Laplace-transforms and transfer functions.</li>
+<li><strong>Solve linear difference equations using Z-transforms.</strong></li>
+<li><strong>Analyze stability and performance of discrete-time systems with Z-transforms and transfer functions.</strong></li>
+<li><strong>Sample continuous-time systems to create a discrete-time system model.</strong></li>
+<li>Make experimental measurements on a continuous-time physical system and compare the results to time and frequency-domain analytical results.</li>
+<li><strong>Make experimental measurements on a discrete-time physical system and compare the results to time and frequency-domain analytical results.</strong></li>
+</ol>
+</section>
+<section id="transitive-prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="transitive-prerequisites">Transitive Prerequisites</h2>
+<p>From ECE 2714:</p>
+<ul>
+<li>Mathematically model continuous and discrete linear, time-invariant systems using differential and difference equations respectively</li>
+<li>Analyze the use of filters and their interpretation in the time and frequency domains and implement standard filters in hardware and/or software.</li>
+<li>Apply computations of the four fundamental Fourier transforms to the analysis and design of linear systems.</li>
+</ul>
+<p>From other base courses:</p>
+<ul>
+<li>Model and simulate physical systems using computational tools, and basic programming ability. (ECE 2514)</li>
+<li>Develop microcontroller-based embedded system software that meets real-time specifications. (ECE 2564)</li>
+</ul>
+<p><strong>Important note for graduate students:</strong> If you have enrolled in this course via a force add and lack the equivalent prerequisite knowledge, please be advised that you may find the material particularly challenging.</p>
+</section>
+<section id="course-textbook-and-reference-material" class="level2">
+<h2 class="anchored" data-anchor-id="course-textbook-and-reference-material">Course Textbook and Reference Material</h2>
+<p>The official textbook is Proakis, John G. and Dimitris G. Manolakis, Digital Signal Processing Principles, Algorithms, and Applications, 4th edition (denoted PM).</p>
+<p>You can find used copies at a reasonable price. Earlier (3rd) or later (5th) editions of the text can also be used.</p>
+<p>I also provide supplementary notes but they should not be considered a replacement for the textbook.</p>
+<p>The following references will also be used, which are freely available:</p>
+<ul>
+<li>Arduino UNO R4 Minima User Manual</li>
+<li>Renesas RA4M1 Group User’s Manual: Hardware</li>
+<li>Renesas Flexible Software Package (FSP) User’s Manual</li>
+<li>Cortex-M4 Devices Generic User Guide</li>
+</ul>
+</section>
+<section id="lab-material-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="lab-material-requirements">Lab Material Requirements</h2>
+<p>You need:</p>
+<ul>
+<li>Matlab or Octave for general computation, plotting, data analysis, and filter design tools. If you prefer you can also use Python with the SimPy, NumPy, SciPy, and Matplotlib packages.</li>
+<li>You will also need a solderless breadboard, at least four LF356N op-amps or equivalent, as well as a selection of resistors, capacitors, and 22 AWG solid hookup wire and wire strippers (or a selection of pre-cut jumpers). The lab-in-a-box kit from ECE 1004 should include everything you need.</li>
+<li>You will also need a power supply, two-channel oscilloscope, and function generator. Integrated USB devices and associated software are suitable, e.g.&nbsp;the Digilent Analog Discovery 2 (AD2). Loaners for the AD2 are available.</li>
+</ul>
+<p><strong>IMPORTANT:</strong> You are required to purchase an Arduino UNO R4 Minima, the microcontroller development board we will be using this semester. It is widely available for about $20 USD. You will also need a USB C cable (and possibly an adapter) for flashing the board from your laptop. You will have to install a freely available development environment for this board, as well as a general C and C++ compiler for your host computer (MSVC, GCC, or Clang).</p>
+</section>
+<section id="class-meetings" class="level2">
+<h2 class="anchored" data-anchor-id="class-meetings">Class Meetings</h2>
+<p>Most class meetings you will be responsible for:</p>
+<ol type="1">
+<li><p>Reading a section of the textbook and/or notes</p></li>
+<li><p>Attending the class meeting, participating, and asking questions</p></li>
+<li><p>Filling out a weekly survey</p></li>
+</ol>
+<p>Consistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings.</p>
+</section>
+<section id="problem-sets" class="level2">
+<h2 class="anchored" data-anchor-id="problem-sets">Problem Sets</h2>
+<ul>
+<li>Problems sets are released on Mondays and generally due the following Wednesday.</li>
+<li>The first problem set covers CT/DT signals and the CT Fourier Transform. It is due Wed 9/10 <u>through Canvas</u>.</li>
+<li>You should typeset your solutions, use an annotating program on the PDF, or scan work done with pencil and paper (the free Adobe Scan app works well).</li>
+<li>You can insert pages if needed but maintain the question ordering.</li>
+<li><strong>Illegible submissions will not be graded.</strong></li>
+</ul>
+<p>You are encouraged to work in small groups on the problem sets. However you must write up solutions in your own words and submit them individually.</p>
+</section>
+<section id="honor-code-policy-for-problem-sets" class="level2">
+<h2 class="anchored" data-anchor-id="honor-code-policy-for-problem-sets">Honor Code Policy for Problem Sets</h2>
+<ul>
+<li><p>The problem sets must be completed individually. However, I strongly encourage you to discuss and work the problems with other students.</p></li>
+<li><p>A group of two or three works well. In these groups you are allowed to work through the problems together.</p></li>
+<li><p>To write up your solutions, you may not refer to any jointly created notes.</p></li>
+<li><p>Your submitted solution should credit any student with whom you worked/discussed problems.</p></li>
+<li><p>You must be able to explain and duplicate all the steps in any work you submit.</p></li>
+</ul>
+<p>See the syllabus for full details.</p>
+</section>
+<section id="permissible-ai-use" class="level2">
+<h2 class="anchored" data-anchor-id="permissible-ai-use">Permissible AI Use</h2>
+<p>In this course, use of generative AI tools is permitted for all assignments, given that the student is using the AI tool to contribute to their learning of the course content, but not to replace original work.</p>
+<ul>
+<li>You must properly acknowledge when and how AI tools have been used in your submissions.</li>
+<li>Failure to disclose AI use or submitting AI-generated work as entirely your own without critical engagement will constitute a violation of the Honor Code.</li>
+</ul>
+<p>If you are ever uncertain about the use of AI, it is your responsibility to ask me before proceeding.</p>
+</section>
+<section id="labs" class="level2">
+<h2 class="anchored" data-anchor-id="labs">Labs</h2>
+<p>In addition to problem sets you will have four labs:</p>
+<ul>
+<li>Lab 1: Identity system with MCU, anti-aliasing and reconstruction filters</li>
+<li>Lab 2: DFT based filters on a general-purpose computer</li>
+<li>Lab 3: FIR implementation on MCU</li>
+<li>Lab 4: IIR design and implementation on MCU with report and presentation</li>
+</ul>
+<p>You will need:</p>
+<ul>
+<li><p>The kit from ECE 1004/2024 or equivalent (solderless breadboard, components, power supply, oscilloscope, function generator, and associated software)</p></li>
+<li><p>An Arduino Uno R4 Minima ($20 USD)</p></li>
+<li><p>Matlab (and the signal processing toolbox) or equivalent</p></li>
+<li><p>C++ Compiler (e.g.&nbsp;from ECE 2514)</p></li>
+<li><p>VSCode with the PlatformIO extension (freely available)</p></li>
+</ul>
+<p>Loaners for the AD2 will be available soon.</p>
+</section>
+<section id="exams" class="level2">
+<h2 class="anchored" data-anchor-id="exams">Exams</h2>
+<ul>
+<li>There a midterm exam and a cumulative final exam, together making up 50% of the grade.</li>
+<li>These will be in-person and closed-book.</li>
+<li>You will be allowed one 8.5’’ x 11’’ sheet of crib notes for the midterm exam.</li>
+<li>You will be allowed two 8.5’’ x 11’’ sheet of crib notes for the final exam.</li>
+<li>You are allowed to bring a graphing, scientific, or basic calculator.</li>
+<li>Other electronic devices including cell phone, laptop, iPad, smart watch, etc. are prohibited.</li>
+<li>Only foam ear-plugs are allowed (no earbuds or over the ear headphones).</li>
+</ul>
+</section>
+<section id="grading" class="level2">
+<h2 class="anchored" data-anchor-id="grading">Grading</h2>
+<p>Grades are based on the following weights:</p>
+<ul>
+<li>Homework Problem Sets: 10% (weighted equally)</li>
+<li>Labs: 40% (not weighted equally)</li>
+<li>Midterm Exam: 25%</li>
+<li>Final Exam: 25%</li>
+</ul>
+<p>See the syllabus on the Canvas site for full policy and administrative details, including late work.</p>
+</section>
+<section id="reminders-and-next-actions" class="level2">
+<h2 class="anchored" data-anchor-id="reminders-and-next-actions">Reminders and Next Actions</h2>
+<ul>
+<li>Read the Syllabus if you have not already</li>
+<li>Read PM Chapter 1 and Chapter 2</li>
+<li>Refer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes</li>
+<li>Get started on Problem Set #1.</li>
+<li>Start gathering what you need for the labs.</li>
+</ul>
+<p>Questions?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/clwyatt\.github\.io\/ece4624-notes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
