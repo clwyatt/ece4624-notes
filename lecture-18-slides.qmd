@@ -1,0 +1,40 @@
+---
+title: "ECE 4624: Meeting 18"
+subtitle: "FIR Filter Structures"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-18-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+##
+
+Today we introduce FIR filter structure alternatives the the Direct-Forms, motivate their use, and describe them as signal flow graphs.
+
+READING: ?
+
+
+
+
+
+
+
+
+

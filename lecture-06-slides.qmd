@@ -1,0 +1,59 @@
+---
+title: "ECE 4624: Meeting 6"
+subtitle: "DT Systems as Linear, Constant-Coefficient Difference Equations and Impulse Response"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-06-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+##
+
+Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today's lecture is a review of prerequisite material from ECE 2714.
+
+READING: ?
+
+# Properties and Classification of DT systems
+
+## Memory
+
+## Invertability
+
+## Causality
+
+## Stability
+
+## Time-invariance
+
+## Linearity
+
+# Difference Equations
+
+# Iterative Solution
+
+# LCCDE
+
+## recursive form
+
+## delay form
+
+## advance form
+
+# Impulse Response of LCCDE

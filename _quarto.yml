@@ -1,0 +1,18 @@
+project:
+  type: website
+
+website:
+  title: "ECE 4624: DSP and Filter Design -- Fall 2025"
+
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+
+

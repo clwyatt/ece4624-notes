@@ -1,0 +1,63 @@
+---
+title: "ECE 4624: Meeting 10"
+subtitle: "DT Frequency Response and Frequency Selective Filters"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-10-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+##
+
+Today we review the frequency response of DT LTI systems and the four basic frequency selective filters.
+
+READING: ?
+
+# DT LTI Frequency Response
+
+# Frequency Selective Filters
+
+## Lowpass
+
+ideal and practical
+
+## Highpass
+
+ideal and practical
+
+## Bandpass
+
+ideal and practical
+
+## Bandstop
+
+ideal and practical
+
+# desired characteristics
+
+- linear phase (FIR vs IIR)
+
+
+
+
+
+
+
+

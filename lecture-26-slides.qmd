@@ -1,0 +1,39 @@
+---
+title: "ECE 4624: Meeting 26"
+subtitle: "Wiener Filter"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-26-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+##
+
+Today we look at the Wiener filter, a classic approach to filtering noise from signals modeled using stationary random processes.
+
+
+READING: ?
+
+
+
+
+
+
+

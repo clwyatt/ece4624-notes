@@ -1,0 +1,51 @@
+---
+title: "ECE 4624: Meeting 4"
+subtitle: "Sampling and Reconstruction"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-04-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"   
+---
+
+## 
+
+Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today's lecture is a review of prerequisite material.
+
+
+READING: ?
+
+# Sampling Theory
+
+# Practical Sampling
+
+## Sample and Hold
+
+## Quantization
+
+## Anti-aliasing
+
+# Reconstruction Theory
+
+# Practical Reconstruction
+
+## zero-order hold
+
+## anti-imaging filter
+

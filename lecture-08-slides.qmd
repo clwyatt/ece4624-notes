@@ -1,0 +1,38 @@
+---
+title: "ECE 4624: Meeting 8"
+subtitle: "Time Domain Analysis of DT LTI Systems"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-08-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+##
+
+Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.
+
+READING: ?
+
+
+# DT-LTI Systems and Convolution
+
+# Eigenfunction for DT-LTI Systems
+
+# Correlation

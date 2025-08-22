@@ -1,0 +1,38 @@
+---
+title: "ECE 4624: Meeting 20"
+subtitle: "Quantization and Round-Off Effects"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-20-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+##
+
+Today we review fixed-point number representation, the effects of quantization of filter coefficeints, and discuss round-off effects in filters. We discuss how to use scaling to prevent underflow and overflow during filter computations.
+
+READING: ?
+
+
+
+
+
+
+
