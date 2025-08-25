@@ -578,7 +578,7 @@
     "href": "lecture-01-slides.html#tentative-schedule",
     "title": "ECE 4624: Meeting 1",
     "section": "Tentative Schedule",
-    "text": "Tentative Schedule\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
+    "text": "Tentative Schedule\n\n\n\n\n\n\n\n\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
   },
   {
     "objectID": "lecture-01-slides.html#prerequisite-ece-3704",
@@ -662,7 +662,7 @@
     "href": "lecture-01-slides.html#reminders-and-next-actions",
     "title": "ECE 4624: Meeting 1",
     "section": "Reminders and Next Actions",
-    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nGet started on Problem Set #1.\nStart gathering what you need for the labs.\n\nQuestions?"
+    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nStart gathering what you need for the labs.\n\nQuestions?"
   },
   {
     "objectID": "lecture-01-notes.html",
@@ -781,7 +781,7 @@
     "href": "lecture-01-notes.html#tentative-schedule",
     "title": "ECE 4624: Meeting 1",
     "section": "Tentative Schedule",
-    "text": "Tentative Schedule\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
+    "text": "Tentative Schedule\n\n\n\n\n\n\n\n\n\n\n\n#\nDate\nTopic\n#\nDate\nTopic\n\n\n\n\n1\n8/25\nCourse Introduction\n16\n10/20\nFast Fourier Transform\n\n\n2\n8/27\nCT and DT Signals\n17\n10/22\nMidterm Exam\n\n\n3\n9/3\nCT Fourier Transform\n18\n10/27\nFIR Filter Structures\n\n\n4\n9/8\nSampling and Reconstruction\n19\n10/29\nIIR Filter Structures\n\n\n5\n9/10\nMicrocontroller Programming for DSP\n20\n11/3\nQuantization and Round-Off Effects\n\n\n6\n9/15\nDT Systems as LCCDE and Impulse Response\n21\n11/5\nFIR Filter Design\n\n\n7\n9/17\nSoftware Design for DSP\n22\n11/10\nLowpass IIR Filter Design\n\n\n8\n9/22\nTime Domain Analysis of DT LTI Systems\n23\n11/12\nTransformations of IIR Filters\n\n\n9\n9/24\nDT Block diagrams and Signal Flow Graphs\n24\n11/17\nProbability Primer\n\n\n10\n9/29\nDT Fourier Series and Fourier Transform\n25\n11/19\nStationary Random Processes\n\n\n11\n10/1\nDT Frequency Response and Filters\n26\n12/1\nWiener Filter\n\n\n12\n10/6\nZ Transform\n27\n12/4\nAdaptive Filtering using LMS\n\n\n13\n10/8\nDT System Analysis using Z-Transform\n28\n12/8\nOpen\n\n\n14\n10/13\nThe Discrete Fourier Transform\n29\n12/10\nCourse Review\n\n\n15\n10/15\nApplications of DFT\n\n12/16\nFinal Exam\n\n\n\nSee the Canvas site for the up-to-date, detailed schedule."
   },
   {
     "objectID": "lecture-01-notes.html#prerequisite-ece-3704",
@@ -865,7 +865,7 @@
     "href": "lecture-01-notes.html#reminders-and-next-actions",
     "title": "ECE 4624: Meeting 1",
     "section": "Reminders and Next Actions",
-    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nGet started on Problem Set #1.\nStart gathering what you need for the labs.\n\nQuestions?"
+    "text": "Reminders and Next Actions\n\nRead the Syllabus if you have not already\nRead PM Chapter 1 and Chapter 2\nRefer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes\nStart gathering what you need for the labs.\n\nQuestions?"
   },
   {
     "objectID": "lecture-21-slides.html#section",
