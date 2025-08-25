@@ -6,19 +6,20 @@ author:
     email: clwyatt@vt.edu
     affiliations: ECE@Virginia Tech
 date: 2025-08-26
-
 format: 
   revealjs:
     self-contained: false
     slide-number: true
+    chalkboard: true
     theme: 
       - clw-slide-style.scss
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
-    
+	
   html:
+    
     output-file: lecture-01-notes.html
     toc: false
-    
+
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
@@ -28,143 +29,171 @@ html-math-method:
 
 The goal today is to introduce the course and administrative details.
 
-* Staff Introductions
-* Course Overview
-* Learning Objectives
-* Schedule
-* Prerequisites
-* Grading
+-   Staff Introductions
+-   Course Overview
+-   Learning Objectives
+-   Schedule
+-   Prerequisites
+-   Grading
 
 Canvas URL: <https://canvas.vt.edu/courses/215720>
 
 ## Course Staff
 
 Instructor
-: Chris Wyatt, clwyatt@vt.edu, Zoom and Phone: 540-231-6658
 
-* There is no TA for this course.
-* See the Canvas syllabus for my up-to-date office hours links and times.
+:   Chris Wyatt, clwyatt\@vt.edu, Zoom and Phone: 540-231-6658
 
-[Note:]{.alert} if you need to see me outside office hours, send me an email with a selection of times over the following 2-3 days and I will get back to you with a time and location if possible.
+-   There is no TA for this course.
+-   See the Canvas syllabus for my up-to-date office hours links and
+    times.
+
+[Note:]{.alert} if you need to see me outside office hours, send me an
+email with a selection of times over the following 2-3 days and I will
+get back to you with a time and location if possible.
 
 ## Introduction to DSP
 
-* Basic signal types
-  - CT
-  - DT
-  - Digital
-* Defintion of DSP
-  - digital representation of signals
-  - use of digital systems to analyze, modify, store, or extract information
-  - replacement of CT processing in many applications
-  
+-   Basic signal types
+    -   CT
+    -   DT
+    -   Digital
+-   Defintion of DSP
+    -   digital representation of signals
+    -   use of digital systems to analyze, modify, store, or extract
+        information
+    -   replacement of CT processing in many applications
+
 ## Advantages of DSP over CT processing
 
-- Flexibility
-- Reproducibility
-- Reliability
-- Complexity
+-   Flexibility
+-   Reproducibility
+-   Reliability
+-   Complexity
 
 ## Life cycle of DSP systems
 
-- design
-- development
-- analyze
-- simulation
-- testing
-- maintenance
+-   design
+-   development
+-   analyze
+-   simulation
+-   testing
+-   maintenance
 
 ## DSP types
 
-* offline (non-real-time) 
-* real-time
+-   offline (non-real-time)
+-   real-time
 
 Much of our focus will be on real-time DSP.
 
 ## Basic elements of real-time DSP systems
 
-- pre-amplifier to amplify and shift the DC level of the system
-- anti-aliasing filter
-- ADC
-- Other digital inputs
-- DSP Hardware
-- DAC
-- reconstruction filter
-- other digital outputs (storage, transmission, etc.)
+-   pre-amplifier to amplify and shift the DC level of the system
+-   anti-aliasing filter
+-   ADC
+-   Other digital inputs
+-   DSP Hardware
+-   DAC
+-   reconstruction filter
+-   other digital outputs (storage, transmission, etc.)
 
 ## Overview of ECE 4624 DSP and Filter Design
 
-* This course covers the analysis, design, and realization of digital filters and their application to signal processing and control.
-* It uses the techniques and concepts from ECE 2714 and 3704. Those courses are the foundation of DSP, and we will review and use the theory of linear, time-invariant, discrete-time systems. However both courses focus mostly on analysis with only introductory coverage of design and implementation.
-* In addition those courses neglected the effect of quantization – the need to represent signal samples and filter coefficients as fixed-width integers for efficient implementation, rather than floating-point numbers. Knowing how to model and consider quantization effects is an important part of designing and implementing practical DSP systems.
-* At the end of the course we introduce stochastic, or random, signals. Learning about stochastic signals opens up a broader world of more sophisticated concepts, including the idea of adaptive filtering, and applications, such as noise cancellation.
+-   This course covers the analysis, design, and realization of digital
+    filters and their application to signal processing and control.
+-   It uses the techniques and concepts from ECE 2714 and 3704. Those
+    courses are the foundation of DSP, and we will review and use the
+    theory of linear, time-invariant, discrete-time systems. However
+    both courses focus mostly on analysis with only introductory
+    coverage of design and implementation.
+-   In addition those courses neglected the effect of quantization – the
+    need to represent signal samples and filter coefficients as
+    fixed-width integers for efficient implementation, rather than
+    floating-point numbers. Knowing how to model and consider
+    quantization effects is an important part of designing and
+    implementing practical DSP systems.
+-   At the end of the course we introduce stochastic, or random,
+    signals. Learning about stochastic signals opens up a broader world
+    of more sophisticated concepts, including the idea of adaptive
+    filtering, and applications, such as noise cancellation.
 
 ## The learning objectives for the course are:
 
 Having successfully completed this course, the student will be able to:
 
-1. Evaluate the performance of a digital filter, in terms of its frequency response.
-2. Use Fast Fourier Transform techniques for the analysis of arbitrary signals.
-3. Demonstrate coefficient quantization effects in digital filters.
-4. Design digital filters using transformation techniques from analog designs.
-5. Design digital filters using windowing techniques.
-6. Design digital filters meeting given specifications.
-7. Organize and write technical reports.
-8. Organize and make technical presentations.
-
+1.  Evaluate the performance of a digital filter, in terms of its
+    frequency response.
+2.  Use Fast Fourier Transform techniques for the analysis of arbitrary
+    signals.
+3.  Demonstrate coefficient quantization effects in digital filters.
+4.  Design digital filters using transformation techniques from analog
+    designs.
+5.  Design digital filters using windowing techniques.
+6.  Design digital filters meeting given specifications.
+7.  Organize and write technical reports.
+8.  Organize and make technical presentations.
 
 ## LO1: Evaluate the performance of a digital filter, in terms of its frequency response
 
-Example Problem: Given a low-pass filter described by the difference equation
-  $$
+Example Problem: Given a low-pass filter described by the difference
+equation $$
   y[n] = ay[n-1] + by[n-2] + cy[n-3] + dx[n] + ex[n-1] + fx[n-2]
-  $$
-  where the coefficients $a$ through $f$ are given and whose transition band is defined from -3dB to -40dB, determine the cutoff frequency and width of the transition band in samples/sec.
+  $$ where the coefficients $a$ through $f$ are given and whose
+transition band is defined from -3dB to -40dB, determine the cutoff
+frequency and width of the transition band in samples/sec.
 
 ## LO2: Use Fast Fourier Transform techniques for the analysis of arbitrary signals
 
-Example Problem: Given samples of a real single-channel signal in the file ``sig.wav`` sampled at 18kHz determine the relative power between the frequency bands DC-500Hz and 1kHz-1.5kHz.
+Example Problem: Given samples of a real single-channel signal in the
+file `sig.wav` sampled at 18kHz determine the relative power between the
+frequency bands DC-500Hz and 1kHz-1.5kHz.
 
 ## LO3: Demonstrate coefficient quantization effects in digital filters
 
-  Example Problem: Given a 5th order IIR bandpass filter with coefficients limited to 8 bits, plot the frequency response with and without quantization. What is the maximum expected deviation in the bandwidth of the filter due to quantization?
+Example Problem: Given a 5th order IIR bandpass filter with coefficients
+limited to 8 bits, plot the frequency response with and without
+quantization. What is the maximum expected deviation in the bandwidth of
+the filter due to quantization?
 
 ## LO4: Design digital filters using transformation techniques from analog designs
 
-Example Problem: Consider an analog filter with transfer function
-  $$
+Example Problem: Consider an analog filter with transfer function $$
   H(s) = \frac{K(s-a)}{(s+b)(s+c)(s+d)}
-  $$
-  Using the bilateral transform, derive an equivalent DT filter.
+  $$ Using the bilateral transform, derive an equivalent DT filter.
 
 ## LO5: Design digital filters using windowing techniques
 
-  Example Problem: Given an IIR filter whose impulse response is given by $h[n]$, design a comparable FIR filter using a Hamming window of length 61.
+Example Problem: Given an IIR filter whose impulse response is given by
+$h[n]$, design a comparable FIR filter using a Hamming window of length
+61.
 
 ## LO6: Design digital filters meeting given specifications
 
-  Example Problem: Consider a low-pass DT filter whose -3dB frequency is $\frac{\pi}{8}$ rad/sample with a transition band to -40dB less than $\frac{\pi}{12}$, and pass-band ripple less than 3%. Design a Butterworth IIR filter meeting these specifications.
+Example Problem: Consider a low-pass DT filter whose -3dB frequency is
+$\frac{\pi}{8}$ rad/sample with a transition band to -40dB less than
+$\frac{\pi}{12}$, and pass-band ripple less than 3%. Design a
+Butterworth IIR filter meeting these specifications.
 
 ## Tentative Schedule
 
-
-   \#   Date   Topic                                     \#   Date   Topic
-  ---- ------- ---------------------------------------- ---- ------- --------------------------------------
-   1   8/25    Course Introduction                       16   10/20  Fast Fourier Transform
-   2   8/27    CT and DT Signals                         17   10/22  **Midterm Exam**
-   3   9/3     CT Fourier Transform                      18   10/27  FIR Filter Structures             
-   4   9/8     Sampling and Reconstruction               19   10/29  IIR Filter Structures             
-   5   9/10    Microcontroller Programming for DSP       20   11/3   Quantization and Round-Off Effects
-   6   9/15    DT Systems as LCCDE and Impulse Response  21   11/5   FIR Filter Design                 
-   7   9/17    Software Design for DSP                   22   11/10  Lowpass IIR Filter Design         
-   8   9/22    Time Domain Analysis of DT LTI Systems    23   11/12  Transformations of IIR Filters    
-   9   9/24    DT Block diagrams and Signal Flow Graphs  24   11/17  Probability Primer                
-   10  9/29    DT Fourier Series and Fourier Transform   25   11/19  Stationary Random Processes       
-   11  10/1    DT Frequency Response and  Filters        26   12/1   Wiener Filter               
-   12  10/6    Z Transform                               27   12/4   Adaptive Filtering using LMS
-   13  10/8    DT System Analysis using Z-Transform      28   12/8   Open
-   14  10/13   The Discrete Fourier Transform            29   12/10  Course Review
-   15  10/15   Applications of DFT                            12/16  **Final Exam**
+| \# | Date  | Topic                                    | \# | Date  | Topic                              |
+|:--:|:-----:|:-----------------------------------------|:--:|:-----:|:-----------------------------------|
+| 1  | 8/25  | Course Introduction                      | 16 | 10/20 | Fast Fourier Transform             |
+| 2  | 8/27  | CT and DT Signals                        | 17 | 10/22 | **Midterm Exam**                   |
+| 3  | 9/3   | CT Fourier Transform                     | 18 | 10/27 | FIR Filter Structures              |
+| 4  | 9/8   | Sampling and Reconstruction              | 19 | 10/29 | IIR Filter Structures              |
+| 5  | 9/10  | Microcontroller Programming for DSP      | 20 | 11/3  | Quantization and Round-Off Effects |
+| 6  | 9/15  | DT Systems as LCCDE and Impulse Response | 21 | 11/5  | FIR Filter Design                  |
+| 7  | 9/17  | Software Design for DSP                  | 22 | 11/10 | Lowpass IIR Filter Design          |
+| 8  | 9/22  | Time Domain Analysis of DT LTI Systems   | 23 | 11/12 | Transformations of IIR Filters     |
+| 9  | 9/24  | DT Block diagrams and Signal Flow Graphs | 24 | 11/17 | Probability Primer                 |
+| 10 | 9/29  | DT Fourier Series and Fourier Transform  | 25 | 11/19 | Stationary Random Processes        |
+| 11 | 10/1  | DT Frequency Response and Filters        | 26 | 12/1  | Wiener Filter                      |
+| 12 | 10/6  | Z Transform                              | 27 | 12/4  | Adaptive Filtering using LMS       |
+| 13 | 10/8  | DT System Analysis using Z-Transform     | 28 | 12/8  | Open                               |
+| 14 | 10/13 | The Discrete Fourier Transform           | 29 | 12/10 | Course Review                      |
+| 15 | 10/15 | Applications of DFT                      |    | 12/16 | **Final Exam**                     |
 
 See the Canvas site for the up-to-date, detailed schedule.
 
@@ -172,54 +201,89 @@ See the Canvas site for the up-to-date, detailed schedule.
 
 You should be able to:
 
-1. **Describe general systems with the use of block diagrams.**
-2. Solve linear differential equations using Laplace-transforms.
-3. Analyze stability and performance of continuous-time systems with Laplace-transforms and transfer functions.
-4. **Solve linear difference equations using Z-transforms.**
-5. **Analyze stability and performance of discrete-time systems with Z-transforms and transfer functions.**
-6. **Sample continuous-time systems to create a discrete-time system model.**
-7. Make experimental measurements on a continuous-time physical system and compare the results to time and frequency-domain analytical results.
-8. **Make experimental measurements on a discrete-time physical system and compare the results to time and frequency-domain analytical results.**
+1.  **Describe general systems with the use of block diagrams.**
+2.  Solve linear differential equations using Laplace-transforms.
+3.  Analyze stability and performance of continuous-time systems with
+    Laplace-transforms and transfer functions.
+4.  **Solve linear difference equations using Z-transforms.**
+5.  **Analyze stability and performance of discrete-time systems with
+    Z-transforms and transfer functions.**
+6.  **Sample continuous-time systems to create a discrete-time system
+    model.**
+7.  Make experimental measurements on a continuous-time physical system
+    and compare the results to time and frequency-domain analytical
+    results.
+8.  **Make experimental measurements on a discrete-time physical system
+    and compare the results to time and frequency-domain analytical
+    results.**
 
 ## Transitive Prerequisites
 
 From ECE 2714:
 
-* Mathematically model continuous and discrete linear, time-invariant systems using differential and difference equations respectively
-* Analyze the use of filters and their interpretation in the time and frequency domains and implement standard filters in hardware and/or software.
-* Apply computations of the four fundamental Fourier transforms to the analysis and design of linear systems.    
+-   Mathematically model continuous and discrete linear, time-invariant
+    systems using differential and difference equations respectively
+-   Analyze the use of filters and their interpretation in the time and
+    frequency domains and implement standard filters in hardware and/or
+    software.
+-   Apply computations of the four fundamental Fourier transforms to the
+    analysis and design of linear systems.
 
 From other base courses:
 
-* Model and simulate physical systems using computational tools, and basic programming ability. (ECE 2514)
-* Develop microcontroller-based embedded system software that meets real-time specifications. (ECE 2564)
+-   Model and simulate physical systems using computational tools, and
+    basic programming ability. (ECE 2514)
+-   Develop microcontroller-based embedded system software that meets
+    real-time specifications. (ECE 2564)
 
-**Important note for graduate students:** If you have enrolled in this course via a force add and lack the equivalent prerequisite knowledge, please be advised that you may find the material particularly challenging.
+**Important note for graduate students:** If you have enrolled in this
+course via a force add and lack the equivalent prerequisite knowledge,
+please be advised that you may find the material particularly
+challenging.
 
 ## Course Textbook and Reference Material
 
-The official textbook is Proakis, John G. and Dimitris G. Manolakis, Digital Signal Processing Principles, Algorithms, and Applications, 4th edition (denoted PM).
+The official textbook is Proakis, John G. and Dimitris G. Manolakis,
+Digital Signal Processing Principles, Algorithms, and Applications, 4th
+edition (denoted PM).
 
-You can find used copies at a reasonable price. Earlier (3rd) or later (5th) editions of the text can also be used.
+You can find used copies at a reasonable price. Earlier (3rd) or later
+(5th) editions of the text can also be used.
 
-I also provide supplementary notes but they should not be considered a replacement for the textbook.
+I also provide supplementary notes but they should not be considered a
+replacement for the textbook.
 
 The following references will also be used, which are freely available:
 
-* Arduino UNO R4 Minima User Manual
-* Renesas RA4M1 Group User’s Manual: Hardware
-* Renesas Flexible Software Package (FSP) User’s Manual
-* Cortex-M4 Devices Generic User Guide
+-   Arduino UNO R4 Minima User Manual
+-   Renesas RA4M1 Group User’s Manual: Hardware
+-   Renesas Flexible Software Package (FSP) User’s Manual
+-   Cortex-M4 Devices Generic User Guide
 
 ## Lab Material Requirements
 
 You need:
 
-* Matlab or Octave for general computation, plotting, data analysis, and filter design tools. If you prefer you can also use Python with the SimPy, NumPy, SciPy, and Matplotlib packages.
-* You will also need a solderless breadboard, at least four LF356N op-amps or equivalent, as well as a selection of resistors, capacitors, and 22 AWG solid hookup wire and wire strippers (or a selection of pre-cut jumpers). The lab-in-a-box kit from ECE 1004 should include everything you need.
-* You will also need a power supply, two-channel oscilloscope, and function generator. Integrated USB devices and associated software are suitable, e.g. the Digilent Analog Discovery 2 (AD2). Loaners for the AD2 are available.
+-   Matlab or Octave for general computation, plotting, data analysis,
+    and filter design tools. If you prefer you can also use Python with
+    the SimPy, NumPy, SciPy, and Matplotlib packages.
+-   You will also need a solderless breadboard, at least four LF356N
+    op-amps or equivalent, as well as a selection of resistors,
+    capacitors, and 22 AWG solid hookup wire and wire strippers (or a
+    selection of pre-cut jumpers). The lab-in-a-box kit from ECE 1004
+    should include everything you need.
+-   You will also need a power supply, two-channel oscilloscope, and
+    function generator. Integrated USB devices and associated software
+    are suitable, e.g. the Digilent Analog Discovery 2 (AD2). Loaners
+    for the AD2 are available.
 
-**IMPORTANT:** You are required to purchase an Arduino UNO R4 Minima, the microcontroller development board we will be using this semester. It is widely available for about $20 USD. You will also need a USB C cable (and possibly an adapter) for flashing the board from your laptop. You will have to install a freely available development environment for this board, as well as a general C and C++ compiler for your host computer (MSVC, GCC, or Clang).
+**IMPORTANT:** You are required to purchase an Arduino UNO R4 Minima,
+the microcontroller development board we will be using this semester. It
+is widely available for about \$20 USD. You will also need a USB C cable
+(and possibly an adapter) for flashing the board from your laptop. You
+will have to install a freely available development environment for this
+board, as well as a general C and C++ compiler for your host computer
+(MSVC, GCC, or Clang).
 
 ## Class Meetings
 
@@ -237,12 +301,15 @@ you will get out of our meetings.
 
 ## Problem Sets
 
-* Problems sets are released on Mondays and generally due the following Wednesday.
-* The first problem set covers CT/DT signals and the CT Fourier Transform. It is due Wed 9/10 [through Canvas]{.underline}.
-* You should typeset your solutions, use an annotating program on the PDF, or scan work done with pencil and
-paper (the free Adobe Scan app works well).
-* You can insert pages if needed but maintain the question ordering.
-* **Illegible submissions will not be graded.**
+-   Problems sets are released on Mondays and generally due the
+    following Wednesday.
+-   The first problem set covers CT/DT signals and the CT Fourier
+    Transform. It is due Wed 9/10 [through Canvas]{.underline}.
+-   You should typeset your solutions, use an annotating program on the
+    PDF, or scan work done with pencil and paper (the free Adobe Scan
+    app works well).
+-   You can insert pages if needed but maintain the question ordering.
+-   **Illegible submissions will not be graded.**
 
 You are encouraged to work in small groups on the problem sets. However
 you must write up solutions in your own words and submit them
@@ -250,84 +317,99 @@ individually.
 
 ## Honor Code Policy for Problem Sets
 
-- The problem sets must be completed individually. However, I strongly
-  encourage you to discuss and work the problems with other students.
+-   The problem sets must be completed individually. However, I strongly
+    encourage you to discuss and work the problems with other students.
 
-- A group of two or three works well. In these groups you are allowed to
-  work through the problems together.
+-   A group of two or three works well. In these groups you are allowed
+    to work through the problems together.
 
-- To write up your solutions, you may not refer to any jointly created
-  notes.
+-   To write up your solutions, you may not refer to any jointly created
+    notes.
 
-- Your submitted solution should credit any student with whom you
-  worked/discussed problems.
+-   Your submitted solution should credit any student with whom you
+    worked/discussed problems.
 
-- You must be able to explain and duplicate all the steps in any work
-  you submit.
+-   You must be able to explain and duplicate all the steps in any work
+    you submit.
 
 See the syllabus for full details.
 
 ## Permissible AI Use
 
-In this course, use of generative AI tools is permitted for all assignments, given that the student is using the AI tool to contribute to their learning of the course content, but not to replace original work. 
+In this course, use of generative AI tools is permitted for all
+assignments, given that the student is using the AI tool to contribute
+to their learning of the course content, but not to replace original
+work.
 
-* You must properly acknowledge when and how AI tools have been used in your submissions. 
-* Failure to disclose AI use or submitting AI-generated work as entirely your own without critical engagement will constitute a violation of the Honor Code.
+-   You must properly acknowledge when and how AI tools have been used
+    in your submissions.
+-   Failure to disclose AI use or submitting AI-generated work as
+    entirely your own without critical engagement will constitute a
+    violation of the Honor Code.
 
-If you are ever uncertain about the use of AI, it is your responsibility to ask me before proceeding.
+If you are ever uncertain about the use of AI, it is your responsibility
+to ask me before proceeding.
 
 ## Labs
 
 In addition to problem sets you will have four labs:
 
-* Lab 1: Identity system with MCU, anti-aliasing and reconstruction filters
-* Lab 2: DFT based filters on a general-purpose computer
-* Lab 3: FIR implementation on MCU
-* Lab 4: IIR design and implementation on MCU with report and presentation
+-   Lab 1: Identity system with MCU, anti-aliasing and reconstruction
+    filters
+-   Lab 2: DFT based filters on a general-purpose computer
+-   Lab 3: FIR implementation on MCU
+-   Lab 4: IIR design and implementation on MCU with report and
+    presentation
 
 You will need:
 
-* The kit from ECE 1004/2024 or equivalent (solderless breadboard, components, power supply, oscilloscope, function generator, and associated software)
+-   The kit from ECE 1004/2024 or equivalent (solderless breadboard,
+    components, power supply, oscilloscope, function generator, and
+    associated software)
 
-* An Arduino Uno R4 Minima ($20 USD)
+-   An Arduino Uno R4 Minima (\$20 USD)
 
-* Matlab (and the signal processing toolbox) or equivalent
+-   Matlab (and the signal processing toolbox) or equivalent
 
-* C++ Compiler (e.g. from ECE 2514)
+-   C++ Compiler (e.g. from ECE 2514)
 
-* VSCode with the PlatformIO extension (freely available)
+-   VSCode with the PlatformIO extension (freely available)
 
 Loaners for the AD2 will be available soon.
 
 ## Exams
 
-* There a midterm exam and a cumulative final exam, together making up 50% of the grade.
-* These will be in-person and closed-book.
-* You will be allowed one 8.5’’ x 11’’ sheet of crib notes for the midterm exam.
-* You will be allowed two 8.5’’ x 11’’ sheet of crib notes for the final exam.
-* You are allowed to bring a graphing, scientific, or basic calculator.
-* Other electronic devices including cell phone, laptop, iPad, smart watch, etc. are prohibited.
-* Only foam ear-plugs are allowed (no earbuds or over the ear headphones).
+-   There a midterm exam and a cumulative final exam, together making up
+    50% of the grade.
+-   These will be in-person and closed-book.
+-   You will be allowed one 8.5’’ x 11’’ sheet of crib notes for the
+    midterm exam.
+-   You will be allowed two 8.5’’ x 11’’ sheet of crib notes for the
+    final exam.
+-   You are allowed to bring a graphing, scientific, or basic
+    calculator.
+-   Other electronic devices including cell phone, laptop, iPad, smart
+    watch, etc. are prohibited.
+-   Only foam ear-plugs are allowed (no earbuds or over the ear
+    headphones).
 
 ## Grading
 
 Grades are based on the following weights:
 
-* Homework Problem Sets: 10% (weighted equally)
-* Labs: 40% (not weighted equally)
-* Midterm Exam: 25%
-* Final Exam: 25%
+-   Homework Problem Sets: 10% (weighted equally)
+-   Labs: 40% (not weighted equally)
+-   Midterm Exam: 25%
+-   Final Exam: 25%
 
 See the syllabus on the Canvas site for full policy and administrative
 details, including late work.
 
 ## Reminders and Next Actions
 
-* Read the Syllabus if you have not already
-* Read PM Chapter 1 and Chapter 2
-* Refer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes
-* Get started on Problem Set #1.
-* Start gathering what you need for the labs.
-
+-   Read the Syllabus if you have not already
+-   Read PM Chapter 1 and Chapter 2
+-   Refer to as needed Chapters 1 and 2 of ECE 2714 Supplementary Notes
+-   Start gathering what you need for the labs.
 
 Questions?

@@ -351,5 +351,9 @@ $selection-bg: #26351c !default;
 
 .reveal .footer {
     text-align: left !important;
-    font-size: smaller;
+}
+
+.reveal .footer a{
+    margin-left: 5px;
+    font-size: medium;
 }
