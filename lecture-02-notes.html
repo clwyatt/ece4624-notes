@@ -102,7 +102,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -134,8 +134,7 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-02-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -222,7 +221,7 @@ f: A \rightarrow B
 </section>
 <section id="analog-signals" class="level2">
 <h2 class="anchored" data-anchor-id="analog-signals">Analog Signals</h2>
-<p>If the function <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span>, we call this an analog or real, continuous-time signal, e.g.&nbsp;a voltage at time <span class="math inline">\(t \in \mathbb{R}\)</span>, <span class="math inline">\(v(t)\)</span>. We will write these as <span class="math inline">\(x(t)\)</span>, <span class="math inline">\(y(t)\)</span>, etc. The units of <span class="math inline">\(t\)</span> are seconds. <a href="#fig-analog-plots" class="quarto-xref">Figure&nbsp;1</a> shows some graphical representations, i.e.&nbsp;plots.</p>
+<p>If the function <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span>, we call this an analog or real, continuous-time signal, e.g.&nbsp;a voltage at time <span class="math inline">\(t \in \mathbb{R}\)</span>, <span class="math inline">\(v(t)\)</span>. We will write these as <span class="math inline">\(x(t)\)</span>, <span class="math inline">\(y(t)\)</span>, etc. The units of <span class="math inline">\(t\)</span> are seconds.</p>
 <div id="cell-fig-analog-plots" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div id="fig-analog-plots" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Example plots of analog signals. Shows a plot of the unit step, causal real exponential, sinusoid, and a damped causal sinusoid.">
@@ -240,7 +239,7 @@ Figure&nbsp;1: Example plots of analog signals.
 </section>
 <section id="real-discrete-time-signal" class="level2">
 <h2 class="anchored" data-anchor-id="real-discrete-time-signal">Real, Discrete-time Signal</h2>
-<p>If the function <span class="math inline">\(f: \mathbb{Z} \rightarrow \mathbb{R}\)</span>, we call this a real, discrete-time signal, e.g.&nbsp;the temperature every day at noon. We will write these as <span class="math inline">\(x[n]\)</span>, <span class="math inline">\(y[n]\)</span>, etc. Note <span class="math inline">\(n\)</span> is dimensionless. <a href="#fig-realdt-plots" class="quarto-xref">Figure&nbsp;2</a> shows some graphical representations.</p>
+<p>If the function <span class="math inline">\(f: \mathbb{Z} \rightarrow \mathbb{R}\)</span>, we call this a real, discrete-time signal, e.g.&nbsp;the temperature every day at noon. We will write these as <span class="math inline">\(x[n]\)</span>, <span class="math inline">\(y[n]\)</span>, etc. Note <span class="math inline">\(n\)</span> is dimensionless.</p>
 <div id="cell-fig-realdt-plots" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div id="fig-realdt-plots" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Example plots of real-valued, discrete-time signals. Shows a plot of the unit step, causal real exponential, sinusoid, and a damped causal sinusoid.">
@@ -559,26 +558,32 @@ P_x = \lim_{T\rightarrow\infty} \frac{1}{2T} \int_{-T}^T \lvert x(t)\rvert^2 dt 
 <li><p>single input - single output (SISO) system.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_1.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a single-input, single-output system"></p>
+<p><img src="figures/fig6_1.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a single-input, single-output system"></p>
 <figcaption>SISO Block Diagram</figcaption>
 </figure>
 </div></li>
+</ul>
+<p>We will focus on single input - single output systems.</p>
+</section>
+<section id="other-system-types" class="level2">
+<h2 class="anchored" data-anchor-id="other-system-types">Other System Types</h2>
+<ul>
 <li><p>single input - multiple output (SIMO) system</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_2.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a single-input, multiple-output system"></p>
+<p><img src="figures/fig6_2.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a single-input, multiple-output system"></p>
 <figcaption>SIMO Block Diagram</figcaption>
 </figure>
 </div></li>
 <li><p>general case, multiple input - multiple output (MIMO)</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_3.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a multiple-input, multiple-output system"></p>
+<p><img src="figures/fig6_3.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a multiple-input, multiple-output system"></p>
 <figcaption>MIMO Block Diagram</figcaption>
 </figure>
 </div></li>
 </ul>
-<p>We will focus on single input - single output systems.</p>
+<p>MIMO systems can be handled using state-based descriptions.</p>
 </section>
 <section id="systems-cont." class="level2">
 <h2 class="anchored" data-anchor-id="systems-cont.">Systems cont.</h2>
@@ -586,27 +591,32 @@ P_x = \lim_{T\rightarrow\infty} \frac{1}{2T} \int_{-T}^T \lvert x(t)\rvert^2 dt 
 <li><p>If both input and output are CT signals, it is a CT system.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_4.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a CT system"></p>
+<p><img src="figures/fig6_4.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a CT system"></p>
 <figcaption>Generic Block Diagram of CT System</figcaption>
 </figure>
 </div></li>
 <li><p>If both input and output are DT signals, it is a DT system.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_5.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a DT system"></p>
+<p><img src="figures/fig6_5.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a DT system"></p>
 <figcaption>Generic Block Diagram of a DT System</figcaption>
 </figure>
 </div></li>
+</ul>
+</section>
+<section id="systems-cont.-1" class="level2">
+<h2 class="anchored" data-anchor-id="systems-cont.-1">Systems cont.</h2>
+<ul>
 <li><p>If input and output are not both CT or DT signals, it is a hybrid CT-DT system.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_6.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a hybrid system with DT input and CT output"></p>
+<p><img src="figures/fig6_6.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a hybrid system with DT input and CT output"></p>
 <figcaption>Generic Block Diagram of a Hybrid DT/CT System</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/fig6_7.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a hybrid system with CT input and DT output"></p>
+<p><img src="figures/fig6_7.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a hybrid system with CT input and DT output"></p>
 <figcaption>Generic Block Diagram of a Hybrid CT/DT System</figcaption>
 </figure>
 </div></li>
@@ -628,14 +638,14 @@ P_x = \lim_{T\rightarrow\infty} \frac{1}{2T} \int_{-T}^T \lvert x(t)\rvert^2 dt 
 <li><p>The impulse response for CT systems is denoted <span class="math inline">\(h(t)\)</span>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/figA_1.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a CT system with impulse as input"></p>
+<p><img src="figures/figA_1.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a CT system with impulse as input"></p>
 <figcaption>Impulse Response of CT System</figcaption>
 </figure>
 </div></li>
 <li><p>The impulse response for DT systems is denoted <span class="math inline">\(h[n]\)</span>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/figA_2.svg" class="img-fluid figure-img" alt="diagram showing the block diagram of a DT system with impulse as input"></p>
+<p><img src="figures/figA_2.svg" class="img-fluid figure-img" style="width:40.0%" alt="diagram showing the block diagram of a DT system with impulse as input"></p>
 <figcaption>Impulse Response of DT System</figcaption>
 </figure>
 </div></li>

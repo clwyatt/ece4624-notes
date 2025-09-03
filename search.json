@@ -60,14 +60,14 @@
     "href": "lecture-02-slides.html#analog-signals",
     "title": "ECE 4624: Meeting 2",
     "section": "Analog Signals",
-    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds. Figure 1 shows some graphical representations, i.e. plots.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
+    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
   },
   {
     "objectID": "lecture-02-slides.html#real-discrete-time-signal",
     "href": "lecture-02-slides.html#real-discrete-time-signal",
     "title": "ECE 4624: Meeting 2",
     "section": "Real, Discrete-time Signal",
-    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless. Figure 2 shows some graphical representations.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
+    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
   },
   {
     "objectID": "lecture-02-slides.html#some-other-possibilities",
@@ -214,14 +214,28 @@
     "href": "lecture-02-slides.html#systems",
     "title": "ECE 4624: Meeting 2",
     "section": "Systems",
-    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+  },
+  {
+    "objectID": "lecture-02-slides.html#other-system-types",
+    "href": "lecture-02-slides.html#other-system-types",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Other System Types",
+    "text": "Other System Types\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nMIMO systems can be handled using state-based descriptions."
   },
   {
     "objectID": "lecture-02-slides.html#systems-cont.",
     "href": "lecture-02-slides.html#systems-cont.",
     "title": "ECE 4624: Meeting 2",
     "section": "Systems cont.",
-    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System\n\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
+    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System"
+  },
+  {
+    "objectID": "lecture-02-slides.html#systems-cont.-1",
+    "href": "lecture-02-slides.html#systems-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems cont.",
+    "text": "Systems cont.\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
   },
   {
     "objectID": "lecture-02-slides.html#system-input-and-output",
@@ -277,14 +291,14 @@
     "href": "lecture-02-notes.html#analog-signals",
     "title": "ECE 4624: Meeting 2",
     "section": "Analog Signals",
-    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds. Figure 1 shows some graphical representations, i.e. plots.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
+    "text": "Analog Signals\nIf the function \\(f: \\mathbb{R} \\rightarrow \\mathbb{R}\\), we call this an analog or real, continuous-time signal, e.g. a voltage at time \\(t \\in \\mathbb{R}\\), \\(v(t)\\). We will write these as \\(x(t)\\), \\(y(t)\\), etc. The units of \\(t\\) are seconds.\n\n\n\n\n\n\n\n\nFigure 1: Example plots of analog signals."
   },
   {
     "objectID": "lecture-02-notes.html#real-discrete-time-signal",
     "href": "lecture-02-notes.html#real-discrete-time-signal",
     "title": "ECE 4624: Meeting 2",
     "section": "Real, Discrete-time Signal",
-    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless. Figure 2 shows some graphical representations.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
+    "text": "Real, Discrete-time Signal\nIf the function \\(f: \\mathbb{Z} \\rightarrow \\mathbb{R}\\), we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as \\(x[n]\\), \\(y[n]\\), etc. Note \\(n\\) is dimensionless.\n\n\n\n\n\n\n\n\nFigure 2: Example plots of real-valued, discrete-time signals."
   },
   {
     "objectID": "lecture-02-notes.html#some-other-possibilities",
@@ -431,14 +445,28 @@
     "href": "lecture-02-notes.html#systems",
     "title": "ECE 4624: Meeting 2",
     "section": "Systems",
-    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+    "text": "Systems\nA system is an interconncted set of components or sub-systems. Mathematically a system is a transformation, \\(T\\), between one or more signals, a rule that maps functions to functions.\n\nsingle input - single output (SISO) system.\n\n\n\nSISO Block Diagram\n\n\n\nWe will focus on single input - single output systems."
+  },
+  {
+    "objectID": "lecture-02-notes.html#other-system-types",
+    "href": "lecture-02-notes.html#other-system-types",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Other System Types",
+    "text": "Other System Types\n\nsingle input - multiple output (SIMO) system\n\n\n\nSIMO Block Diagram\n\n\ngeneral case, multiple input - multiple output (MIMO)\n\n\n\nMIMO Block Diagram\n\n\n\nMIMO systems can be handled using state-based descriptions."
   },
   {
     "objectID": "lecture-02-notes.html#systems-cont.",
     "href": "lecture-02-notes.html#systems-cont.",
     "title": "ECE 4624: Meeting 2",
     "section": "Systems cont.",
-    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System\n\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
+    "text": "Systems cont.\n\nIf both input and output are CT signals, it is a CT system.\n\n\n\nGeneric Block Diagram of CT System\n\n\nIf both input and output are DT signals, it is a DT system.\n\n\n\nGeneric Block Diagram of a DT System"
+  },
+  {
+    "objectID": "lecture-02-notes.html#systems-cont.-1",
+    "href": "lecture-02-notes.html#systems-cont.-1",
+    "title": "ECE 4624: Meeting 2",
+    "section": "Systems cont.",
+    "text": "Systems cont.\n\nIf input and output are not both CT or DT signals, it is a hybrid CT-DT system.\n\n\n\nGeneric Block Diagram of a Hybrid DT/CT System\n\n\n\n\n\nGeneric Block Diagram of a Hybrid CT/DT System\n\n\n\nWe will focus on Hybrid and DT systems."
   },
   {
     "objectID": "lecture-02-notes.html#system-input-and-output",
@@ -613,7 +641,7 @@
     "href": "lecture-01-slides.html#class-meetings",
     "title": "ECE 4624: Meeting 1",
     "section": "Class Meetings",
-    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\nFilling out a weekly survey\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
+    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
   },
   {
     "objectID": "lecture-01-slides.html#problem-sets",
@@ -816,7 +844,7 @@
     "href": "lecture-01-notes.html#class-meetings",
     "title": "ECE 4624: Meeting 1",
     "section": "Class Meetings",
-    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\nFilling out a weekly survey\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
+    "text": "Class Meetings\nMost class meetings you will be responsible for:\n\nReading a section of the textbook and/or notes\nAttending the class meeting, participating, and asking questions\n\nConsistent preparation for class reduces procrastination and smooths out your weekly workload. The better prepared you are for class, the more you will get out of our meetings."
   },
   {
     "objectID": "lecture-01-notes.html#problem-sets",
@@ -893,91 +921,427 @@
     "href": "lecture-04-slides.html#section",
     "title": "ECE 4624: Meeting 4",
     "section": "",
-    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is (mostly) a review of prerequisite material.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 23 and 24\n\nSampling converts from a CT signal \\(x(t)\\) to a digital (quantized DT) signal \\(x[n]\\) using a sample time \\(T\\).\nReconstruction converts from a DT signal \\(x[n]\\) to a CT signal \\(x(t)\\), interpolating between samples.\nIdeally a conversion from \\(x(t)\\) to \\(x[n]\\) and back again would result in identical signal (an all-pass system)."
+  },
+  {
+    "objectID": "lecture-04-slides.html#sampling-theory",
+    "href": "lecture-04-slides.html#sampling-theory",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sampling Theory",
+    "text": "Sampling Theory\nThe process of sampling is to produce a DT signal \\(x[n]\\) from a CT signal \\(x(t)\\) by sampling time at regular intervals \\(T\\in \\mathbb{R}^+\\) called the sample-time, or equivalently sampling at a frequency of \\(\\tfrac{1}{T}\\) Hz or \\(\\tfrac{2\\pi}{T}\\) rad/s.\nMathematically this is simple to express in the time domain as \\(x[n] = x(nT)\\), however we seek a system that can perform this task.\nRecall the impulse train is the periodic signal \\[x_1(t) = \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(t-nT_0)\\] with period \\(T_0\\) and frequency \\(\\omega_0 = \\tfrac{2\\pi}{T_0}\\)."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-1",
+    "href": "lecture-04-slides.html#section-1",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "The exponential CT Fourier series of the impulse train is given by \\[x_1(t) = \\sum\\limits_{n=-\\infty}^{\\infty} a_n e^{j\\tfrac{2\\pi}{T_0}nt}\\] where the Fourier series coefficients are \\[a_n = \\frac{1}{T_0} \\int\\limits_{-\\frac{T_0}{2}}^{\\frac{T_0}{2}} \\delta(t) e^{-jn\\omega_0 t} \\; dt = \\frac{1}{T_0}\\] Now, lets take the Fourier Transform of the Fourier series representation \\[\\begin{align*}\nX_1(j\\omega) &= \\int\\limits_{-\\infty}^{\\infty} \\sum\\limits_{n=-\\infty}^{\\infty} \\frac{1}{T_0} e^{j\\tfrac{2\\pi}{T_0}nt}e^{j\\omega t}\\; dt\\\\\n&= \\frac{2\\pi}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(\\omega - \\omega_0 n)\n\\end{align*}\\] also an impulse train in the frequency domain."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-2",
+    "href": "lecture-04-slides.html#section-2",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Now suppose we have another signal \\(x_2(t)\\) and we multiply \\(x_1(t)\\) and \\(x_2(t)\\) to get a signal \\(y(t)\\). \\[y(t) = x_1(t) \\cdot x_2(t) = \\sum\\limits_{n=-\\infty}^{\\infty} x_2(t) \\delta(t-nT_0) = \\sum\\limits_{n=-\\infty}^{\\infty} x_2(nT_0) \\delta(t-nT_0)\\] Since \\(y(t)\\) is non-zero only at the locations of the delta functions, we can treat \\(y(nT_0) = x_2(nT_0)\\) as the DT signal \\(x_2[n]\\)."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-3",
+    "href": "lecture-04-slides.html#section-3",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Equivalently in the frequency domain the modulation theorem gives \\[y(t) = x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(j\\omega) * X_2(j\\omega) = Y(j\\omega)\\]\nThe convolution gives\n\\[\\begin{align*}\n  Y(j\\omega) &= \\frac{1}{2\\pi} X_1(j\\omega) * X_2(j\\omega)\\\\\n  &= \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty}  \\frac{2\\pi}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(\\omega - \\omega^\\prime - \\omega_0 n) X_2(j\\omega^\\prime) \\; d\\omega^\\prime\\\\\n  &= \\frac{1}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} X_2(j(\\omega - n\\omega_0))\n\\end{align*}\\]\nThus the sampling process in the frequency domain causes periodic replication of the Fourier transform of the signal being sampled, \\(x_2(t)\\), which are sometimes called images. This signal \\(Y(j\\omega)\\) is periodic in \\(\\omega_0 = \\tfrac{2\\pi}{T_0}\\) radians per second and corresponds to the DT Fourier Transform of \\(x_2[n]  \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2\\left(e^{j\\omega}\\right)\\), which is periodic in \\(2\\pi\\) radians per sample time."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-4",
+    "href": "lecture-04-slides.html#section-4",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "To help us visualize this, suppose that the signal \\(x_2(t)  \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(j\\omega)\\) is band-limited to \\(B\\) Hz, that is \\(X_2(j\\omega) = 0\\) for all frequencies outside the band \\(-2\\pi B &lt; \\omega &lt; 2\\pi B\\)."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-5",
+    "href": "lecture-04-slides.html#section-5",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "After sampling (\\(y(t) = x_1(t)\\cdot x_2(t)\\)) and assuming \\(\\omega_0 &gt; 4\\pi B\\) the spectrum of the sampled signal is:"
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-6",
+    "href": "lecture-04-slides.html#section-6",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "If instead \\(\\omega_0 &lt; 4\\pi B\\) the images overlap and we get aliasing, where high frequency content gets added to the lower frequency content."
+  },
+  {
+    "objectID": "lecture-04-slides.html#nyquist-sampling",
+    "href": "lecture-04-slides.html#nyquist-sampling",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Nyquist Sampling",
+    "text": "Nyquist Sampling\nTo reconstruct the signal \\(x_2[n]\\) back to \\(x_2(t)\\) we need to ensure that \\(\\omega_0 &gt; 4\\pi B\\) rad/s or equivalently \\(f_0 &gt; 2 B\\) Hz, which requires the sample time \\(T_0 &lt; \\tfrac{1}{2B}\\) seconds.\nThis is called the Nyquist sample rate/frequency."
+  },
+  {
+    "objectID": "lecture-04-slides.html#practical-sampling",
+    "href": "lecture-04-slides.html#practical-sampling",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Practical Sampling",
+    "text": "Practical Sampling\nSampling in practice requires addressing three issues.\n\nWe cannot generate the impulse train, but can only approximate it.\nDigital signals must have a fixed bit width so we have to convert the real signal value to a quantized one.\nThe quantized value then needs to be coded into a bit representation (e.g. signed twos-complement)\nSince in general we have no control over the input signal, we need to ensure the signal is approximately band-limited before sampling."
   },
   {
     "objectID": "lecture-04-slides.html#sample-and-hold",
     "href": "lecture-04-slides.html#sample-and-hold",
     "title": "ECE 4624: Meeting 4",
     "section": "Sample and Hold",
-    "text": "Sample and Hold"
+    "text": "Sample and Hold\nSampling is typically accomplished using a circuit called a sample-and-hold or track-and-hold"
   },
   {
     "objectID": "lecture-04-slides.html#quantization",
     "href": "lecture-04-slides.html#quantization",
     "title": "ECE 4624: Meeting 4",
     "section": "Quantization",
-    "text": "Quantization"
+    "text": "Quantization\nDuring the hold phase we need to quantize the signal into \\(N\\) bits.\n\nThe quantizer is a nonlinear system \\[\n\\hat{x}[n] = Q\\left\\{x[n]\\right\\}\n\\]\nThe input range (e.g. from 0 to \\(V_{\\text{ref}}\\)) is divided into \\(2^N\\) discrete levels.\nThe LSB weight \\(q\\) is the smallest possible change in analog input that results in a change in the digital output – i.e., the resolution of the ADC.\n\\[\nq = \\frac{V_{\\text{ref}}}{2^N}\n\\]\nFor example, if the ADC has a reference voltage of 1 V and 12 bits of resolution, then:\n\\[\nq = \\frac{1}{2^{12}} = \\frac{1}{4096} \\approx 244 \\, \\mu\\text{V}\n\\]"
+  },
+  {
+    "objectID": "lecture-04-slides.html#quantization-noise",
+    "href": "lecture-04-slides.html#quantization-noise",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization Noise",
+    "text": "Quantization Noise\nIn the simplest model, quantization adds noise uniformly distributed over the passband\n\ndefine the error as \\[\n    e[n] = \\hat{x}[n] - x[n]\n\\]\nthen \\[\n\\hat{x}[n] = x[n] + e[n]\n\\]\n\\(e\\) is assumed to be sampled from a stationary random process\n\\(e\\) is assumed to be uncorrelated with \\(x[n]\\)\n\\(e[n]\\) is assumed to be uncorrelated to \\(e[n+m]\\) for any \\(m\\), thus a white noise process\nthe probability distribution of \\(e\\) is assumed to be uniform over the sampling range\n\nThere are cases where this model breaks down but it often good enough. In this model the RMS value of the noise is \\(q/\\sqrt{12}\\), where \\(q\\) is weight of the LSB."
+  },
+  {
+    "objectID": "lecture-04-slides.html#quantization-using-successive-approximation",
+    "href": "lecture-04-slides.html#quantization-using-successive-approximation",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization using successive approximation",
+    "text": "Quantization using successive approximation\nQuantization can be thought of as a binary search algorithm:\nInitialize all bits of \\(\\hat{x}\\) to zero.\nLet bit \\(b_i\\) of \\(\\hat{x}\\) be the MSB. Given a real value \\(x\\).\n\nSet \\(b_i\\) to one\nIf \\(x &lt; \\hat{x}\\) toggle the bit to zero\nIf no more bits, stop, else let \\(i\\rightarrow i+1\\)\n\nThis is implemented using an FSM.\nThe speed of conversion is limited by\n\nthe settling time of the DAC\nthe settling time of the Comparator\nthe logic overhead, \\(O(N)\\) state transitions"
   },
   {
     "objectID": "lecture-04-slides.html#anti-aliasing",
     "href": "lecture-04-slides.html#anti-aliasing",
     "title": "ECE 4624: Meeting 4",
     "section": "Anti-aliasing",
-    "text": "Anti-aliasing"
+    "text": "Anti-aliasing\nBefore the sample and hold we need to include a filter to limit the bandwidth. This can be accomplished by a CT low-pass filter called an anti-aliasing filter whose cutoff frequency in the ideal case is \\(\\omega_c = 2\\pi B\\).\nAs we discussed last time ideal filters cannot be implemented, thus we specify the anti-aliasing filter as a pass-band gain/frequency and a stop-band gain/frequency.\nSince the transition band is non-zero for a practical filter, this means we have to either lower the pass-band relative to the ideal or increase the sample rate.\nIn the best case, the filter should have a stop-band frequency at half the sampling frequency with the order of the filter and pass-band frequency adjusted as needed.\nAlternatively the gain that defines the stop-band can be relaxed."
   },
   {
-    "objectID": "lecture-04-slides.html#zero-order-hold",
-    "href": "lecture-04-slides.html#zero-order-hold",
+    "objectID": "lecture-04-slides.html#anti-aliasing-design-example",
+    "href": "lecture-04-slides.html#anti-aliasing-design-example",
     "title": "ECE 4624: Meeting 4",
-    "section": "zero-order hold",
-    "text": "zero-order hold"
+    "section": "Anti-aliasing Design Example",
+    "text": "Anti-aliasing Design Example"
   },
   {
-    "objectID": "lecture-04-slides.html#anti-imaging-filter",
-    "href": "lecture-04-slides.html#anti-imaging-filter",
+    "objectID": "lecture-04-slides.html#sigma-delta-adc",
+    "href": "lecture-04-slides.html#sigma-delta-adc",
     "title": "ECE 4624: Meeting 4",
-    "section": "anti-imaging filter",
-    "text": "anti-imaging filter"
+    "section": "Sigma-Delta ADC",
+    "text": "Sigma-Delta ADC\nA different approach to ADC that is often used in high-precision integrated VLSI devices is to:\n\noversample the input signal by a factor \\(K\\)\nshape the quantization noise using a sigma-delta modulator\ndigital lowpass filter the result\ndecimate the digital signal by \\(K\\)"
+  },
+  {
+    "objectID": "lecture-04-slides.html#oversampling-with-analog-and-digital-filtering",
+    "href": "lecture-04-slides.html#oversampling-with-analog-and-digital-filtering",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Oversampling with analog and digital filtering",
+    "text": "Oversampling with analog and digital filtering\nRecall the quantization noise is added to the passband uniformly. If we increase the sampling rate by a factor \\(K\\) (oversample) then this noise is spread out over a larger bandwidth.\nWe can then digitally low-pass filter to remove some of this noise. This improves the signal-to-noise ratio by \\(10\\log_{10}(K)\\) dB.\nFor example if K=4, then we get a modest 6 dB improvement."
+  },
+  {
+    "objectID": "lecture-04-slides.html#sigma-delta-modulation",
+    "href": "lecture-04-slides.html#sigma-delta-modulation",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sigma-Delta Modulation",
+    "text": "Sigma-Delta Modulation\nWe can “shape” the noise power spectral density using a modulator to push more of it into the digital filter stop band."
+  },
+  {
+    "objectID": "lecture-04-slides.html#reconstruction-theory",
+    "href": "lecture-04-slides.html#reconstruction-theory",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Reconstruction Theory",
+    "text": "Reconstruction Theory\nGiven a DT signal \\(x[n]\\) and a sample spacing \\(T\\), we can define a corresponding CT signal as \\[x_p(t) = \\sum\\limits_{n = -\\infty}^{\\infty} x[n] \\, \\delta(t-nT)\\] the impulse train with each impulse weighted by the DT signal."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-7",
+    "href": "lecture-04-slides.html#section-7",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "CT signal reconstruction can be viewed from two perspectives.\nIn the time domain perspective, the CT signal \\(x(t)\\) corresponding to a DT signal \\(x[n]\\) can be viewed as interpolation, where the values of the CT signal are equal to the DT signal at intervals of the sample time, i.e. \\(x(nT) = x[n]\\), and in between the value of \\(x(t)\\) is interpolated."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-8",
+    "href": "lecture-04-slides.html#section-8",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "If the interpolation is of zero-order, the value at \\(x(nT)\\) is held constant until \\(x(nT+T)\\).\nThis is called a zero-order hold, and can mathematically modeled as convolution of the weighted impulse train with a pulse \\(p(t) = u(t) - u(t-T)\\) whose width is the sample time, called the interpolation function. \\[y(t) = p(t)*x_p(t)\\]"
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-9",
+    "href": "lecture-04-slides.html#section-9",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "The zero-order hold is not a very accurate representation of a band-limited signal. So, what interpolation function is optimal?\nTo answer this question we can turn to the alternative perspective on reconstruction, that of the frequency domain.\nRecall the sampled signal \\(x(nT)\\) in the frequency domain can be viewed as the summation of the Fourier transform of \\(x(t)\\), \\(X(j\\omega)\\), and periodic replicas or images centered at multiples of the sampling frequency.\nIf we assume the original signal was band-limited and sampled appropriately (using the Nyquist criteria), then if we ideal low-pass filter the sampled signal we will preserve the central portion of the Fourier spectrum that corresponds to the original signal, and chop off the images.\nFor this reason the reconstruction filter is also called an anti-imaging filter."
+  },
+  {
+    "objectID": "lecture-04-slides.html#section-10",
+    "href": "lecture-04-slides.html#section-10",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Recall filtering is multiplication the frequency domain and convolution in the time domain, so the optimal interpolation function corresponds to the impulse response of the ideal low-pass filter with cutoff frequency \\(\\omega_c = 2\\pi B\\), a sinc function.\n\\[h(t) = \\mathcal{F}^{-1} \\left\\{ H(j\\omega) \\right\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\omega_c}^{\\omega_c} e^{j\\omega t} \\; d\\omega = \\frac{1}{\\pi t}\\sin(\\omega_c t)\\]\nThus the ideal ideal interpolation function is the sinc function, and reconstruction is low-pass filtering of the weighted impulse train \\(x_p(t)\\)."
+  },
+  {
+    "objectID": "lecture-04-slides.html#practical-reconstruction",
+    "href": "lecture-04-slides.html#practical-reconstruction",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Practical Reconstruction",
+    "text": "Practical Reconstruction\nAs we have seen before we cannot physically represent the impulse train nor the ideal low-pass filter.\nThus practical reconstruction uses an approximation of the ideal reconstruction filter by a digital-to-analog converter (DAC), followed by a causal (and thus physically possible) low-pass filter."
+  },
+  {
+    "objectID": "lecture-04-slides.html#zero-order-hold-using-an-r-2r-ladder",
+    "href": "lecture-04-slides.html#zero-order-hold-using-an-r-2r-ladder",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Zero-order hold using an R-2R ladder",
+    "text": "Zero-order hold using an R-2R ladder\nA zero-order hold DAC can be implemented by a circuit called a resistor ladder. Consider a digital output with \\(N\\) bits and a reference voltage \\(V_{ref}\\) (for example an 8-bit output port on a micro-controller using CMOS 3.3v logic).\nIf this port is connected to a resistor network consisting of resistor values \\(R\\) and \\(2R\\) then depending on the bit pattern at the output port \\(V\\), the output of the buffer op-amp will be \\[V_o = V_{ref}\\frac{V}{2^N}\\]\nIf the port value is changed every sample time \\(T\\), then the resister ladder and buffer op-amp combine to implement a zero-order hold circuit."
+  },
+  {
+    "objectID": "lecture-04-slides.html#capacitive-dacs",
+    "href": "lecture-04-slides.html#capacitive-dacs",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Capacitive DACs",
+    "text": "Capacitive DACs\nResister ladders have a number of drawbacks that limit them to around 8-bit resolution\n\nrequires very accurate and closely matched resistor values that are hard to manufacture\na current flows through the resistor network, regardless of the output value = static power dissipation that increases with resolution\nintegrated (on-chip) matching and trimming of resistors is a complex and expensive process\n\nSwitched-capacitor DACs can use arrays of identical, unit-sized capacitors.\n\nall capacitors are identical so their relative matching is more precise and has less variation.\ncurrent flows only when charging/discharging = less power at idle\nprecise capacitors are easier and more cost-effective to manufacture in integrated devices than resistors\n\nMost SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision."
+  },
+  {
+    "objectID": "lecture-04-slides.html#anti-imaging-reconstruction-filter",
+    "href": "lecture-04-slides.html#anti-imaging-reconstruction-filter",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Anti-imaging (reconstruction) filter",
+    "text": "Anti-imaging (reconstruction) filter\nThe zero-order hold is followed by the reconstruction (anti-imaging) filter which low-pass filters the output and smooths-out the jumps from value to value and glitches during transitions.\nIn general the reconstruction filter is of a similar, or identical form to an anti-aliasing filter."
+  },
+  {
+    "objectID": "lecture-04-slides.html#sigma-delta-dac",
+    "href": "lecture-04-slides.html#sigma-delta-dac",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sigma-Delta DAC",
+    "text": "Sigma-Delta DAC\nThe Sigma-Delta ADC can effectively be reversed to get a Sigma-Delta DAC for more than 12 bits of accuracy."
+  },
+  {
+    "objectID": "lecture-04-slides.html#additional-references",
+    "href": "lecture-04-slides.html#additional-references",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Additional References",
+    "text": "Additional References\n\nUnderstanding SAR ADCs: Their Architecture and Comparison with Other ADCs Analog Devices Technical Article\nSigma-Delta ADCs and DACs, Analog Devices Application Note AN283"
   },
   {
     "objectID": "lecture-04-notes.html",
     "href": "lecture-04-notes.html",
     "title": "ECE 4624: Meeting 4",
     "section": "",
-    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is (mostly) a review of prerequisite material.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 23 and 24\n\nSampling converts from a CT signal \\(x(t)\\) to a digital (quantized DT) signal \\(x[n]\\) using a sample time \\(T\\).\nReconstruction converts from a DT signal \\(x[n]\\) to a CT signal \\(x(t)\\), interpolating between samples.\nIdeally a conversion from \\(x(t)\\) to \\(x[n]\\) and back again would result in identical signal (an all-pass system)."
   },
   {
     "objectID": "lecture-04-notes.html#section",
     "href": "lecture-04-notes.html#section",
     "title": "ECE 4624: Meeting 4",
     "section": "",
-    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is a review of prerequisite material.\nREADING: ?"
+    "text": "Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today’s lecture is (mostly) a review of prerequisite material.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 23 and 24\n\nSampling converts from a CT signal \\(x(t)\\) to a digital (quantized DT) signal \\(x[n]\\) using a sample time \\(T\\).\nReconstruction converts from a DT signal \\(x[n]\\) to a CT signal \\(x(t)\\), interpolating between samples.\nIdeally a conversion from \\(x(t)\\) to \\(x[n]\\) and back again would result in identical signal (an all-pass system)."
+  },
+  {
+    "objectID": "lecture-04-notes.html#sampling-theory",
+    "href": "lecture-04-notes.html#sampling-theory",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sampling Theory",
+    "text": "Sampling Theory\nThe process of sampling is to produce a DT signal \\(x[n]\\) from a CT signal \\(x(t)\\) by sampling time at regular intervals \\(T\\in \\mathbb{R}^+\\) called the sample-time, or equivalently sampling at a frequency of \\(\\tfrac{1}{T}\\) Hz or \\(\\tfrac{2\\pi}{T}\\) rad/s.\nMathematically this is simple to express in the time domain as \\(x[n] = x(nT)\\), however we seek a system that can perform this task.\nRecall the impulse train is the periodic signal \\[x_1(t) = \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(t-nT_0)\\] with period \\(T_0\\) and frequency \\(\\omega_0 = \\tfrac{2\\pi}{T_0}\\)."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-1",
+    "href": "lecture-04-notes.html#section-1",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "The exponential CT Fourier series of the impulse train is given by \\[x_1(t) = \\sum\\limits_{n=-\\infty}^{\\infty} a_n e^{j\\tfrac{2\\pi}{T_0}nt}\\] where the Fourier series coefficients are \\[a_n = \\frac{1}{T_0} \\int\\limits_{-\\frac{T_0}{2}}^{\\frac{T_0}{2}} \\delta(t) e^{-jn\\omega_0 t} \\; dt = \\frac{1}{T_0}\\] Now, lets take the Fourier Transform of the Fourier series representation \\[\\begin{align*}\nX_1(j\\omega) &= \\int\\limits_{-\\infty}^{\\infty} \\sum\\limits_{n=-\\infty}^{\\infty} \\frac{1}{T_0} e^{j\\tfrac{2\\pi}{T_0}nt}e^{j\\omega t}\\; dt\\\\\n&= \\frac{2\\pi}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(\\omega - \\omega_0 n)\n\\end{align*}\\] also an impulse train in the frequency domain."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-2",
+    "href": "lecture-04-notes.html#section-2",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Now suppose we have another signal \\(x_2(t)\\) and we multiply \\(x_1(t)\\) and \\(x_2(t)\\) to get a signal \\(y(t)\\). \\[y(t) = x_1(t) \\cdot x_2(t) = \\sum\\limits_{n=-\\infty}^{\\infty} x_2(t) \\delta(t-nT_0) = \\sum\\limits_{n=-\\infty}^{\\infty} x_2(nT_0) \\delta(t-nT_0)\\] Since \\(y(t)\\) is non-zero only at the locations of the delta functions, we can treat \\(y(nT_0) = x_2(nT_0)\\) as the DT signal \\(x_2[n]\\)."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-3",
+    "href": "lecture-04-notes.html#section-3",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Equivalently in the frequency domain the modulation theorem gives \\[y(t) = x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(j\\omega) * X_2(j\\omega) = Y(j\\omega)\\]\nThe convolution gives\n\\[\\begin{align*}\n  Y(j\\omega) &= \\frac{1}{2\\pi} X_1(j\\omega) * X_2(j\\omega)\\\\\n  &= \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty}  \\frac{2\\pi}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} \\delta(\\omega - \\omega^\\prime - \\omega_0 n) X_2(j\\omega^\\prime) \\; d\\omega^\\prime\\\\\n  &= \\frac{1}{T_0} \\sum\\limits_{n=-\\infty}^{\\infty} X_2(j(\\omega - n\\omega_0))\n\\end{align*}\\]\nThus the sampling process in the frequency domain causes periodic replication of the Fourier transform of the signal being sampled, \\(x_2(t)\\), which are sometimes called images. This signal \\(Y(j\\omega)\\) is periodic in \\(\\omega_0 = \\tfrac{2\\pi}{T_0}\\) radians per second and corresponds to the DT Fourier Transform of \\(x_2[n]  \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2\\left(e^{j\\omega}\\right)\\), which is periodic in \\(2\\pi\\) radians per sample time."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-4",
+    "href": "lecture-04-notes.html#section-4",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "To help us visualize this, suppose that the signal \\(x_2(t)  \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(j\\omega)\\) is band-limited to \\(B\\) Hz, that is \\(X_2(j\\omega) = 0\\) for all frequencies outside the band \\(-2\\pi B &lt; \\omega &lt; 2\\pi B\\)."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-5",
+    "href": "lecture-04-notes.html#section-5",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "After sampling (\\(y(t) = x_1(t)\\cdot x_2(t)\\)) and assuming \\(\\omega_0 &gt; 4\\pi B\\) the spectrum of the sampled signal is:"
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-6",
+    "href": "lecture-04-notes.html#section-6",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "If instead \\(\\omega_0 &lt; 4\\pi B\\) the images overlap and we get aliasing, where high frequency content gets added to the lower frequency content."
+  },
+  {
+    "objectID": "lecture-04-notes.html#nyquist-sampling",
+    "href": "lecture-04-notes.html#nyquist-sampling",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Nyquist Sampling",
+    "text": "Nyquist Sampling\nTo reconstruct the signal \\(x_2[n]\\) back to \\(x_2(t)\\) we need to ensure that \\(\\omega_0 &gt; 4\\pi B\\) rad/s or equivalently \\(f_0 &gt; 2 B\\) Hz, which requires the sample time \\(T_0 &lt; \\tfrac{1}{2B}\\) seconds.\nThis is called the Nyquist sample rate/frequency."
+  },
+  {
+    "objectID": "lecture-04-notes.html#practical-sampling",
+    "href": "lecture-04-notes.html#practical-sampling",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Practical Sampling",
+    "text": "Practical Sampling\nSampling in practice requires addressing three issues.\n\nWe cannot generate the impulse train, but can only approximate it.\nDigital signals must have a fixed bit width so we have to convert the real signal value to a quantized one.\nThe quantized value then needs to be coded into a bit representation (e.g. signed twos-complement)\nSince in general we have no control over the input signal, we need to ensure the signal is approximately band-limited before sampling."
   },
   {
     "objectID": "lecture-04-notes.html#sample-and-hold",
     "href": "lecture-04-notes.html#sample-and-hold",
     "title": "ECE 4624: Meeting 4",
     "section": "Sample and Hold",
-    "text": "Sample and Hold"
+    "text": "Sample and Hold\nSampling is typically accomplished using a circuit called a sample-and-hold or track-and-hold"
   },
   {
     "objectID": "lecture-04-notes.html#quantization",
     "href": "lecture-04-notes.html#quantization",
     "title": "ECE 4624: Meeting 4",
     "section": "Quantization",
-    "text": "Quantization"
+    "text": "Quantization\nDuring the hold phase we need to quantize the signal into \\(N\\) bits.\n\nThe quantizer is a nonlinear system \\[\n\\hat{x}[n] = Q\\left\\{x[n]\\right\\}\n\\]\nThe input range (e.g. from 0 to \\(V_{\\text{ref}}\\)) is divided into \\(2^N\\) discrete levels.\nThe LSB weight \\(q\\) is the smallest possible change in analog input that results in a change in the digital output – i.e., the resolution of the ADC.\n\\[\nq = \\frac{V_{\\text{ref}}}{2^N}\n\\]\nFor example, if the ADC has a reference voltage of 1 V and 12 bits of resolution, then:\n\\[\nq = \\frac{1}{2^{12}} = \\frac{1}{4096} \\approx 244 \\, \\mu\\text{V}\n\\]"
+  },
+  {
+    "objectID": "lecture-04-notes.html#quantization-noise",
+    "href": "lecture-04-notes.html#quantization-noise",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization Noise",
+    "text": "Quantization Noise\nIn the simplest model, quantization adds noise uniformly distributed over the passband\n\ndefine the error as \\[\n    e[n] = \\hat{x}[n] - x[n]\n\\]\nthen \\[\n\\hat{x}[n] = x[n] + e[n]\n\\]\n\\(e\\) is assumed to be sampled from a stationary random process\n\\(e\\) is assumed to be uncorrelated with \\(x[n]\\)\n\\(e[n]\\) is assumed to be uncorrelated to \\(e[n+m]\\) for any \\(m\\), thus a white noise process\nthe probability distribution of \\(e\\) is assumed to be uniform over the sampling range\n\nThere are cases where this model breaks down but it often good enough. In this model the RMS value of the noise is \\(q/\\sqrt{12}\\), where \\(q\\) is weight of the LSB."
+  },
+  {
+    "objectID": "lecture-04-notes.html#quantization-using-successive-approximation",
+    "href": "lecture-04-notes.html#quantization-using-successive-approximation",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Quantization using successive approximation",
+    "text": "Quantization using successive approximation\nQuantization can be thought of as a binary search algorithm:\nInitialize all bits of \\(\\hat{x}\\) to zero.\nLet bit \\(b_i\\) of \\(\\hat{x}\\) be the MSB. Given a real value \\(x\\).\n\nSet \\(b_i\\) to one\nIf \\(x &lt; \\hat{x}\\) toggle the bit to zero\nIf no more bits, stop, else let \\(i\\rightarrow i+1\\)\n\nThis is implemented using an FSM.\nThe speed of conversion is limited by\n\nthe settling time of the DAC\nthe settling time of the Comparator\nthe logic overhead, \\(O(N)\\) state transitions"
   },
   {
     "objectID": "lecture-04-notes.html#anti-aliasing",
     "href": "lecture-04-notes.html#anti-aliasing",
     "title": "ECE 4624: Meeting 4",
     "section": "Anti-aliasing",
-    "text": "Anti-aliasing"
+    "text": "Anti-aliasing\nBefore the sample and hold we need to include a filter to limit the bandwidth. This can be accomplished by a CT low-pass filter called an anti-aliasing filter whose cutoff frequency in the ideal case is \\(\\omega_c = 2\\pi B\\).\nAs we discussed last time ideal filters cannot be implemented, thus we specify the anti-aliasing filter as a pass-band gain/frequency and a stop-band gain/frequency.\nSince the transition band is non-zero for a practical filter, this means we have to either lower the pass-band relative to the ideal or increase the sample rate.\nIn the best case, the filter should have a stop-band frequency at half the sampling frequency with the order of the filter and pass-band frequency adjusted as needed.\nAlternatively the gain that defines the stop-band can be relaxed."
   },
   {
-    "objectID": "lecture-04-notes.html#zero-order-hold",
-    "href": "lecture-04-notes.html#zero-order-hold",
+    "objectID": "lecture-04-notes.html#anti-aliasing-design-example",
+    "href": "lecture-04-notes.html#anti-aliasing-design-example",
     "title": "ECE 4624: Meeting 4",
-    "section": "zero-order hold",
-    "text": "zero-order hold"
+    "section": "Anti-aliasing Design Example",
+    "text": "Anti-aliasing Design Example"
   },
   {
-    "objectID": "lecture-04-notes.html#anti-imaging-filter",
-    "href": "lecture-04-notes.html#anti-imaging-filter",
+    "objectID": "lecture-04-notes.html#sigma-delta-adc",
+    "href": "lecture-04-notes.html#sigma-delta-adc",
     "title": "ECE 4624: Meeting 4",
-    "section": "anti-imaging filter",
-    "text": "anti-imaging filter"
+    "section": "Sigma-Delta ADC",
+    "text": "Sigma-Delta ADC\nA different approach to ADC that is often used in high-precision integrated VLSI devices is to:\n\noversample the input signal by a factor \\(K\\)\nshape the quantization noise using a sigma-delta modulator\ndigital lowpass filter the result\ndecimate the digital signal by \\(K\\)"
+  },
+  {
+    "objectID": "lecture-04-notes.html#oversampling-with-analog-and-digital-filtering",
+    "href": "lecture-04-notes.html#oversampling-with-analog-and-digital-filtering",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Oversampling with analog and digital filtering",
+    "text": "Oversampling with analog and digital filtering\nRecall the quantization noise is added to the passband uniformly. If we increase the sampling rate by a factor \\(K\\) (oversample) then this noise is spread out over a larger bandwidth.\nWe can then digitally low-pass filter to remove some of this noise. This improves the signal-to-noise ratio by \\(10\\log_{10}(K)\\) dB.\nFor example if K=4, then we get a modest 6 dB improvement."
+  },
+  {
+    "objectID": "lecture-04-notes.html#sigma-delta-modulation",
+    "href": "lecture-04-notes.html#sigma-delta-modulation",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sigma-Delta Modulation",
+    "text": "Sigma-Delta Modulation\nWe can “shape” the noise power spectral density using a modulator to push more of it into the digital filter stop band."
+  },
+  {
+    "objectID": "lecture-04-notes.html#reconstruction-theory",
+    "href": "lecture-04-notes.html#reconstruction-theory",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Reconstruction Theory",
+    "text": "Reconstruction Theory\nGiven a DT signal \\(x[n]\\) and a sample spacing \\(T\\), we can define a corresponding CT signal as \\[x_p(t) = \\sum\\limits_{n = -\\infty}^{\\infty} x[n] \\, \\delta(t-nT)\\] the impulse train with each impulse weighted by the DT signal."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-7",
+    "href": "lecture-04-notes.html#section-7",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "CT signal reconstruction can be viewed from two perspectives.\nIn the time domain perspective, the CT signal \\(x(t)\\) corresponding to a DT signal \\(x[n]\\) can be viewed as interpolation, where the values of the CT signal are equal to the DT signal at intervals of the sample time, i.e. \\(x(nT) = x[n]\\), and in between the value of \\(x(t)\\) is interpolated."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-8",
+    "href": "lecture-04-notes.html#section-8",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "If the interpolation is of zero-order, the value at \\(x(nT)\\) is held constant until \\(x(nT+T)\\).\nThis is called a zero-order hold, and can mathematically modeled as convolution of the weighted impulse train with a pulse \\(p(t) = u(t) - u(t-T)\\) whose width is the sample time, called the interpolation function. \\[y(t) = p(t)*x_p(t)\\]"
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-9",
+    "href": "lecture-04-notes.html#section-9",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "The zero-order hold is not a very accurate representation of a band-limited signal. So, what interpolation function is optimal?\nTo answer this question we can turn to the alternative perspective on reconstruction, that of the frequency domain.\nRecall the sampled signal \\(x(nT)\\) in the frequency domain can be viewed as the summation of the Fourier transform of \\(x(t)\\), \\(X(j\\omega)\\), and periodic replicas or images centered at multiples of the sampling frequency.\nIf we assume the original signal was band-limited and sampled appropriately (using the Nyquist criteria), then if we ideal low-pass filter the sampled signal we will preserve the central portion of the Fourier spectrum that corresponds to the original signal, and chop off the images.\nFor this reason the reconstruction filter is also called an anti-imaging filter."
+  },
+  {
+    "objectID": "lecture-04-notes.html#section-10",
+    "href": "lecture-04-notes.html#section-10",
+    "title": "ECE 4624: Meeting 4",
+    "section": "",
+    "text": "Recall filtering is multiplication the frequency domain and convolution in the time domain, so the optimal interpolation function corresponds to the impulse response of the ideal low-pass filter with cutoff frequency \\(\\omega_c = 2\\pi B\\), a sinc function.\n\\[h(t) = \\mathcal{F}^{-1} \\left\\{ H(j\\omega) \\right\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\omega_c}^{\\omega_c} e^{j\\omega t} \\; d\\omega = \\frac{1}{\\pi t}\\sin(\\omega_c t)\\]\nThus the ideal ideal interpolation function is the sinc function, and reconstruction is low-pass filtering of the weighted impulse train \\(x_p(t)\\)."
+  },
+  {
+    "objectID": "lecture-04-notes.html#practical-reconstruction",
+    "href": "lecture-04-notes.html#practical-reconstruction",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Practical Reconstruction",
+    "text": "Practical Reconstruction\nAs we have seen before we cannot physically represent the impulse train nor the ideal low-pass filter.\nThus practical reconstruction uses an approximation of the ideal reconstruction filter by a digital-to-analog converter (DAC), followed by a causal (and thus physically possible) low-pass filter."
+  },
+  {
+    "objectID": "lecture-04-notes.html#zero-order-hold-using-an-r-2r-ladder",
+    "href": "lecture-04-notes.html#zero-order-hold-using-an-r-2r-ladder",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Zero-order hold using an R-2R ladder",
+    "text": "Zero-order hold using an R-2R ladder\nA zero-order hold DAC can be implemented by a circuit called a resistor ladder. Consider a digital output with \\(N\\) bits and a reference voltage \\(V_{ref}\\) (for example an 8-bit output port on a micro-controller using CMOS 3.3v logic).\nIf this port is connected to a resistor network consisting of resistor values \\(R\\) and \\(2R\\) then depending on the bit pattern at the output port \\(V\\), the output of the buffer op-amp will be \\[V_o = V_{ref}\\frac{V}{2^N}\\]\nIf the port value is changed every sample time \\(T\\), then the resister ladder and buffer op-amp combine to implement a zero-order hold circuit."
+  },
+  {
+    "objectID": "lecture-04-notes.html#capacitive-dacs",
+    "href": "lecture-04-notes.html#capacitive-dacs",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Capacitive DACs",
+    "text": "Capacitive DACs\nResister ladders have a number of drawbacks that limit them to around 8-bit resolution\n\nrequires very accurate and closely matched resistor values that are hard to manufacture\na current flows through the resistor network, regardless of the output value = static power dissipation that increases with resolution\nintegrated (on-chip) matching and trimming of resistors is a complex and expensive process\n\nSwitched-capacitor DACs can use arrays of identical, unit-sized capacitors.\n\nall capacitors are identical so their relative matching is more precise and has less variation.\ncurrent flows only when charging/discharging = less power at idle\nprecise capacitors are easier and more cost-effective to manufacture in integrated devices than resistors\n\nMost SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision."
+  },
+  {
+    "objectID": "lecture-04-notes.html#anti-imaging-reconstruction-filter",
+    "href": "lecture-04-notes.html#anti-imaging-reconstruction-filter",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Anti-imaging (reconstruction) filter",
+    "text": "Anti-imaging (reconstruction) filter\nThe zero-order hold is followed by the reconstruction (anti-imaging) filter which low-pass filters the output and smooths-out the jumps from value to value and glitches during transitions.\nIn general the reconstruction filter is of a similar, or identical form to an anti-aliasing filter."
+  },
+  {
+    "objectID": "lecture-04-notes.html#sigma-delta-dac",
+    "href": "lecture-04-notes.html#sigma-delta-dac",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Sigma-Delta DAC",
+    "text": "Sigma-Delta DAC\nThe Sigma-Delta ADC can effectively be reversed to get a Sigma-Delta DAC for more than 12 bits of accuracy."
+  },
+  {
+    "objectID": "lecture-04-notes.html#additional-references",
+    "href": "lecture-04-notes.html#additional-references",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Additional References",
+    "text": "Additional References\n\nUnderstanding SAR ADCs: Their Architecture and Comparison with Other ADCs Analog Devices Technical Article\nSigma-Delta ADCs and DACs, Analog Devices Application Note AN283"
   },
   {
     "objectID": "lecture-12-slides.html#section",
@@ -1362,7 +1726,7 @@
     "href": "lecture-03-notes.html#fourier-series-synthesis-and-analysis-equations",
     "title": "ECE 4624: Meeting 3",
     "section": "Fourier Series: Synthesis and Analysis Equations",
-    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[\\boxed{x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.}\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[\\boxed{a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt}\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
   },
   {
     "objectID": "lecture-03-notes.html#fourier-series-spectrum",
@@ -1390,7 +1754,7 @@
     "href": "lecture-03-notes.html#section-2",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "\\[\\begin{aligned}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\underbrace{\\sin(k\\pi t)}_{\\text{always = 0}} \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt\\; \\mbox{ using an integration table }\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{aligned}\\]"
+    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
   },
   {
     "objectID": "lecture-03-notes.html#section-3",
@@ -1425,14 +1789,14 @@
     "href": "lecture-03-notes.html#section-5",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[\\boxed{X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
   },
   {
     "objectID": "lecture-03-notes.html#section-6",
     "href": "lecture-03-notes.html#section-6",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[\\boxed{x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}\\]"
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
   },
   {
     "objectID": "lecture-03-notes.html#section-7",
@@ -1453,14 +1817,14 @@
     "href": "lecture-03-notes.html#example-fourier-transform-of-the-impulse.",
     "title": "ECE 4624: Meeting 3",
     "section": "Example: Fourier Transform of the impulse.",
-    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{aligned}\\]"
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
   },
   {
     "objectID": "lecture-03-notes.html#example-fourier-transform-of-the-causal-real-exponential.",
     "href": "lecture-03-notes.html#example-fourier-transform-of-the-causal-real-exponential.",
     "title": "ECE 4624: Meeting 3",
     "section": "Example: Fourier transform of the causal real exponential.",
-    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{aligned}\\]\nThis converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
   },
   {
     "objectID": "lecture-03-notes.html#existence-of-the-ct-fourier-transform",
@@ -1474,7 +1838,7 @@
     "href": "lecture-03-notes.html#properties-of-ctft",
     "title": "ECE 4624: Meeting 3",
     "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the Eigenvalue or frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the Eigenvalues/Frequency Response from a stable differential equation."
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
   },
   {
     "objectID": "lecture-03-notes.html#properties-of-ctft-1",
@@ -1530,7 +1894,7 @@
     "href": "lecture-03-notes.html#section-9",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j \\omega) X(j \\omega) \\, e^{j \\omega t}\\; d\\omega = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
   },
   {
     "objectID": "lecture-03-notes.html#bode-plots",
@@ -1544,7 +1908,7 @@
     "href": "lecture-03-notes.html#example",
     "title": "ECE 4624: Meeting 3",
     "section": "Example",
-    "text": "Example\nConsider a frequency response given by \\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]\n\nimport scipy.signal as signal\nimport matplotlib.pyplot as plt\n\nnum = [20000]\nden = [1,300,20000]\n\nsystem = signal.TransferFunction(num, den)\n\n# Calculate Bode data\nw, mag, phase = signal.bode(system)\n\n# Plotting\nplt.figure()\nplt.subplot(2, 1, 1)\nplt.semilogx(w, mag)  # Magnitude plot\nplt.title('Bode Plot')\nplt.ylabel('Magnitude (dB)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.subplot(2, 1, 2)\nplt.semilogx(w, phase*3.1459/180)  # Phase plot\nplt.xlabel('Frequency (rad/s)')\nplt.ylabel('Phase (rad)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.tight_layout()\nplt.show()"
+    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
   },
   {
     "objectID": "lecture-03-notes.html#filters-in-ct",
@@ -1579,7 +1943,7 @@
     "href": "lecture-03-notes.html#lowpass-filter-specification-1",
     "title": "ECE 4624: Meeting 3",
     "section": "Lowpass Filter Specification",
-    "text": "Lowpass Filter Specification\n\nimport scipy.signal as signal\nimport matplotlib.pyplot as plt\n\nnum = [0.0, 0.0, 0.0, 0.2506]\nden = [1.0, 0.5972, 0.9283, 0.2506]\n\nsystem = signal.TransferFunction(num, den)\n\n# Calculate Bode data\nw, mag, phase = signal.bode(system)\n\nplt.figure()\nplt.subplot(2, 1, 1)\nplt.semilogx(w, mag)\nplt.title('Bode Plot for a Prototype Lowpass Filter')\nplt.ylabel('Magnitude (dB)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.subplot(2, 1, 2)\nplt.semilogx(w, phase*3.1459/180)\nplt.xlabel('Frequency (rad/s)')\nplt.ylabel('Phase (rad)')\nplt.grid(True, which=\"both\", ls=\"-\")\n\nplt.tight_layout()\nplt.show()\n\n/home/clwyatt/.local/lib/python3.10/site-packages/scipy/signal/_ltisys.py:599: BadCoefficients: Badly conditioned filter coefficients (numerator): the results may be meaningless\n  self.num, self.den = normalize(*system)"
+    "text": "Lowpass Filter Specification\n\n\n/home/clwyatt/.local/lib/python3.10/site-packages/scipy/signal/_ltisys.py:599: BadCoefficients: Badly conditioned filter coefficients (numerator): the results may be meaningless\n  self.num, self.den = normalize(*system)"
   },
   {
     "objectID": "lecture-03-slides.html#section",
@@ -1593,7 +1957,7 @@
     "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
     "title": "ECE 4624: Meeting 3",
     "section": "Fourier Series: Synthesis and Analysis Equations",
-    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[\\boxed{x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.}\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[\\boxed{a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt}\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
   },
   {
     "objectID": "lecture-03-slides.html#fourier-series-spectrum",
@@ -1621,7 +1985,7 @@
     "href": "lecture-03-slides.html#section-2",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "\\[\\begin{aligned}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\underbrace{\\sin(k\\pi t)}_{\\text{always = 0}} \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt\\; \\mbox{ using an integration table }\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{aligned}\\]"
+    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
   },
   {
     "objectID": "lecture-03-slides.html#section-3",
@@ -1656,14 +2020,14 @@
     "href": "lecture-03-slides.html#section-5",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[\\boxed{X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
   },
   {
     "objectID": "lecture-03-slides.html#section-6",
     "href": "lecture-03-slides.html#section-6",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[\\boxed{x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}\\]"
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
   },
   {
     "objectID": "lecture-03-slides.html#section-7",
@@ -1684,14 +2048,14 @@
     "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
     "title": "ECE 4624: Meeting 3",
     "section": "Example: Fourier Transform of the impulse.",
-    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{aligned}\\]"
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
   },
   {
     "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
     "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
     "title": "ECE 4624: Meeting 3",
     "section": "Example: Fourier transform of the causal real exponential.",
-    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is\n\\[\\begin{aligned}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{aligned}\\]\nThis converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
   },
   {
     "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
@@ -1705,7 +2069,7 @@
     "href": "lecture-03-slides.html#properties-of-ctft",
     "title": "ECE 4624: Meeting 3",
     "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the Eigenvalue or frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the Eigenvalues/Frequency Response from a stable differential equation."
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
   },
   {
     "objectID": "lecture-03-slides.html#properties-of-ctft-1",
@@ -1761,7 +2125,7 @@
     "href": "lecture-03-slides.html#section-9",
     "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j \\omega) X(j \\omega) \\, e^{j \\omega t}\\; d\\omega = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
   },
   {
     "objectID": "lecture-03-slides.html#bode-plots",
@@ -1775,7 +2139,7 @@
     "href": "lecture-03-slides.html#example",
     "title": "ECE 4624: Meeting 3",
     "section": "Example",
-    "text": "Example\nConsider a frequency response given by \\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
+    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
   },
   {
     "objectID": "lecture-03-slides.html#filters-in-ct",
