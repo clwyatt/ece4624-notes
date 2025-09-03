@@ -1,51 +1,380 @@
 ---
 title: "ECE 4624: Meeting 4"
 subtitle: "Sampling and Reconstruction"
-date: last-modified
+date: 2025-9-8
 author:
   - name: Chris Wyatt
     email: clwyatt@vt.edu
     affiliations: ECE@Virginia Tech
-    
 format: 
   revealjs:
     self-contained: false
     slide-number: true
+    default-image-extension: svg
     theme: 
       - clw-slide-style.scss
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
     
   html:
+    default-image-extension: svg
     output-file: lecture-04-notes.html
     toc: false
-    
+    echo: false
+    format-links: false
+
+  beamer:
+    default-image-extension: pdf
+    output-file: lecture-04-slides.pdf
+    fontsize: 8pt
+
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"   
 ---
 
-## 
+##  {.t}
 
-Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today's lecture is a review of prerequisite material.
+Today we review how to convert CT signals to DT Signals and vice-versa. This is an important step in DSP as in many applications the system is in practice acting on a CT signal. Note again, today's lecture is (mostly) a review of prerequisite material.
 
 
-READING: ?
+READING:
 
-# Sampling Theory
+* PM 4.1.4 and Chapter 6
+* 2714 Supplementary Notes 23 and 24
 
-# Practical Sampling
+Sampling converts from a CT signal $x(t)$ to a digital (quantized DT) signal $x[n]$ using a sample time $T$.
 
-## Sample and Hold
+Reconstruction converts from a DT signal $x[n]$ to a CT signal $x(t)$, interpolating between samples.
 
-## Quantization
+Ideally a conversion from $x(t)$ to $x[n]$ and back again would result in identical signal (an all-pass system).
 
-## Anti-aliasing
+## Sampling Theory  {.t}
 
-# Reconstruction Theory
+The process of sampling is to produce a DT signal $x[n]$ from a CT
+signal $x(t)$ by sampling time at regular intervals $T\in \mathbb{R}^+$
+called the *sample-time*, or equivalently sampling at a frequency of
+$\tfrac{1}{T}$ Hz or $\tfrac{2\pi}{T}$ rad/s.
 
-# Practical Reconstruction
+Mathematically this is
+simple to express in the time domain as $x[n] = x(nT)$, however we seek
+a system that can perform this task.
 
-## zero-order hold
+Recall the impulse train is the periodic signal
+$$x_1(t) = \sum\limits_{n=-\infty}^{\infty} \delta(t-nT_0)$$ with period
+$T_0$ and frequency $\omega_0 = \tfrac{2\pi}{T_0}$.
 
-## anti-imaging filter
+##  {.t}
 
+The exponential CT
+Fourier series of the impulse train is given by
+$$x_1(t) = \sum\limits_{n=-\infty}^{\infty} a_n e^{j\tfrac{2\pi}{T_0}nt}$$
+where the Fourier series coefficients are
+$$a_n = \frac{1}{T_0} \int\limits_{-\frac{T_0}{2}}^{\frac{T_0}{2}} \delta(t) e^{-jn\omega_0 t} \; dt = \frac{1}{T_0}$$
+Now, lets take the Fourier Transform of the Fourier series
+representation \begin{align*}
+X_1(j\omega) &= \int\limits_{-\infty}^{\infty} \sum\limits_{n=-\infty}^{\infty} \frac{1}{T_0} e^{j\tfrac{2\pi}{T_0}nt}e^{j\omega t}\; dt\\
+&= \frac{2\pi}{T_0} \sum\limits_{n=-\infty}^{\infty} \delta(\omega - \omega_0 n)
+\end{align*} also an impulse train in the frequency domain.
+
+## {.t}
+
+Now suppose we have another signal $x_2(t)$ and we multiply $x_1(t)$ and
+$x_2(t)$ to get a signal $y(t)$.
+$$y(t) = x_1(t) \cdot x_2(t) = \sum\limits_{n=-\infty}^{\infty} x_2(t) \delta(t-nT_0) = \sum\limits_{n=-\infty}^{\infty} x_2(nT_0) \delta(t-nT_0)$$
+Since $y(t)$ is non-zero only at the locations of the delta functions,
+we can treat $y(nT_0) = x_2(nT_0)$ as the DT signal $x_2[n]$.
+
+## {.t}
+
+Equivalently in the frequency domain the modulation theorem gives
+$$y(t) = x_1(t) \cdot x_2(t) \stackrel{\mathcal{F}}{\longleftrightarrow} \frac{1}{2\pi} X_1(j\omega) * X_2(j\omega) = Y(j\omega)$$
+
+The convolution gives
+
+\begin{align*}
+  Y(j\omega) &= \frac{1}{2\pi} X_1(j\omega) * X_2(j\omega)\\
+  &= \frac{1}{2\pi} \int\limits_{-\infty}^{\infty}  \frac{2\pi}{T_0} \sum\limits_{n=-\infty}^{\infty} \delta(\omega - \omega^\prime - \omega_0 n) X_2(j\omega^\prime) \; d\omega^\prime\\
+  &= \frac{1}{T_0} \sum\limits_{n=-\infty}^{\infty} X_2(j(\omega - n\omega_0)) 
+\end{align*}
+
+Thus the sampling process in the frequency domain causes
+periodic replication of the Fourier transform of the signal being
+sampled, $x_2(t)$, which are sometimes called *images*. This signal
+$Y(j\omega)$ is periodic in $\omega_0 = \tfrac{2\pi}{T_0}$ *radians per
+second* and corresponds to the DT Fourier Transform of
+$x_2[n]  \stackrel{\mathcal{F}}{\longleftrightarrow} X_2\left(e^{j\omega}\right)$,
+which is periodic in $2\pi$ *radians per sample time*.
+
+## {.t}
+
+To help us visualize this, suppose that the signal
+$x_2(t)  \stackrel{\mathcal{F}}{\longleftrightarrow} X_2(j\omega)$ is
+*band-limited* to $B$ Hz, that is $X_2(j\omega) = 0$ for all frequencies
+outside the band $-2\pi B < \omega < 2\pi B$.
+
+## {.t}
+
+After sampling ($y(t) = x_1(t)\cdot x_2(t)$) and assuming
+$\omega_0 > 4\pi B$ the spectrum of the sampled signal is:
+
+## {.t}
+
+If instead $\omega_0 < 4\pi B$ the images overlap and we get *aliasing*,
+where high frequency content gets added to the lower frequency content.
+
+## Nyquist Sampling {.t}
+
+To reconstruct the signal $x_2[n]$ back to
+$x_2(t)$ we need to ensure that $\omega_0 > 4\pi B$ rad/s or
+equivalently $f_0 > 2 B$ Hz, which requires the sample time
+$T_0 < \tfrac{1}{2B}$ seconds.
+
+This is called the *Nyquist* sample rate/frequency.
+
+## Practical Sampling {.t}
+
+Sampling in practice requires addressing three issues.
+
+1. We cannot generate the impulse train, but can only approximate it.
+2. Digital signals must have a fixed bit width so we have to convert the real
+signal value to a *quantized* one.
+3. The quantized value then needs to be coded into a bit representation (e.g. signed twos-complement)
+4. Since in general we have no control over the input signal, we need to ensure the signal is
+approximately band-limited before sampling.
+
+## Sample and Hold {.t}
+
+Sampling is typically accomplished using a circuit called a
+*sample-and-hold* or *track-and-hold*
+
+## Quantization {.t}
+
+During the hold phase we need to *quantize* the signal into $N$ bits.
+
+* The quantizer is a nonlinear system
+  $$
+  \hat{x}[n] = Q\left\{x[n]\right\}
+  $$
+* The input range (e.g. from 0 to $V_{\text{ref}}$) is divided into $2^N$ discrete levels.
+* The LSB *weight* $q$ is the smallest possible change in analog input that results in a change in the digital output -- i.e., the resolution of the ADC.
+  
+  $$
+  q = \frac{V_{\text{ref}}}{2^N}
+  $$
+
+- For example, if the ADC has a reference voltage of 1 V and 12 bits of resolution, then:
+
+  $$
+  q = \frac{1}{2^{12}} = \frac{1}{4096} \approx 244 \, \mu\text{V}
+  $$
+
+
+## Quantization Noise {.t}
+
+In the simplest model, quantization adds *noise* uniformly distributed over the passband 
+
+* define the error as
+  $$
+	  e[n] = \hat{x}[n] - x[n]
+  $$
+* then 
+  $$
+  \hat{x}[n] = x[n] + e[n]
+  $$
+* $e$ is assumed to be sampled from a stationary random process
+* $e$ is assumed to be uncorrelated with $x[n]$
+* $e[n]$ is assumed to be uncorrelated to $e[n+m]$ for any $m$, thus a white noise process
+* the probability distribution of $e$ is assumed to be uniform over the sampling range
+
+There are cases where this model breaks down but it often good enough. In this model the RMS value of the noise is $q/\sqrt{12}$, where $q$ is weight of the LSB.
+
+## Quantization using successive approximation {.t}
+
+Quantization can be thought of as a binary search algorithm: 
+
+Initialize all bits of $\hat{x}$ to zero.
+
+Let bit $b_i$ of $\hat{x}$ be the MSB. Given a real value $x$.
+
+1. Set $b_i$ to one 
+2. If $x < \hat{x}$ toggle the bit to zero
+3. If no more bits, stop, else let $i\rightarrow i+1$
+
+This is implemented using an FSM.
+
+The speed of conversion is limited by
+
+* the settling time of the DAC
+* the settling time of the Comparator
+* the logic overhead, $O(N)$ state transitions
+
+## Anti-aliasing {.t}
+
+Before the sample and hold we need to include a filter to limit the
+bandwidth. This can be accomplished by a CT low-pass filter called an
+*anti-aliasing* filter whose cutoff frequency in the ideal case is
+$\omega_c = 2\pi B$.
+
+As we discussed last time ideal filters cannot be
+implemented, thus we specify the anti-aliasing filter as a pass-band
+gain/frequency and a stop-band gain/frequency.
+
+Since the transition band
+is non-zero for a practical filter, this means we have to either lower
+the pass-band relative to the ideal or increase the sample rate.
+
+In the best case, the filter should have a stop-band frequency at half the
+sampling frequency with the order of the filter and pass-band frequency
+adjusted as needed.
+
+Alternatively the gain that defines the stop-band can be relaxed.
+
+## Anti-aliasing Design Example
+
+
+## Sigma-Delta ADC {.t}
+
+A different approach to ADC that is often used in high-precision integrated VLSI devices is to:
+
+1. oversample the input signal by a factor $K$
+2. shape the quantization noise using a sigma-delta modulator
+3. digital lowpass filter the result
+4. decimate the digital signal by $K$
+
+## Oversampling with analog and digital filtering {.t}
+
+Recall the quantization noise is added to the passband uniformly. If we increase the sampling rate by a factor $K$ (oversample) then this noise is spread out over a larger bandwidth.
+
+We can then digitally low-pass filter to remove some of this noise. This improves the signal-to-noise ratio by $10\log_{10}(K)$ dB.
+
+For example if K=4, then we get a modest 6 dB improvement.
+
+
+
+## Sigma-Delta Modulation {.t}
+
+We can "shape" the noise power spectral density using a modulator to push more of it into the digital filter stop band.
+
+## Reconstruction Theory  {.t}
+
+Given a DT signal $x[n]$ and a sample spacing $T$, we can define a
+corresponding CT signal as
+$$x_p(t) = \sum\limits_{n = -\infty}^{\infty} x[n] \, \delta(t-nT)$$ the
+impulse train with each impulse weighted by the DT signal.
+
+##  {.t}
+
+CT signal reconstruction can be viewed from two perspectives.
+
+In the time domain perspective, the CT signal
+$x(t)$ corresponding to a DT signal $x[n]$ can be viewed as
+*interpolation*, where the values of the CT signal are equal to the DT
+signal at intervals of the sample time, i.e. $x(nT) = x[n]$, and in
+between the value of $x(t)$ is interpolated.
+
+## {.t}
+
+If the interpolation is of
+zero-order, the value at $x(nT)$ is held constant until $x(nT+T)$.
+
+This
+is called a *zero-order hold*, and can mathematically modeled as
+convolution of the weighted impulse train with a pulse
+$p(t) = u(t) - u(t-T)$ whose width is the sample time, called the
+interpolation function. $$y(t) = p(t)*x_p(t)$$
+
+## {.t}
+
+The zero-order hold is not a very accurate representation of a
+band-limited signal. So, what interpolation function is optimal?
+
+To answer this question we can turn to the alternative perspective on
+reconstruction, that of the frequency domain.
+
+Recall the sampled signal
+$x(nT)$ in the frequency domain can be viewed as the summation of the
+Fourier transform of $x(t)$, $X(j\omega)$, and periodic replicas or
+images centered at multiples of the sampling frequency.
+
+If we assume the
+original signal was band-limited and sampled appropriately (using the
+Nyquist criteria), then if we ideal low-pass filter the sampled signal
+we will preserve the central portion of the Fourier spectrum that
+corresponds to the original signal, and chop off the images.
+
+For this
+reason the reconstruction filter is also called an anti-imaging filter.
+
+## {.t}
+
+Recall filtering is multiplication the frequency domain and convolution
+in the time domain, so the optimal interpolation function corresponds to
+the impulse response of the ideal low-pass filter with cutoff frequency
+$\omega_c = 2\pi B$, a sinc function.
+
+$$h(t) = \mathcal{F}^{-1} \left\{ H(j\omega) \right\} = \frac{1}{2\pi} \int\limits_{-\omega_c}^{\omega_c} e^{j\omega t} \; d\omega = \frac{1}{\pi t}\sin(\omega_c t)$$
+
+Thus the ideal ideal interpolation function is the sinc function, and
+reconstruction is low-pass filtering of the weighted impulse train
+$x_p(t)$.
+
+## Practical Reconstruction {.t}
+
+As we have seen before we cannot physically represent the impulse train
+nor the ideal low-pass filter.
+
+Thus practical reconstruction uses an
+approximation of the ideal reconstruction filter by a digital-to-analog
+converter (DAC), followed by a causal (and thus physically possible)
+low-pass filter.
+
+## Zero-order hold using an R-2R ladder {.t}
+
+A zero-order hold DAC can be implemented by a circuit called a resistor
+ladder. Consider a digital output with $N$ bits and a reference voltage
+$V_{ref}$ (for example an 8-bit output port on a micro-controller using
+CMOS 3.3v logic).
+
+If this port is connected to a resistor network consisting of resistor
+values $R$ and $2R$ then depending on the bit pattern at the output port $V$, the output of
+the buffer op-amp will be $$V_o = V_{ref}\frac{V}{2^N}$$
+
+If the port value is changed every sample time $T$, then the resister
+ladder and buffer op-amp combine to implement a zero-order hold circuit.
+
+## Capacitive DACs
+
+Resister ladders have a number of drawbacks that limit them to around 8-bit resolution
+
+* requires very accurate and closely matched resistor values that are hard to manufacture
+* a current flows through the resistor network, regardless of the output value = static power dissipation that increases with resolution
+* integrated (on-chip) matching and trimming of resistors is a complex and expensive process
+
+Switched-capacitor DACs can use arrays of identical, unit-sized capacitors.
+
+* all capacitors are identical so their relative matching is more precise and has less variation.
+* current flows only when charging/discharging = less power at idle
+* precise capacitors are easier and more cost-effective to manufacture in integrated devices than resistors
+
+Most SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision.
+
+## Anti-imaging (reconstruction) filter {.t}
+
+The zero-order hold is followed by the reconstruction (anti-imaging)
+filter which low-pass filters the output and smooths-out the jumps from
+value to value and glitches during transitions.
+
+In general the reconstruction filter is of a similar, or identical form
+to an anti-aliasing filter.
+
+## Sigma-Delta DAC {.t}
+
+The Sigma-Delta ADC can effectively be reversed to get a Sigma-Delta DAC for more than 12 bits of accuracy.
+
+
+
+## Additional References
+
+* [Understanding SAR ADCs: Their Architecture and Comparison with Other ADCs ](https://www.analog.com/en/resources/technical-articles/successive-approximation-registers-sar-and-flash-adcs.html)
+Analog Devices Technical Article
+* Sigma-Delta ADCs and DACs, Analog Devices Application Note AN283

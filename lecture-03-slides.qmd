@@ -1,30 +1,39 @@
 ---
 title: "ECE 4624: Meeting 3"
 subtitle: "CT Fourier Transform"
-date: last-modified
+date: 2025-9-3
 author:
   - name: Chris Wyatt
     email: clwyatt@vt.edu
     affiliations: ECE@Virginia Tech
-    
+
 format: 
   revealjs:
     self-contained: false
     slide-number: true
+    default-image-extension: svg
     theme: 
       - clw-slide-style.scss
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
     
   html:
+    default-image-extension: svg
     output-file: lecture-03-notes.html
     toc: false
-    
+    echo: false
+    format-links: false
+
+  beamer:
+    default-image-extension: pdf
+    output-file: lecture-03-slides.pdf
+    fontsize: 8pt
+  
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"   
 ---
 
-##
+## {.t}
 
 In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today's lecture is a review of material from ECE 2714.
 
@@ -36,21 +45,21 @@ READINGS:
 * Chapter 18 ECE 2714 Supplementary Notes
 * Chapter 20 ECE 2714 Supplementary Notes
 
-## Fourier Series: Synthesis and Analysis Equations
+## Fourier Series: Synthesis and Analysis Equations {.t}
 
 Suppose we can approximate a periodic function $x(t)$ with period $T_0$ by the sum
-$$\boxed{x(t) \approx \sum\limits_{k = -\infty}^{\infty} a_k \, e^{j k\omega_0 t}\;.}$$
+$$x(t) \approx \sum\limits_{k = -\infty}^{\infty} a_k \, e^{j k\omega_0 t}\;.$$
 This is called the *synthesis equation* of the CT Fourier series.
 
 Note $k$ is an integer and the fundamental frequency $\omega_0 = \frac{2\pi}{T_0}$.
 
 The Fourier series coefficients, $a_k$, are determined by the
 *analysis equation*:
-$$\boxed{a_k = \frac{1}{T_0} \int\limits_{0}^{T_0} x(t)e^{-jk\omega_0 t} \; dt}$$
+$$a_k = \frac{1}{T_0} \int\limits_{0}^{T_0} x(t)e^{-jk\omega_0 t} \; dt$$
 where the integration can be over any interval of length $T_0$ that is
 equal to the period.
 
-## Fourier Series: Spectrum
+## Fourier Series: Spectrum {.t}
 
 The CT Fourier Series coefficients are also called the
 *spectrum* of the signal.
@@ -68,7 +77,7 @@ coefficients it is common to plot the amplitude and phase spectrum
 together.
 
 
-## Example of the Fourier series
+## Example of the Fourier series {.t}
 
 Consider the signal $$x_p(t) = \left\{ \begin{array}{lc}
     t^2 & -1 < t < 1\\
@@ -77,9 +86,9 @@ Consider the signal $$x_p(t) = \left\{ \begin{array}{lc}
 \right.$$ periodically extended with period $T_0 = 2$
 $$x(t) = \sum\limits_{i = -\infty}^{\infty} x_p(t - 2i)$$
 
-![Plot of the example signal.](figures/fig14_1.svg){fig-align="center" fig-alt="See the caption."}
+![Plot of the example signal.](figures/fig14_1){fig-align="center" fig-alt="See the caption."}
 
-##
+## {.t}
 
 To find the Fourier Series approximation of $x(t)$,
 $$x(t) \approx \sum\limits_{k = -\infty}^{\infty} a_k \, e^{j k\omega_0 t}\; ,$$
@@ -92,18 +101,17 @@ $$
   a_k = \frac{1}{2} \int\limits_{-1}^{1} t^2\,e^{-jk\pi t} \; dt
 $$
 
-##
+## {.t}
 
-$$\begin{aligned}
+\begin{align*}
   a_k &= \frac{1}{2} \int\limits_{-1}^{1} t^2\,e^{-jk\pi t} \; dt\\
   &= \frac{1}{2} \left[ \int\limits_{-1}^{1} t^2\,\cos(-k\pi t) \; dt + j \int\limits_{-1}^{1} t^2\,\sin(-k\pi t) \; dt \right]\\
-  &= \frac{1}{2} \left[ \int\limits_{-1}^{1} t^2\,\cos(k\pi t) \; dt + j \int\limits_{-1}^{1} - t^2\,\underbrace{\sin(k\pi t)}_{\text{always = 0}} \; dt \right]\\
-  &= \frac{1}{2} \int\limits_{-1}^{1} t^2\,\cos(k\pi t) \; dt\; \mbox{ using an integration table }\\
+  &= \frac{1}{2} \left[ \int\limits_{-1}^{1} t^2\,\cos(k\pi t) \; dt + j \int\limits_{-1}^{1} - t^2\,\sin(k\pi t) \; dt \right]\\
   &= \frac{1}{2} \frac{4k\pi\overbrace{\cos(k\pi)}^{(-1)^k} + 2(k^2\pi^2-2)\overbrace{\sin(k\pi)}^{\text{always = 0}}}{k^3\pi^3}\\
  a_k &= \frac{2}{k^2\pi^2}\left(-1\right)^k
-\end{aligned}$$
+\end{align*}
 
-##
+## {.t}
 
 $$
  a_k = \frac{2}{k^2\pi^2}\left(-1\right)^k
@@ -115,7 +123,7 @@ $$a_0 = \frac{1}{2} \int\limits_{-1}^{1} t^2 \; dt = \frac{1}{6}t^3 \Big|_{-1}^{
 Thus the final approximation is
 $$x(t) \approx \sum\limits_{k = -\infty}^{\infty} \underbrace{\frac{2}{k^2\pi^2}\left(-1\right)^k}_{a_k} \, e^{j k\pi t} \;.$$
 
-##
+##  {.t}
 
 The corresponding amplitude and phase spectrum plot:
 
@@ -155,7 +163,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Convergence of the CT Fourier Series
+## Convergence of the CT Fourier Series  {.t}
 
 As mentioned above the Fourier Series is strictly speaking an
 approximation
@@ -173,7 +181,7 @@ signal:
 
 - The signal is bounded, i.e. $$\int_{T_0} |x(t)| \;dt < \infty$$
 
-## CT Fourier Transform
+## CT Fourier Transform  {.t}
 
 Consider the aperiodic signal $$x(t) = \begin{cases}
   p(t) & A < t < B\\
@@ -189,14 +197,14 @@ $$
 $$
 since $x(t) = 0$ outside the interval $(A,B)$.
 
-##
+## {.t}
 
 Define the *CT Fourier Transform* of $x(t)$ as
-$$\boxed{X(\omega) = \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt}$$
+$$X(\omega) = \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt$$
 so that $$a_k = \frac{1}{T_0} X(k\omega_0)$$ are samples of $X(\omega)$
 spaced at frequencies $\omega_0$.
 
-##
+## {.t}
 
 By the CT Fourier series synthesis
 equation
@@ -206,9 +214,9 @@ toward $\infty$ and $x_p(t) \rightarrow x(t)$. At the same time the
 frequency sample spacing becomes infinitesimal and
 $$X(k\omega_0) e^{jk\omega_0 t} \rightarrow X(\omega) e^{j\omega t}\; d\omega$$
 To give the *Inverse Fourier Transform*
-$$\boxed{x(t) = \frac{1}{2\pi} \int\limits_{-\infty}^{\infty} X(\omega)e^{j\omega t}\; d\omega}$$
+$$x(t) = \frac{1}{2\pi} \int\limits_{-\infty}^{\infty} X(\omega)e^{j\omega t}\; d\omega$$
 
-## 
+##  {.t}
 
 This gives the *Fourier Transform Pair*:
 $$\underbrace{X(\omega) = \mathcal{F}\{x(t)\} = \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt}_{\text{Forward Transform / Analysis Equation}}
@@ -221,7 +229,7 @@ $X(j\omega)$ is superficial. They generally are the same function. For example
 $$X(j\omega) = \frac{1}{1+(j\omega)^2} = \frac{1}{1-\omega^2} = X(\omega)$$
 are the same function since $j^2 = -1$.
 
-## Fourier Transform Pair
+## Fourier Transform Pair {.t}
 
 $$\underbrace{X(\omega) = \mathcal{F}\{x(t)\} = \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt}_{\text{Forward Transform / Analysis Equation}}
 \hspace{3em}
@@ -243,29 +251,29 @@ $|X(\omega)|$ and the phase spectrum is the function $\angle X(\omega)$.
 It is common to plot the spectrum as the combination of the magnitude
 and phase spectrum.
 
-## Example: Fourier Transform of the impulse.
+## Example: Fourier Transform of the impulse. {.t}
 
 Consider the signal $x(t) = \delta(t)$. The Fourier transform is
-\begin{aligned}
+\begin{align*}
     X(\omega) &= \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt\\
     &= \int\limits_{-\infty}^{\infty} \delta(t) e^{-j\omega t}\; dt\\
     &= e^{-j\omega (0)} \mbox{ by the sifting property}\\
     &= 1  
-\end{aligned}
+\end{align*}
 
-## Example: Fourier transform of the causal real exponential.
+## Example: Fourier transform of the causal real exponential. {.t}
 
 Consider the signal $x(t) = e^{at}u(t)$ for $a\in \mathbb{R}$. The
 Fourier transform is
-\begin{aligned}
+\begin{align*}
     X(\omega) &= \int\limits_{-\infty}^{\infty} x(t) e^{-j\omega t}\; dt = \int\limits_{0}^{\infty}  e^{at} \, e^{-j\omega t}\; dt = \int\limits_{0}^{\infty}  e^{(a-j\omega) t}\; dt\\
     &= \frac{1}{a-j\omega } e^{(a-j\omega) t} \Big|_{0}^{\infty} = \frac{1}{a-j\omega } \left[ \lim_{T\rightarrow\infty} e^{(a-j\omega) T} - \underbrace{e^{(a-j\omega) (0)}}_{1}\right]  
-\end{aligned}
+\end{align*}
 This converges if $a < 0$ and
 
 $$X(\omega) = \frac{-1}{a-j\omega } = \frac{1}{j\omega-a} \mbox{ for } a < 0\;.$$
 
-## Existence of the CT Fourier Transform
+## Existence of the CT Fourier Transform {.t}
 
 The example of the real exponential above showed that for the Fourier
 transform to exist, the Fourier (analysis) integral must exist. Similar
@@ -286,7 +294,7 @@ These conditions are not necessary however, and we can extend the
 Fourier transform to a broader class of signals, if we allow delta
 functions in the transform
 
-## Properties of CTFT
+## Properties of CTFT {.t}
 
 - **Linearity:** if
   $x_1(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X_1(\omega)$ and
@@ -300,15 +308,15 @@ functions in the transform
   Note in particular if one signal is the system input and the other is
   the impulse response, the output is the product of the Fourier
   transforms of each, where the Fourier transform of $h(t)$ is
-  $H(\omega)$, the Eigenvalue or frequency response.
+  $H(\omega)$, the frequency response.
 
 - **Differentiation:** if
   $x(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X(\omega)$ then
   $$\frac{dx}{dt}(t) \stackrel{\mathcal{F}}{\longleftrightarrow} j\omega X(\omega)$$
-  This allows us to easily determine the Eigenvalues/Frequency Response
+  This allows us to easily determine the frequency response
   from a stable differential equation.
 
-## Properties of CTFT
+## Properties of CTFT {.t}
 
 - **Multiplication:** if
   $x_1(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X_1(\omega)$ and
@@ -325,7 +333,7 @@ functions in the transform
   $x(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X(\omega)$ then
   $$e^{j\omega_0 t}x(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X(\omega-\omega_o)$$
 
-## Properties of CTFT
+## Properties of CTFT {.t}
 
 - **Conjugate Symmetry:** if
   $x(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X(\omega)$ then
@@ -342,7 +350,7 @@ functions in the transform
   $a$ is a real constant
   $$x(at) \stackrel{\mathcal{F}}{\longleftrightarrow} \frac{1}{|a|} X\left(\frac{\omega}{a}\right)$$
 
-## Properties of CTFT
+## Properties of CTFT {.t}
 
 - **Parseval's Relation:** if
   $x(t) \stackrel{\mathcal{F}}{\longleftrightarrow} X(\omega)$ then
@@ -350,7 +358,7 @@ functions in the transform
 
 The plot of $|X(\omega)|^2$ as a function of frequency is called the *power spectrum* of the signal.
 
-## Frequency Response of CT LTI Systems
+## Frequency Response of CT LTI Systems {.t}
 
 The input-output relationship for a stable LTI system is
 $$x(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} X(j\omega) \, e^{j \omega t}\; d\omega \;\longrightarrow\; y(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} H(j\omega) X(j\omega) \, e^{j \omega t}\; d\omega$$
@@ -364,11 +372,11 @@ in several equivalent ways.
 * Using the CTFT of the impulse responsr $h(t)$
 * Directly from a linear, constant-coefficient differential equation
 
-##
+## {.t}
 
-![Schematic depiction of analysis of continuous-time systems using Fourier techniques.](figures/fig4_1.svg){fig-align="center" fig-alt="See the caption."}
+![Schematic depiction of analysis of continuous-time systems using Fourier techniques.](figures/fig4_1){fig-align="center" fig-alt="See the caption."}
 
-## Magnitude-phase representation of the CTFR
+## Magnitude-phase representation of the CTFR {.t}
 
 Note that any complex valued function can be expressed in polar form
 using the magnitude and phase. Specifically the input and output can be
@@ -389,7 +397,7 @@ $$
 \angle H(j\omega) = \angle Y(j\omega) - \angle X(j\omega)
 $$
 
-## CTFR acting on sinusoids
+## CTFR acting on sinusoids  {.t}
 
 The advantage of the magnitude and phase representation of the frequency
 response, is the ease with which we can find the output due to a
@@ -408,17 +416,17 @@ $$
   \cos(\omega t + \theta) \longrightarrow |H(j\omega)|\cos(\omega t + \theta + \angle H(j\omega))  
 $$
 
-##
+## {.t}
 
 Also by the linearity property this analysis extends to the CT Fourier
 representation of a signal (an infinite sum of sinusoids):
-$$x(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} X(j \omega) \, e^{j \omega t}\; d\omega \;\longrightarrow\; y(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} H(j \omega) X(j \omega) \, e^{j \omega t}\; d\omega = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} \left| H(j \omega)\right| X(j \omega) \, e^{j \omega t + \angle H(j \omega)}\; d\omega$$
+$$x(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} X(j \omega) \, e^{j \omega t}\; d\omega \;\longrightarrow\; y(t) = \frac{1}{2\pi}\int\limits_{-\infty}^{\infty} \left| H(j \omega)\right| X(j \omega) \, e^{j \omega t + \angle H(j \omega)}\; d\omega$$
 
 Thus we arrive at the reason for the name *Frequency Response* -- it
 specifies the the response of a stable system to any linear combination
 of sinusoidal inputs, i.e. any signal with a Fourier Transform.
 
-## Bode plots
+## Bode plots {.t}
 
 We can visualize the frequency response as a plot of the real and
 imaginary part, or, of the magnitude and phase. Since the magnitude and
@@ -440,9 +448,8 @@ Thus the magnitude of the frequency response in dB
 is $20 \log_{10} |H(j\omega)|$. When the frequency response is plotted
 this particular way we get what is called a *Bode plot*.
 
-## Example
+## Example {.t}
 
-Consider a frequency response given by
 $$H(j\omega) = \frac{20000}{(j\omega)^2 + 300(j\omega) + 20000}$$ 
 
 ```{python}
@@ -476,7 +483,7 @@ plt.show()
 
 ```
 
-## Filters in CT
+## Filters in CT {.t}
 
 Given a stable LTI system with
 frequency response $H(j\omega)$
@@ -496,7 +503,7 @@ types.
 
 We will be discussing filters in much more detail later. For now we just need to define one of the types, the *lowpass filter*.
 
-## Lowpass CT Filters
+## Lowpass CT Filters {.t}
 
 Low-pass Filters attenuate high frequencies while passing through
   lower frequencies. They are often used to reduce the effects of
@@ -514,7 +521,7 @@ $$H(j\omega) = \left\{ \begin{array}{lc}
 The range of frequencies below $|\omega_c|$ are called the pass-band.
 The range of frequencies above $|\omega_c|$ are called the stop-band.
 
-## Practical Lowpass Filters
+## Practical Lowpass Filters {.t}
 
 Ideal CT filters cannot be implemented in practice because they are
 non-causal and thus physically impossible.
@@ -535,7 +542,7 @@ sharpness that is a function of the order of the filter and the exact
 form of the frequency response polynomials. Thus practical filters are
 described by additional parameters that define the stop and pass-bands.
 
-## Lowpass Filter Specification
+## Lowpass Filter Specification {.t}
 
 The overall *gain* of the filter is the magnitude of the frequency
 response at a frequency that depends on the filter type, zero for a
@@ -556,7 +563,7 @@ pass-band frequencies.
 The *pass-band ripple* is defined as the maximum
 deviation from the overall gain, over the pass-band.
 
-## Lowpass Filter Specification
+## Lowpass Filter Specification {.t}
 
 ```{python}
 import scipy.signal as signal

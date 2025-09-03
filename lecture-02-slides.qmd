@@ -17,10 +17,17 @@ format:
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
     
   html:
+    default-image-extension: svg
     output-file: lecture-02-notes.html
     toc: false
     echo: false
-    
+    format-links: false
+
+  beamer:
+    default-image-extension: pdf
+    output-file: lecture-02-slides.pdf
+    fontsize: 8pt
+      
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
@@ -79,7 +86,7 @@ The most basic classification of signals depends on the sets that makeup the dom
 
 ## Analog Signals
 
-If the function $f: \mathbb{R} \rightarrow \mathbb{R}$, we call this an analog or real, continuous-time signal, e.g. a voltage at time $t \in \mathbb{R}$, $v(t)$. We will write these as $x(t)$, $y(t)$, etc. The units of $t$ are seconds. @fig-analog-plots shows some graphical representations, i.e. plots.
+If the function $f: \mathbb{R} \rightarrow \mathbb{R}$, we call this an analog or real, continuous-time signal, e.g. a voltage at time $t \in \mathbb{R}$, $v(t)$. We will write these as $x(t)$, $y(t)$, etc. The units of $t$ are seconds.
 
 ```{python}
 #| label: fig-analog-plots
@@ -134,7 +141,7 @@ plt.show()
 
 ## Real, Discrete-time Signal
 
-If the function $f: \mathbb{Z} \rightarrow \mathbb{R}$, we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as $x[n]$, $y[n]$, etc. Note $n$ is dimensionless. @fig-realdt-plots shows some graphical representations.
+If the function $f: \mathbb{Z} \rightarrow \mathbb{R}$, we call this a real, discrete-time signal, e.g. the temperature every day at noon. We will write these as $x[n]$, $y[n]$, etc. Note $n$ is dimensionless.
 
 ```{python}
 #| label: fig-realdt-plots
@@ -563,35 +570,42 @@ A system is an interconncted set of components or sub-systems. Mathematically a 
 
 * single input - single output (SISO) system.
 
-  ![SISO Block Diagram ](figures/fig6_1.svg){fig-align="center" fig-alt="diagram showing the block diagram of a single-input, single-output system"}
+  ![SISO Block Diagram ](figures/fig6_1){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a single-input, single-output system"}
+  
+We will focus on single input - single output systems.
+
+## Other System Types
 
 * single input - multiple output (SIMO) system
 
-  ![SIMO Block Diagram ](figures/fig6_2.svg){fig-align="center" fig-alt="diagram showing the block diagram of a single-input, multiple-output system"}
+  ![SIMO Block Diagram ](figures/fig6_2){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a single-input, multiple-output system"}
 
 * general case, multiple input - multiple output (MIMO)
 
-  ![MIMO Block Diagram ](figures/fig6_3.svg){fig-align="center" fig-alt="diagram showing the block diagram of a multiple-input, multiple-output system"}
-  
-We will focus on single input - single output systems.
+  ![MIMO Block Diagram ](figures/fig6_3){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a multiple-input, multiple-output system"}
+
+MIMO systems can be handled using state-based descriptions.
+
 
 ## Systems cont.
 
 - If both input and output are CT signals, it is a CT system.
 
-  ![Generic Block Diagram of CT System](figures/fig6_4.svg){fig-align="center" fig-alt="diagram showing the block diagram of a CT system"}
+  ![Generic Block Diagram of CT System](figures/fig6_4){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a CT system"}
 
 
 - If both input and output are DT signals, it is a DT system.
 
-  ![Generic Block Diagram of a DT System](figures/fig6_5.svg){fig-align="center" fig-alt="diagram showing the block diagram of a DT system"}
+  ![Generic Block Diagram of a DT System](figures/fig6_5){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a DT system"}
+
+## Systems cont.
 
 - If input and output are not both CT or DT signals, it is a hybrid
   CT-DT system.
 
-  ![Generic Block Diagram of a Hybrid DT/CT System](figures/fig6_6.svg){fig-align="center" fig-alt="diagram showing the block diagram of a hybrid system with DT input and CT output"}
+  ![Generic Block Diagram of a Hybrid DT/CT System](figures/fig6_6){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a hybrid system with DT input and CT output"}
   
-  ![Generic Block Diagram of a Hybrid CT/DT System](figures/fig6_7.svg){fig-align="center" fig-alt="diagram showing the block diagram of a hybrid system with CT input and DT output"}
+  ![Generic Block Diagram of a Hybrid CT/DT System](figures/fig6_7){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a hybrid system with CT input and DT output"}
 
 We will focus on Hybrid and DT systems.
 
@@ -608,11 +622,11 @@ We will focus on Hybrid and DT systems.
 
 * The impulse response for CT systems is denoted $h(t)$.
 
-  ![Impulse Response of CT System](figures/figA_1.svg){fig-align="center" fig-alt="diagram showing the block diagram of a CT system with impulse as input"}
+  ![Impulse Response of CT System](figures/figA_1){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a CT system with impulse as input"}
   
 * The impulse response for DT systems is denoted $h[n]$.
 
-  ![Impulse Response of DT System](figures/figA_2.svg){fig-align="center" fig-alt="diagram showing the block diagram of a DT system with impulse as input"}
+  ![Impulse Response of DT System](figures/figA_2){width=40% fig-align="center" fig-alt="diagram showing the block diagram of a DT system with impulse as input"}
 
 ## CT system representations
 

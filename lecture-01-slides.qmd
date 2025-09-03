@@ -19,6 +19,7 @@ format:
     
     output-file: lecture-01-notes.html
     toc: false
+    format-links: false
 
 html-math-method:
   method: mathjax
