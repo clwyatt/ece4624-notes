@@ -1845,7 +1845,7 @@
     "href": "index.html",
     "title": "Table of Contents",
     "section": "",
-    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nSoftware Design for DSP\nTime Domain Analysis of DT LTI Systems\nDT Fourier Series and Fourier Transform\nDT Frequency Response and Frequency Selective Filters\nZ Transform\nDT System Analysis using Z-Transform\nDT Block diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform\nApplications of DFT\nFast Fourier Transform\nFIR Filter Structures\nIIR Filter Structures\nQuantization and Round-Off Effects\nFIR Filter Design\nLowpass IIR Filter Design\nTransformations of IIR Filters\nProbability Primer\nStationary Random Processes\nWiener Filter\nAdaptive Filtering using LMS"
+    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT Fourier Series and Fourier Transform\nDT Frequency Response and Frequency Selective Filters\nZ Transform\nDT System Analysis using Z-Transform\nDT Block diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform\nApplications of DFT\nFast Fourier Transform\nFIR Filter Structures\nIIR Filter Structures\nQuantization and Round-Off Effects\nFIR Filter Design\nLowpass IIR Filter Design\nTransformations of IIR Filters\nProbability Primer\nStationary Random Processes\nWiener Filter\nAdaptive Filtering using LMS"
   },
   {
     "objectID": "lecture-22-slides.html#section",
