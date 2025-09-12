@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chris Wyatt">
-<meta name="dcterms.date" content="2025-08-22">
+<meta name="dcterms.date" content="2025-09-08">
 
 <title>ECE 4624: Meeting 6 – ECE 4624: DSP and Filter Design – Fall 2025</title>
 <style>
@@ -70,10 +70,39 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -105,8 +134,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lecture-06-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -137,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 22, 2025</p>
+      <p class="date">September 8, 2025</p>
     </div>
   </div>
   
@@ -152,49 +180,166 @@ ul.task-list li input[type="checkbox"] {
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
 <p>Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.</p>
-<p>READING: ?</p>
+<p>READING:</p>
+<ul>
+<li>PM 4.1.4 and Chapter 6</li>
+<li>2714 Supplementary Notes 5 and 7</li>
+</ul>
+<p>Topics:</p>
+<ul>
+<li>Properties and Classification of DT systems</li>
+<li>Difference Equations</li>
+<li>Impulse Response of LCCDE</li>
+</ul>
 </section>
-<section id="properties-and-classification-of-dt-systems" class="level1">
-<h1>Properties and Classification of DT systems</h1>
-<section id="memory" class="level2">
-<h2 class="anchored" data-anchor-id="memory">Memory</h2>
+<section id="dt-system-representations" class="level2">
+<h2 class="anchored" data-anchor-id="dt-system-representations">DT system representations</h2>
+<p>We can mathematically represent, or model, DT systems multiple ways.</p>
+<ul>
+<li><p>purely mathematically - in time domain we will use</p>
+<ul>
+<li><p>linear, constant coefficient difference equations, e.g. <span class="math display">\[y[n] = a y[n-1] + b y[n-2] + x[n]\]</span></p></li>
+<li><p>DT impulse response <span class="math inline">\(h[n]\)</span></p></li>
+</ul></li>
+<li><p>purely mathematically - in frequency domain we will use</p>
+<ul>
+<li><p>frequency response</p></li>
+<li><p>transfer function (complex frequency, covered in ECE 3704)</p></li>
+</ul></li>
+<li><p>graphically, using a mixture of math and block diagrams</p></li>
+</ul>
 </section>
-<section id="invertability" class="level2">
-<h2 class="anchored" data-anchor-id="invertability">Invertability</h2>
+<section id="system-properties-and-classification" class="level2">
+<h2 class="anchored" data-anchor-id="system-properties-and-classification">System properties and classification</h2>
+<p>Choosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.</p>
+<ul>
+<li><p>Memory</p></li>
+<li><p>Invertability</p></li>
+<li><p>Causality</p></li>
+<li><p>Stability</p></li>
+<li><p>Time-invariance</p></li>
+<li><p>Linearity</p></li>
+</ul>
 </section>
-<section id="causality" class="level2">
-<h2 class="anchored" data-anchor-id="causality">Causality</h2>
+<section id="memory" class="level2 t">
+<h2 class="t anchored" data-anchor-id="memory">Memory</h2>
+<ul>
+<li>The output of a DT system with memory depends on previous or future inputs and is said to be <em>dynamic</em>.</li>
+<li>Otherwise the system is memoryless or <em>instantaneous</em>, and the output <span class="math inline">\(y[n]\)</span> at index <span class="math inline">\(n\)</span> depends only on <span class="math inline">\(x[n]\)</span>.</li>
+</ul>
 </section>
-<section id="stability" class="level2">
-<h2 class="anchored" data-anchor-id="stability">Stability</h2>
+<section id="invertability" class="level2 t">
+<h2 class="t anchored" data-anchor-id="invertability">Invertability</h2>
+<ul>
+<li>A system is invertible if there exists a system that when placed in series with the original recovers the input.</li>
+</ul>
+<p><span class="math display">\[x[n] \mapsto{T} y[n] \mapsto{T^{-1}} x[n]\]</span> where <span class="math inline">\(T^{-1}\)</span> is the inverse system of <span class="math inline">\(T\)</span>.</p>
 </section>
-<section id="time-invariance" class="level2">
-<h2 class="anchored" data-anchor-id="time-invariance">Time-invariance</h2>
+<section id="causality" class="level2 t">
+<h2 class="t anchored" data-anchor-id="causality">Causality</h2>
+<ul>
+<li>A DT system is causal if the output at index <span class="math inline">\(n\)</span> depends on the input for index values at or before <span class="math inline">\(n\)</span>: <span class="math display">\[y[n] \;\text{depends on}\; x[m] \;\text{for} \; m \leq n\]</span></li>
+<li>While all physical CT systems are causal, practical DT systems may not be since we can use memory to "shift time".</li>
+<li>For CT systems we cannot store the infinite number of values between two time points <span class="math inline">\(t_1\)</span> and <span class="math inline">\(t_2\)</span>, but we can store the <span class="math inline">\(n_2-n_1\)</span> values of a DT system between between two indices <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> (assuming infinite precision).</li>
+</ul>
 </section>
-<section id="linearity" class="level2">
-<h2 class="anchored" data-anchor-id="linearity">Linearity</h2>
+<section id="stability" class="level2 t">
+<h2 class="t anchored" data-anchor-id="stability">Stability</h2>
+<ul>
+<li>A DT system is (BIBO) stable if applying a bounded-input (BI) <span class="math display">\[\left|x[n]\right| &lt; \infty \; \forall \; n\]</span> results in a bounded-output (BO) <span class="math inline">\(x[n] \mapsto y[n]\)</span> and <span class="math display">\[\left|y[n]\right| &lt; \infty \; \forall \; n\]</span></li>
+<li>Note, bounded in practice is limited by the physical situation, e.g.&nbsp;the number of bits used to store values.</li>
+</ul>
 </section>
+<section id="time-invariance" class="level2 t">
+<h2 class="t anchored" data-anchor-id="time-invariance">Time-invariance</h2>
+<ul>
+<li>A DT system is time(index)-invariant if, given <span class="math display">\[x[n] \mapsto y[n]\]</span> then an index-shift of the input leads to the same index-shift in the output <span class="math display">\[x[n-m] \mapsto y[n-m]\]</span></li>
+</ul>
 </section>
-<section id="difference-equations" class="level1">
-<h1>Difference Equations</h1>
+<section id="linearity" class="level2 t">
+<h2 class="t anchored" data-anchor-id="linearity">Linearity</h2>
+<ul>
+<li>A DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.</li>
+</ul>
+<p>If <span class="math display">\[x_1[n] \mapsto y_1[n] \;\text{and}\; x_2[n] \mapsto y_2[n]\]</span> then <span class="math display">\[a x_1[n] + b x_2[n] \mapsto a y_1[n] + b y_2[n]\]</span> for constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
+<ul>
+<li><p>Note this property extends to sums of arbitrary signals, e.g. if <span class="math display">\[x_i[n] \mapsto y_i[n] \; \forall\; i \in [1 \cdots N]\]</span> then given <span class="math inline">\(N\)</span> constants <span class="math inline">\(a_i\)</span>, if the system is linear <span class="math display">\[\sum\limits_{i = 1}^N a_i x_i[n] \mapsto \sum\limits_{i = 1}^N a_i y_i[n]\]</span></p></li>
+<li><p>This is a very important property, called <em>superposition</em>, and it simplifies the analysis of systems greatly.</p></li>
+</ul>
 </section>
-<section id="iterative-solution" class="level1">
-<h1>Iterative Solution</h1>
+<section id="difference-equations" class="level2 t">
+<h2 class="t anchored" data-anchor-id="difference-equations">Difference Equations</h2>
+<ul>
+<li>A <em>difference equation</em> is a relation among combinations of two DT functions and shifted versions of them.</li>
+<li>Similar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function.</li>
+</ul>
 </section>
-<section id="lccde" class="level1">
-<h1>LCCDE</h1>
-<section id="recursive-form" class="level2">
-<h2 class="anchored" data-anchor-id="recursive-form">recursive form</h2>
+<section id="lccde" class="level2">
+<h2 class="anchored" data-anchor-id="lccde">LCCDE</h2>
+<p>A <em>linear</em>, <em>constant-coefficient</em>, difference equation (LCCDE) comes in three equivalent forms.</p>
+<ul>
+<li><p>Delay form. <span class="math display">\[\sum\limits_{k = 0}^N a_k y[n-k] = \sum\limits_{k = 0}^M b_k x[n-k]\]</span> or <span class="math display">\[a_0y[n] + a_1y[n-1] + \cdots a_N y[n-N] = b_0 x[n] + \cdots b_Mx[n-M]\]</span></p></li>
+<li><p>Advance form. Let <span class="math inline">\(n\rightarrow n+N\)</span>, then the delay form becomes <span class="math display">\[\sum\limits_{k = 0}^N a_k y[n+N-k] = \sum\limits_{k = 0}^M b_k x[n+N-k]\]</span> or <span class="math display">\[a_0y[n+N] + a_1y[n+N-1] + \cdots a_N y[n] = b_0 x[n+N] + \cdots b_Mx[n+N-M]\]</span></p></li>
+<li><p>Recursive form. <span class="math display">\[y[n] = - \frac{a_1}{a_0} y[n-1] - \cdots -\frac{a_N}{a_0} y[n-N] + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0} x[n-M]\]</span></p></li>
+</ul>
+<p>The <em>order</em> of the system is given by max of <span class="math inline">\(N\)</span> and <span class="math inline">\(M\)</span>.</p>
 </section>
-<section id="delay-form" class="level2">
-<h2 class="anchored" data-anchor-id="delay-form">delay form</h2>
+<section id="advance-and-delay-operators" class="level2 t">
+<h2 class="t anchored" data-anchor-id="advance-and-delay-operators">Advance and Delay Operators</h2>
+<ul>
+<li>Define the advance operator <span class="math inline">\(E^m\)</span> as shifting a DT function by positive <span class="math inline">\(m\)</span>, i.e.&nbsp;<span class="math inline">\(E^m x[n] = x[n+m]\)</span></li>
+<li>Define the delay operator <span class="math inline">\(D^m\)</span> as shifting a DT function by negative <span class="math inline">\(m\)</span>, i.e. <span class="math inline">\(D^m x[n] = x[n-m]\)</span>.</li>
+</ul>
 </section>
-<section id="advance-form" class="level2">
-<h2 class="anchored" data-anchor-id="advance-form">advance form</h2>
+<section id="iterative-solution-of-lccdes" class="level2 t">
+<h2 class="t anchored" data-anchor-id="iterative-solution-of-lccdes">Iterative solution of LCCDEs</h2>
+<p>To perform an iterative solution we need the difference equation in delay form</p>
+<p><span class="math display">\[y[n] =  - \left(\frac{a_1}{a_0}y[n-1] + \cdots \frac{a_N}{a_0} y[n-N]\right) + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0}x[n-M]\]</span></p>
+<p>Given an input and initial conditions for <span class="math inline">\(y[n_0 - 1] \cdots y[n_0 - N]\)</span> we can simulate <span class="math inline">\(y[n]\)</span> for <span class="math inline">\(n \geq n_0\)</span>.</p>
 </section>
+<section id="solution-of-the-homogeneous-lccde" class="level2 t">
+<h2 class="t anchored" data-anchor-id="solution-of-the-homogeneous-lccde">Solution of the homogeneous LCCDE</h2>
+<ul>
+<li>The iterative solution does not give us (directly) an analytical expression for the output at arbitrary <span class="math inline">\(n\)</span>. We have to start at the initial conditions and compute our way up to <span class="math inline">\(n\)</span>.</li>
+<li>We now consider an analytical solution when the input is zero, the solution to the <em>homogeneous</em> difference equation <span class="math display">\[Q(E)\, y = a_0y[n+N] + a_1y[n+N-1] + \cdots a_N y[n] = 0 \; .\]</span> given <span class="math inline">\(N\)</span> sequential auxiliary conditions on <span class="math inline">\(y\)</span>.</li>
+</ul>
 </section>
-<section id="impulse-response-of-lccde" class="level1">
-<h1>Impulse Response of LCCDE</h1>
+<section id="section-1" class="level2 t">
+<h2 class="t anchored" data-anchor-id="section-1"></h2>
+<ul>
+<li><p>Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation <span class="math inline">\(Q(E)=0\)</span> whose roots are either real or occur in complex conjugate pairs.</p></li>
+<li><p>Let <span class="math inline">\(\lambda_i\)</span> be the <span class="math inline">\(i\)</span>-th root of <span class="math inline">\(Q(E) = 0\)</span>, then the solution is of the form <span class="math display">\[y[n] = \sum\limits_{i=1}^N C_i \lambda_i^{n}\]</span> where the parameters <span class="math inline">\(C_i\)</span> are determined from the auxiliary conditions.</p></li>
+<li><p>For a real system (when the coefficients of the difference equation are real) and when the roots are complex <span class="math inline">\(\lambda_{1,2} = |\lambda|e^{\pm j\beta}\)</span>, it is cleaner to assume a form for those terms as <span class="math display">\[y[n] = C |\lambda|^n\cos(\beta n + \theta)\]</span> for constants <span class="math inline">\(C\)</span> and <span class="math inline">\(\theta\)</span>.</p></li>
+</ul>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example:</h2>
+</section>
+<section id="impulse-response-from-lccde" class="level2 t">
+<h2 class="t anchored" data-anchor-id="impulse-response-from-lccde">Impulse response from LCCDE</h2>
+<p>To find the solution to <span class="math inline">\(Q(E)y=P(E)x\)</span> when <span class="math inline">\(x[n] = \delta[n]\)</span> assuming <span class="math inline">\(y[n] = 0\)</span> for <span class="math inline">\(n &lt; 0\)</span>, giving the <em>impulse response</em> <span class="math inline">\(y[n] = h[n]\)</span>.</p>
+<p><strong>Step 1:</strong> Let <span class="math inline">\(y_h\)</span> be the homogeneous solution to <span class="math inline">\(Q(E)y_h=0\)</span> for <span class="math inline">\(n &gt; N\)</span>.</p>
+<p><strong>Step 2:</strong> Assume a form for <span class="math inline">\(h[n]\)</span> given by <span class="math display">\[h[n] = \frac{b_N}{a_N}\delta[n] + y_h[n]u[n]\]</span></p>
+<p><strong>Step 3:</strong> Using the iterative procedure above find the <span class="math inline">\(N\)</span> auxiliary conditions we need by,</p>
+<ul>
+<li><p>first, rewrite the equation in delay form and solve for <span class="math inline">\(y[n]\)</span>,</p></li>
+<li><p>then let <span class="math inline">\(x[n] = \delta[n]\)</span> and manually compute <span class="math inline">\(h[0]\)</span> assuming <span class="math inline">\(h[n] = 0\)</span> for <span class="math inline">\(n &lt; 0\)</span>,</p></li>
+<li><p>repeating the previous step for <span class="math inline">\(h[1]\)</span>, continuing up to <span class="math inline">\(h[N-1]\)</span>.</p></li>
+</ul>
+<p><strong>Step 4:</strong> Using the auxillary conditions in step 3, solve for the constants in the solution <span class="math inline">\(h[n]\)</span> from step 2.</p>
+<p>Note we can check our solution for as many <span class="math inline">\(n\)</span> values as desired using the recursive form.</p>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples:</h2>
+</section>
+<section id="lccde-and-impulse-response-for-iir-filters" class="level2">
+<h2 class="anchored" data-anchor-id="lccde-and-impulse-response-for-iir-filters">LCCDE and impulse response for IIR filters</h2>
+</section>
+<section id="lccde-and-impulse-response-for-fir-filters" class="level2">
+<h2 class="anchored" data-anchor-id="lccde-and-impulse-response-for-fir-filters">LCCDE and impulse response for FIR filters</h2>
+</section>
+<section id="examples-1" class="level2">
+<h2 class="anchored" data-anchor-id="examples-1">Examples:</h2>
 
 
 </section>

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.7.23">
 
   <meta name="author" content="Chris Wyatt">
-  <meta name="dcterms.date" content="2025-08-22">
+  <meta name="dcterms.date" content="2025-09-10">
   <title>ECE 4624: DSP and Filter Design -- Fall 2025 – ECE 4624: Meeting 5</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -129,7 +129,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">ECE 4624: Meeting 5</h1>
-  <p class="subtitle">Microcontroller Programming for DSP</p>
+  <p class="subtitle">Introduction to DSP Hardware</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,58 +145,165 @@ Chris Wyatt
     </div>
 </div>
 
-  <p class="date">2025-08-22</p>
+  <p class="date">2025-09-10</p>
 </section>
-<section id="section" class="slide level2">
+<section id="section" class="slide level2 t">
 <h2></h2>
-<p>Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).</p>
-<p>READING: ?</p>
+<p>Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).</p>
+<ul>
+<li>DSP Hardware</li>
+<li>DSP Software</li>
+<li>Arduino Uno R4 Minima</li>
+<li>Lab 1</li>
+</ul>
 </section>
-<section id="dsp-hardware" class="title-slide slide level1 center">
-<h1>DSP Hardware</h1>
+<section id="dsp-hardware-platforms" class="slide level2 t">
+<h2>DSP Hardware Platforms</h2>
 <ul>
 <li>ASICS</li>
 <li>FPGAs</li>
-<li>MCU</li>
-<li>General-Purpose CPUs</li>
-<li>GPUs</li>
+<li>DSP Processors</li>
+<li>General-Purpose CPU and <span class="math inline">\(\mu\)</span>C</li>
+<li>GPUs and other accelerators</li>
 </ul>
 </section>
-
-<section id="dsp-programming-models-and-languages" class="title-slide slide level1 center">
-<h1>DSP Programming Models and Languages</h1>
+<section id="dsp-programming-models-and-languages" class="slide level2 t">
+<h2>DSP Programming Models and Languages</h2>
 <ul>
 <li>non-realtime</li>
 <li>soft realtime and audio-video processing</li>
 <li>hard realtime and digital control</li>
 </ul>
 </section>
+<section id="factors-when-choosing-hardware" class="slide level2 t">
+<h2>Factors when Choosing Hardware</h2>
+<ul>
+<li>flexibility</li>
+<li>design time</li>
+<li>power consumption</li>
+<li>performance</li>
+<li>development cost</li>
+<li>production cost</li>
+</ul>
+</section>
+<section id="architectures" class="slide level2 t">
+<h2>Architectures</h2>
+<ul>
+<li>Harvard (most DSPs)</li>
+<li>von Neumann (most GPCPU and <span class="math inline">\(\mu\)</span>C)</li>
+</ul>
+</section>
+<section id="basic-computational-elements" class="slide level2 t">
+<h2>Basic computational elements</h2>
+<ul>
+<li>multiply <span class="math display">\[
+y[n] = \alpha x[n]
+\]</span></li>
+<li>accumulate (add in place) <span class="math display">\[
+y[n] = x_1[n] + x_2[n]
+\]</span></li>
+<li>delay <span class="math display">\[
+y[n] = x[n-1]
+\]</span></li>
+</ul>
+<p>While these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point.</p>
+</section>
+<section id="fixed-point-representation-and-hardware" class="slide level2 t">
+<h2>Fixed-Point Representation and Hardware</h2>
+<ul>
+<li><p>Given a value <span class="math inline">\(x\)</span>, the fixed-point representation is</p>
+<p><span class="math display">\[
+x = (b_{-A}, b_{-A+1}, \ldots, b_{-1}, b_0, b_1, \ldots, b_B)_r
+\]</span> where <span class="math inline">\(r\)</span> is the radix and <span class="math inline">\(b_i\in[0,(r-1)]\)</span> is a digit.</p>
+<p><span class="math display">\[
+x = \sum\limits_{i = -A}^B b_i\, r^{-i}
+\]</span></p></li>
+<li><p>we are interested in base 2 (<span class="math inline">\(r=2\)</span>) where digits <span class="math inline">\((0,1)\)</span> are called bits.</p>
+<ul>
+<li><span class="math inline">\(b_{-A}\)</span> is the most-significant bit (MSB)</li>
+<li><span class="math inline">\(b_{B}\)</span> is the least-significant bit (LSB)</li>
+<li>the location of the point is implied</li>
+</ul></li>
+<li><p>unsigned N-bit numbers where <span class="math inline">\(A = N-1\)</span> and <span class="math inline">\(B = 0\)</span> can store positive integers <span class="math inline">\([0,2^N-1]\)</span></p></li>
+</ul>
+</section>
+<section id="fixed-point-representation-and-qm.n-format" class="slide level2 t">
+<h2>Fixed-Point Representation and Qm.n format</h2>
+<ul>
+<li><p>In DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where <span class="math inline">\(A = 0\)</span>, <span class="math inline">\(B=N-1\)</span></p>
+<p><span class="math display">\[
+x = 2^A \sum\limits_{i = 0}^{N-1} b_i\, 2^{-i}
+\]</span> and assume <span class="math inline">\(2^A = 1\)</span>. This is called the Q1.n format.</p></li>
+<li><p>In general the Qm.n format uses m bits for the integer part and n bits for the fractional part</p></li>
+<li><p>when multiplying and adding numbers the formats need to match</p></li>
+<li><p>to convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C</p></li>
+</ul>
+</section>
+<section id="fixed-point-representation-of-negative-numbers" class="slide level2">
+<h2>Fixed-Point representation of negative numbers</h2>
+<ul>
+<li>sign magnitude <span class="math display">\[
+x \geq 0 \qquad (0.b_1,b_2,\ldots,b_B)_2
+\]</span> <span class="math display">\[
+x &lt; 0 \qquad (1.b_1,b_2,\ldots,b_B)_2
+\]</span></li>
+<li>ones-complement <span class="math display">\[
+x &lt; 0 \qquad (1.\bar{b}_1,\bar{b}_2,\ldots,\bar{b}_B)_2
+\]</span> <span class="math display">\[
+x \geq 0 \qquad \text{bitwise complement}
+\]</span></li>
+<li>twos-complement <span class="math display">\[
+x &lt; 0 \qquad (1.\bar{b}_1,\bar{b}_2,\ldots,\bar{b}_B)_2 + (0.0,0,0,\ldots,1)_2  
+\]</span> modulo-2 and ignore the carry.</li>
+</ul>
+<p>Most ALU, including those in DSPs use twos-complement.</p>
+</section>
+<section id="floating-point-representation-and-hardware" class="slide level2 t">
+<h2>Floating-Point Representation and Hardware</h2>
+<p>The alternative to fractional fixed-point arithmetic is floating point.</p>
+<ul>
+<li>in fixed point the resolution is fixed (distande between numbers) <span class="math display">\[
+\Delta = \frac{x_{max} - x_{min}}{2^N}
+\]</span></li>
+<li>floating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity <span class="math display">\[
+x = M\cdot2^E
+\]</span> where <span class="math inline">\(M\)</span> is a sign-magnitude fraction and <span class="math inline">\(E\)</span> is a signed integer.</li>
+<li>there are many floating-point formats (number of bits for M and E, how to handle <span class="math inline">\(0,\infty\)</span>, NAN etc)</li>
+<li>IEEE 754 is a widespread standard</li>
+<li>using floating point is a cost/performance tradeoff</li>
+</ul>
+</section>
+<section id="quantization-errors" class="slide level2 t">
+<h2>Quantization Errors</h2>
+<ul>
+<li>signal quantization</li>
+<li>coefficient quantization</li>
+</ul>
+</section>
+<section id="arithmetic-errors" class="slide level2 t">
+<h2>Arithmetic Errors</h2>
+<ul>
+<li>roundoff or truncation</li>
+<li>overflow and underflow</li>
+<li>limit cycles</li>
+</ul>
+</section>
+<section id="course-development-system" class="slide level2 t">
+<h2>Course Development System</h2>
+<ul>
+<li>board description</li>
+<li>PlatformIO IDE</li>
+<li>event loop</li>
+<li>ADC Setup</li>
+<li>DAC Setup</li>
+<li>resources</li>
+</ul>
+</section>
+<section id="lab-1" class="slide level2 t">
+<h2>Lab 1</h2>
 
-<section>
-<section id="course-development-system" class="title-slide slide level1 center">
-<h1>Course Development System</h1>
 
 </section>
-<section id="board-description" class="slide level2">
-<h2>board description</h2>
-</section>
-<section id="platformio-ide" class="slide level2">
-<h2>PlatformIO IDE</h2>
-</section>
-<section id="event-loop" class="slide level2">
-<h2>event loop</h2>
-</section>
-<section id="adc-setup" class="slide level2">
-<h2>ADC Setup</h2>
-</section>
-<section id="dac-setup" class="slide level2">
-<h2>DAC Setup</h2>
-</section>
-<section id="resources" class="slide level2">
-<h2>resources</h2>
-
-
-</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

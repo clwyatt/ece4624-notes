@@ -357,6 +357,22 @@ q = \frac{1}{2^{12}} = \frac{1}{4096} \approx 244 \, \mu\text{V}
 </ul>
 <p>Most SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision.</p>
 </section>
+<section id="glitches" class="slide level2">
+<h2>Glitches</h2>
+<ul>
+<li>The charging and discharging in capacitive DACs can lead to “glitches”</li>
+<li>These can be pronounced when there are large changes (high order bits)</li>
+</ul>
+</section>
+<section id="segmented-dacs" class="slide level2">
+<h2>Segmented DACS</h2>
+<p>One approach to reducing glitches is to use a segmented DAC</p>
+<ul>
+<li>Higher order bits use a themometer coded DAC</li>
+<li>lower order bits use a binary weighted capacitive DAC</li>
+<li>the two outputs are summed</li>
+</ul>
+</section>
 <section id="anti-imaging-reconstruction-filter" class="slide level2 t">
 <h2>Anti-imaging (reconstruction) filter</h2>
 <p>The zero-order hold is followed by the reconstruction (anti-imaging) filter which low-pass filters the output and smooths-out the jumps from value to value and glitches during transitions.</p>
@@ -370,7 +386,7 @@ q = \frac{1}{2^{12}} = \frac{1}{4096} \approx 244 \, \mu\text{V}
 <h2>Additional References</h2>
 <ul>
 <li><a href="https://www.analog.com/en/resources/technical-articles/successive-approximation-registers-sar-and-flash-adcs.html">Understanding SAR ADCs: Their Architecture and Comparison with Other ADCs</a> Analog Devices Technical Article</li>
-<li>Sigma-Delta ADCs and DACs, Analog Devices Application Note AN283</li>
+<li><a href="https://www.analog.com/media/en/technical-documentation/application-notes/292524291525717245054923680458171an283.pdf">Sigma-Delta ADCs and DACs</a>, Analog Devices Application Note AN283</li>
 </ul>
 
 

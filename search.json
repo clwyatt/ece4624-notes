@@ -1106,6 +1106,20 @@
     "text": "Capacitive DACs\nResister ladders have a number of drawbacks that limit them to around 8-bit resolution\n\nrequires very accurate and closely matched resistor values that are hard to manufacture\na current flows through the resistor network, regardless of the output value = static power dissipation that increases with resolution\nintegrated (on-chip) matching and trimming of resistors is a complex and expensive process\n\nSwitched-capacitor DACs can use arrays of identical, unit-sized capacitors.\n\nall capacitors are identical so their relative matching is more precise and has less variation.\ncurrent flows only when charging/discharging = less power at idle\nprecise capacitors are easier and more cost-effective to manufacture in integrated devices than resistors\n\nMost SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision."
   },
   {
+    "objectID": "lecture-04-slides.html#glitches",
+    "href": "lecture-04-slides.html#glitches",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Glitches",
+    "text": "Glitches\n\nThe charging and discharging in capacitive DACs can lead to “glitches”\nThese can be pronounced when there are large changes (high order bits)"
+  },
+  {
+    "objectID": "lecture-04-slides.html#segmented-dacs",
+    "href": "lecture-04-slides.html#segmented-dacs",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Segmented DACS",
+    "text": "Segmented DACS\nOne approach to reducing glitches is to use a segmented DAC\n\nHigher order bits use a themometer coded DAC\nlower order bits use a binary weighted capacitive DAC\nthe two outputs are summed"
+  },
+  {
     "objectID": "lecture-04-slides.html#anti-imaging-reconstruction-filter",
     "href": "lecture-04-slides.html#anti-imaging-reconstruction-filter",
     "title": "ECE 4624: Meeting 4",
@@ -1323,6 +1337,20 @@
     "text": "Capacitive DACs\nResister ladders have a number of drawbacks that limit them to around 8-bit resolution\n\nrequires very accurate and closely matched resistor values that are hard to manufacture\na current flows through the resistor network, regardless of the output value = static power dissipation that increases with resolution\nintegrated (on-chip) matching and trimming of resistors is a complex and expensive process\n\nSwitched-capacitor DACs can use arrays of identical, unit-sized capacitors.\n\nall capacitors are identical so their relative matching is more precise and has less variation.\ncurrent flows only when charging/discharging = less power at idle\nprecise capacitors are easier and more cost-effective to manufacture in integrated devices than resistors\n\nMost SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision."
   },
   {
+    "objectID": "lecture-04-notes.html#glitches",
+    "href": "lecture-04-notes.html#glitches",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Glitches",
+    "text": "Glitches\n\nThe charging and discharging in capacitive DACs can lead to “glitches”\nThese can be pronounced when there are large changes (high order bits)"
+  },
+  {
+    "objectID": "lecture-04-notes.html#segmented-dacs",
+    "href": "lecture-04-notes.html#segmented-dacs",
+    "title": "ECE 4624: Meeting 4",
+    "section": "Segmented DACS",
+    "text": "Segmented DACS\nOne approach to reducing glitches is to use a segmented DAC\n\nHigher order bits use a themometer coded DAC\nlower order bits use a binary weighted capacitive DAC\nthe two outputs are summed"
+  },
+  {
     "objectID": "lecture-04-notes.html#anti-imaging-reconstruction-filter",
     "href": "lecture-04-notes.html#anti-imaging-reconstruction-filter",
     "title": "ECE 4624: Meeting 4",
@@ -1516,147 +1544,301 @@
     "href": "lecture-06-slides.html#section",
     "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
+  },
+  {
+    "objectID": "lecture-06-slides.html#dt-system-representations",
+    "href": "lecture-06-slides.html#dt-system-representations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "DT system representations",
+    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
+  },
+  {
+    "objectID": "lecture-06-slides.html#system-properties-and-classification",
+    "href": "lecture-06-slides.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 6",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
   },
   {
     "objectID": "lecture-06-slides.html#memory",
     "href": "lecture-06-slides.html#memory",
     "title": "ECE 4624: Meeting 6",
     "section": "Memory",
-    "text": "Memory"
+    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
   },
   {
     "objectID": "lecture-06-slides.html#invertability",
     "href": "lecture-06-slides.html#invertability",
     "title": "ECE 4624: Meeting 6",
     "section": "Invertability",
-    "text": "Invertability"
+    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
   },
   {
     "objectID": "lecture-06-slides.html#causality",
     "href": "lecture-06-slides.html#causality",
     "title": "ECE 4624: Meeting 6",
     "section": "Causality",
-    "text": "Causality"
+    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
   },
   {
     "objectID": "lecture-06-slides.html#stability",
     "href": "lecture-06-slides.html#stability",
     "title": "ECE 4624: Meeting 6",
     "section": "Stability",
-    "text": "Stability"
+    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
   },
   {
     "objectID": "lecture-06-slides.html#time-invariance",
     "href": "lecture-06-slides.html#time-invariance",
     "title": "ECE 4624: Meeting 6",
     "section": "Time-invariance",
-    "text": "Time-invariance"
+    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
   },
   {
     "objectID": "lecture-06-slides.html#linearity",
     "href": "lecture-06-slides.html#linearity",
     "title": "ECE 4624: Meeting 6",
     "section": "Linearity",
-    "text": "Linearity"
+    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
   },
   {
-    "objectID": "lecture-06-slides.html#recursive-form",
-    "href": "lecture-06-slides.html#recursive-form",
+    "objectID": "lecture-06-slides.html#difference-equations",
+    "href": "lecture-06-slides.html#difference-equations",
     "title": "ECE 4624: Meeting 6",
-    "section": "recursive form",
-    "text": "recursive form"
+    "section": "Difference Equations",
+    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
   },
   {
-    "objectID": "lecture-06-slides.html#delay-form",
-    "href": "lecture-06-slides.html#delay-form",
+    "objectID": "lecture-06-slides.html#lccde",
+    "href": "lecture-06-slides.html#lccde",
     "title": "ECE 4624: Meeting 6",
-    "section": "delay form",
-    "text": "delay form"
+    "section": "LCCDE",
+    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
   },
   {
-    "objectID": "lecture-06-slides.html#advance-form",
-    "href": "lecture-06-slides.html#advance-form",
+    "objectID": "lecture-06-slides.html#advance-and-delay-operators",
+    "href": "lecture-06-slides.html#advance-and-delay-operators",
     "title": "ECE 4624: Meeting 6",
-    "section": "advance form",
-    "text": "advance form"
+    "section": "Advance and Delay Operators",
+    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#iterative-solution-of-lccdes",
+    "href": "lecture-06-slides.html#iterative-solution-of-lccdes",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Iterative solution of LCCDEs",
+    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
+    "href": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Solution of the homogeneous LCCDE",
+    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#section-1",
+    "href": "lecture-06-slides.html#section-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "",
+    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#example",
+    "href": "lecture-06-slides.html#example",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Example:",
+    "text": "Example:"
+  },
+  {
+    "objectID": "lecture-06-slides.html#impulse-response-from-lccde",
+    "href": "lecture-06-slides.html#impulse-response-from-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Impulse response from LCCDE",
+    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
+  },
+  {
+    "objectID": "lecture-06-slides.html#examples",
+    "href": "lecture-06-slides.html#examples",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
+  },
+  {
+    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
+    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for IIR filters",
+    "text": "LCCDE and impulse response for IIR filters"
+  },
+  {
+    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
+    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for FIR filters",
+    "text": "LCCDE and impulse response for FIR filters"
+  },
+  {
+    "objectID": "lecture-06-slides.html#examples-1",
+    "href": "lecture-06-slides.html#examples-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
   },
   {
     "objectID": "lecture-06-notes.html",
     "href": "lecture-06-notes.html",
     "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
   },
   {
     "objectID": "lecture-06-notes.html#section",
     "href": "lecture-06-notes.html#section",
     "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING: ?"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
+  },
+  {
+    "objectID": "lecture-06-notes.html#dt-system-representations",
+    "href": "lecture-06-notes.html#dt-system-representations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "DT system representations",
+    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
+  },
+  {
+    "objectID": "lecture-06-notes.html#system-properties-and-classification",
+    "href": "lecture-06-notes.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 6",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
   },
   {
     "objectID": "lecture-06-notes.html#memory",
     "href": "lecture-06-notes.html#memory",
     "title": "ECE 4624: Meeting 6",
     "section": "Memory",
-    "text": "Memory"
+    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
   },
   {
     "objectID": "lecture-06-notes.html#invertability",
     "href": "lecture-06-notes.html#invertability",
     "title": "ECE 4624: Meeting 6",
     "section": "Invertability",
-    "text": "Invertability"
+    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
   },
   {
     "objectID": "lecture-06-notes.html#causality",
     "href": "lecture-06-notes.html#causality",
     "title": "ECE 4624: Meeting 6",
     "section": "Causality",
-    "text": "Causality"
+    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
   },
   {
     "objectID": "lecture-06-notes.html#stability",
     "href": "lecture-06-notes.html#stability",
     "title": "ECE 4624: Meeting 6",
     "section": "Stability",
-    "text": "Stability"
+    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
   },
   {
     "objectID": "lecture-06-notes.html#time-invariance",
     "href": "lecture-06-notes.html#time-invariance",
     "title": "ECE 4624: Meeting 6",
     "section": "Time-invariance",
-    "text": "Time-invariance"
+    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
   },
   {
     "objectID": "lecture-06-notes.html#linearity",
     "href": "lecture-06-notes.html#linearity",
     "title": "ECE 4624: Meeting 6",
     "section": "Linearity",
-    "text": "Linearity"
+    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
   },
   {
-    "objectID": "lecture-06-notes.html#recursive-form",
-    "href": "lecture-06-notes.html#recursive-form",
+    "objectID": "lecture-06-notes.html#difference-equations",
+    "href": "lecture-06-notes.html#difference-equations",
     "title": "ECE 4624: Meeting 6",
-    "section": "recursive form",
-    "text": "recursive form"
+    "section": "Difference Equations",
+    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
   },
   {
-    "objectID": "lecture-06-notes.html#delay-form",
-    "href": "lecture-06-notes.html#delay-form",
+    "objectID": "lecture-06-notes.html#lccde",
+    "href": "lecture-06-notes.html#lccde",
     "title": "ECE 4624: Meeting 6",
-    "section": "delay form",
-    "text": "delay form"
+    "section": "LCCDE",
+    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
   },
   {
-    "objectID": "lecture-06-notes.html#advance-form",
-    "href": "lecture-06-notes.html#advance-form",
+    "objectID": "lecture-06-notes.html#advance-and-delay-operators",
+    "href": "lecture-06-notes.html#advance-and-delay-operators",
     "title": "ECE 4624: Meeting 6",
-    "section": "advance form",
-    "text": "advance form"
+    "section": "Advance and Delay Operators",
+    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#iterative-solution-of-lccdes",
+    "href": "lecture-06-notes.html#iterative-solution-of-lccdes",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Iterative solution of LCCDEs",
+    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
+    "href": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Solution of the homogeneous LCCDE",
+    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#section-1",
+    "href": "lecture-06-notes.html#section-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "",
+    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#example",
+    "href": "lecture-06-notes.html#example",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Example:",
+    "text": "Example:"
+  },
+  {
+    "objectID": "lecture-06-notes.html#impulse-response-from-lccde",
+    "href": "lecture-06-notes.html#impulse-response-from-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Impulse response from LCCDE",
+    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
+  },
+  {
+    "objectID": "lecture-06-notes.html#examples",
+    "href": "lecture-06-notes.html#examples",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
+  },
+  {
+    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
+    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for IIR filters",
+    "text": "LCCDE and impulse response for IIR filters"
+  },
+  {
+    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
+    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for FIR filters",
+    "text": "LCCDE and impulse response for FIR filters"
+  },
+  {
+    "objectID": "lecture-06-notes.html#examples-1",
+    "href": "lecture-06-notes.html#examples-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
   },
   {
     "objectID": "index.html",
@@ -2293,105 +2475,203 @@
     "href": "lecture-05-notes.html",
     "title": "ECE 4624: Meeting 5",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
   },
   {
     "objectID": "lecture-05-notes.html#section",
     "href": "lecture-05-notes.html#section",
     "title": "ECE 4624: Meeting 5",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
   },
   {
-    "objectID": "lecture-05-notes.html#board-description",
-    "href": "lecture-05-notes.html#board-description",
+    "objectID": "lecture-05-notes.html#dsp-hardware-platforms",
+    "href": "lecture-05-notes.html#dsp-hardware-platforms",
     "title": "ECE 4624: Meeting 5",
-    "section": "board description",
-    "text": "board description"
+    "section": "DSP Hardware Platforms",
+    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
   },
   {
-    "objectID": "lecture-05-notes.html#platformio-ide",
-    "href": "lecture-05-notes.html#platformio-ide",
+    "objectID": "lecture-05-notes.html#dsp-programming-models-and-languages",
+    "href": "lecture-05-notes.html#dsp-programming-models-and-languages",
     "title": "ECE 4624: Meeting 5",
-    "section": "PlatformIO IDE",
-    "text": "PlatformIO IDE"
+    "section": "DSP Programming Models and Languages",
+    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
   },
   {
-    "objectID": "lecture-05-notes.html#event-loop",
-    "href": "lecture-05-notes.html#event-loop",
+    "objectID": "lecture-05-notes.html#factors-when-choosing-hardware",
+    "href": "lecture-05-notes.html#factors-when-choosing-hardware",
     "title": "ECE 4624: Meeting 5",
-    "section": "event loop",
-    "text": "event loop"
+    "section": "Factors when Choosing Hardware",
+    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
   },
   {
-    "objectID": "lecture-05-notes.html#adc-setup",
-    "href": "lecture-05-notes.html#adc-setup",
+    "objectID": "lecture-05-notes.html#architectures",
+    "href": "lecture-05-notes.html#architectures",
     "title": "ECE 4624: Meeting 5",
-    "section": "ADC Setup",
-    "text": "ADC Setup"
+    "section": "Architectures",
+    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
   },
   {
-    "objectID": "lecture-05-notes.html#dac-setup",
-    "href": "lecture-05-notes.html#dac-setup",
+    "objectID": "lecture-05-notes.html#basic-computational-elements",
+    "href": "lecture-05-notes.html#basic-computational-elements",
     "title": "ECE 4624: Meeting 5",
-    "section": "DAC Setup",
-    "text": "DAC Setup"
+    "section": "Basic computational elements",
+    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
   },
   {
-    "objectID": "lecture-05-notes.html#resources",
-    "href": "lecture-05-notes.html#resources",
+    "objectID": "lecture-05-notes.html#fixed-point-representation-and-hardware",
+    "href": "lecture-05-notes.html#fixed-point-representation-and-hardware",
     "title": "ECE 4624: Meeting 5",
-    "section": "resources",
-    "text": "resources"
+    "section": "Fixed-Point Representation and Hardware",
+    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
+  },
+  {
+    "objectID": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
+    "href": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Qm.n format",
+    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
+  },
+  {
+    "objectID": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
+    "href": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point representation of negative numbers",
+    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
+  },
+  {
+    "objectID": "lecture-05-notes.html#floating-point-representation-and-hardware",
+    "href": "lecture-05-notes.html#floating-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Floating-Point Representation and Hardware",
+    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
+  },
+  {
+    "objectID": "lecture-05-notes.html#quantization-errors",
+    "href": "lecture-05-notes.html#quantization-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Quantization Errors",
+    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
+  },
+  {
+    "objectID": "lecture-05-notes.html#arithmetic-errors",
+    "href": "lecture-05-notes.html#arithmetic-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Arithmetic Errors",
+    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
+  },
+  {
+    "objectID": "lecture-05-notes.html#course-development-system",
+    "href": "lecture-05-notes.html#course-development-system",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Course Development System",
+    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
+  },
+  {
+    "objectID": "lecture-05-notes.html#lab-1",
+    "href": "lecture-05-notes.html#lab-1",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Lab 1",
+    "text": "Lab 1"
   },
   {
     "objectID": "lecture-05-slides.html#section",
     "href": "lecture-05-slides.html#section",
     "title": "ECE 4624: Meeting 5",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture is largely a review of prerequisite material from ECE 2564 (Embedded Systems).\nREADING: ?"
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
   },
   {
-    "objectID": "lecture-05-slides.html#board-description",
-    "href": "lecture-05-slides.html#board-description",
+    "objectID": "lecture-05-slides.html#dsp-hardware-platforms",
+    "href": "lecture-05-slides.html#dsp-hardware-platforms",
     "title": "ECE 4624: Meeting 5",
-    "section": "board description",
-    "text": "board description"
+    "section": "DSP Hardware Platforms",
+    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
   },
   {
-    "objectID": "lecture-05-slides.html#platformio-ide",
-    "href": "lecture-05-slides.html#platformio-ide",
+    "objectID": "lecture-05-slides.html#dsp-programming-models-and-languages",
+    "href": "lecture-05-slides.html#dsp-programming-models-and-languages",
     "title": "ECE 4624: Meeting 5",
-    "section": "PlatformIO IDE",
-    "text": "PlatformIO IDE"
+    "section": "DSP Programming Models and Languages",
+    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
   },
   {
-    "objectID": "lecture-05-slides.html#event-loop",
-    "href": "lecture-05-slides.html#event-loop",
+    "objectID": "lecture-05-slides.html#factors-when-choosing-hardware",
+    "href": "lecture-05-slides.html#factors-when-choosing-hardware",
     "title": "ECE 4624: Meeting 5",
-    "section": "event loop",
-    "text": "event loop"
+    "section": "Factors when Choosing Hardware",
+    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
   },
   {
-    "objectID": "lecture-05-slides.html#adc-setup",
-    "href": "lecture-05-slides.html#adc-setup",
+    "objectID": "lecture-05-slides.html#architectures",
+    "href": "lecture-05-slides.html#architectures",
     "title": "ECE 4624: Meeting 5",
-    "section": "ADC Setup",
-    "text": "ADC Setup"
+    "section": "Architectures",
+    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
   },
   {
-    "objectID": "lecture-05-slides.html#dac-setup",
-    "href": "lecture-05-slides.html#dac-setup",
+    "objectID": "lecture-05-slides.html#basic-computational-elements",
+    "href": "lecture-05-slides.html#basic-computational-elements",
     "title": "ECE 4624: Meeting 5",
-    "section": "DAC Setup",
-    "text": "DAC Setup"
+    "section": "Basic computational elements",
+    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
   },
   {
-    "objectID": "lecture-05-slides.html#resources",
-    "href": "lecture-05-slides.html#resources",
+    "objectID": "lecture-05-slides.html#fixed-point-representation-and-hardware",
+    "href": "lecture-05-slides.html#fixed-point-representation-and-hardware",
     "title": "ECE 4624: Meeting 5",
-    "section": "resources",
-    "text": "resources"
+    "section": "Fixed-Point Representation and Hardware",
+    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
+  },
+  {
+    "objectID": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
+    "href": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Qm.n format",
+    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
+  },
+  {
+    "objectID": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
+    "href": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point representation of negative numbers",
+    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
+  },
+  {
+    "objectID": "lecture-05-slides.html#floating-point-representation-and-hardware",
+    "href": "lecture-05-slides.html#floating-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Floating-Point Representation and Hardware",
+    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
+  },
+  {
+    "objectID": "lecture-05-slides.html#quantization-errors",
+    "href": "lecture-05-slides.html#quantization-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Quantization Errors",
+    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
+  },
+  {
+    "objectID": "lecture-05-slides.html#arithmetic-errors",
+    "href": "lecture-05-slides.html#arithmetic-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Arithmetic Errors",
+    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
+  },
+  {
+    "objectID": "lecture-05-slides.html#course-development-system",
+    "href": "lecture-05-slides.html#course-development-system",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Course Development System",
+    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
+  },
+  {
+    "objectID": "lecture-05-slides.html#lab-1",
+    "href": "lecture-05-slides.html#lab-1",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Lab 1",
+    "text": "Lab 1"
   },
   {
     "objectID": "lecture-15-notes.html",
