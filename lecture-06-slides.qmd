@@ -6,18 +6,27 @@ author:
   - name: Chris Wyatt
     email: clwyatt@vt.edu
     affiliations: ECE@Virginia Tech
-    
+
 format: 
   revealjs:
     self-contained: false
     slide-number: true
+    default-image-extension: svg
     theme: 
       - clw-slide-style.scss
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
     
   html:
+    default-image-extension: svg
     output-file: lecture-06-notes.html
     toc: false
+    echo: false
+    format-links: false
+
+  beamer:
+    default-image-extension: pdf
+    output-file: lecture-06-slides.pdf
+    fontsize: 8pt
     
 html-math-method:
   method: mathjax
@@ -28,32 +37,224 @@ html-math-method:
 
 Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today's lecture is a review of prerequisite material from ECE 2714.
 
-READING: ?
+READING:
 
-# Properties and Classification of DT systems
+* PM 4.1.4 and Chapter 6
+* 2714 Supplementary Notes 5 and 7
 
-## Memory
+Topics:
 
-## Invertability
+* Properties and Classification of DT systems
+* Difference Equations
+* Impulse Response of LCCDE
 
-## Causality
+## DT system representations
 
-## Stability
+We can mathematically represent, or model, DT systems multiple ways.
 
-## Time-invariance
+- purely mathematically - in time domain we will use
 
-## Linearity
+  - linear, constant coefficient difference equations, e.g.
+    $$y[n] = a y[n-1] + b y[n-2] + x[n]$$
 
-# Difference Equations
+  - DT impulse response $h[n]$
 
-# Iterative Solution
+- purely mathematically - in frequency domain we will use
 
-# LCCDE
+  - frequency response
 
-## recursive form
+  - transfer function (complex frequency, covered in ECE 3704)
 
-## delay form
+- graphically, using a mixture of math and block diagrams
 
-## advance form
+## System properties and classification
 
-# Impulse Response of LCCDE
+Choosing the right kind of system model is important. Here are some
+important properties that allow us to broadly classify systems.
+
+- Memory
+
+- Invertability
+
+- Causality
+
+- Stability
+
+- Time-invariance
+
+- Linearity
+
+## Memory {.t}
+
+- The output of a DT system with memory depends on previous or future
+inputs and is said to be *dynamic*.
+- Otherwise the system is memoryless or *instantaneous*, and the output $y[n]$ at index $n$ depends only on
+$x[n]$.
+
+## Invertability {.t}
+
+* A system is invertible if there exists a system that when placed in
+series with the original recovers the input.
+
+$$x[n] \mapsto{T} y[n] \mapsto{T^{-1}} x[n]$$
+where $T^{-1}$ is the inverse system of $T$.
+
+## Causality {.t}
+
+* A DT system is causal if the output at index $n$ depends on the input
+for index values at or before $n$:
+$$y[n] \;\text{depends on}\; x[m] \;\text{for} \; m \leq n$$
+* While all physical CT systems are causal, practical DT systems may not be since we
+can use memory to \"shift time\".
+* For CT systems we cannot store the infinite number of values between two time points $t_1$ and $t_2$, but
+we can store the $n_2-n_1$ values of a DT system between between two indices $n_1$ and $n_2$ (assuming infinite precision).
+
+## Stability {.t}
+
+* A DT system is (BIBO) stable if applying a bounded-input (BI)
+$$\left|x[n]\right| < \infty \; \forall \; n$$ results in a
+bounded-output (BO) $x[n] \mapsto y[n]$ and
+$$\left|y[n]\right| < \infty \; \forall \; n$$
+* Note, bounded in practice is limited by the physical situation, e.g. the number of bits used to
+store values.
+
+## Time-invariance {.t}
+
+* A DT system is time(index)-invariant if, given
+$$x[n] \mapsto y[n]$$
+then an index-shift of the input leads to the same index-shift in the
+output
+$$x[n-m] \mapsto y[n-m]$$
+
+
+## Linearity {.t}
+
+* A DT system is linear if the output due to a sum of scaled individual
+inputs is the same as the scaled sum of the individual outputs with
+respect to those inputs.
+
+If
+$$x_1[n] \mapsto y_1[n] \;\text{and}\; x_2[n] \mapsto y_2[n]$$
+then
+$$a x_1[n] + b x_2[n] \mapsto a y_1[n] + b y_2[n]$$ for constants $a$
+and $b$.
+
+* Note this property extends to sums of arbitrary signals, e.g.
+if $$x_i[n] \mapsto y_i[n] \; \forall\; i \in [1 \cdots N]$$ then given
+$N$ constants $a_i$, if the system is linear
+$$\sum\limits_{i = 1}^N a_i x_i[n] \mapsto \sum\limits_{i = 1}^N a_i y_i[n]$$
+
+* This is a very important property, called *superposition*, and it
+simplifies the analysis of systems greatly.
+
+
+## Difference Equations {.t}
+
+- A *difference equation* is a relation among combinations of two DT
+functions and shifted versions of them. 
+- Similar to differential
+equations where the solution is a CT function, the solution to a
+difference equation is a DT function.
+
+## LCCDE 
+
+A *linear*, *constant-coefficient*, difference equation (LCCDE) comes in
+three equivalent forms.
+
+- Delay form.
+  $$\sum\limits_{k = 0}^N a_k y[n-k] = \sum\limits_{k = 0}^M b_k x[n-k]$$
+  or
+  $$a_0y[n] + a_1y[n-1] + \cdots a_N y[n-N] = b_0 x[n] + \cdots b_Mx[n-M]$$
+
+- Advance form. Let $n\rightarrow n+N$, then the delay form becomes
+  $$\sum\limits_{k = 0}^N a_k y[n+N-k] = \sum\limits_{k = 0}^M b_k x[n+N-k]$$
+  or
+  $$a_0y[n+N] + a_1y[n+N-1] + \cdots a_N y[n] = b_0 x[n+N] + \cdots b_Mx[n+N-M]$$
+
+- Recursive form. 
+  $$y[n] = - \frac{a_1}{a_0} y[n-1] - \cdots -\frac{a_N}{a_0} y[n-N] + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0} x[n-M]$$
+  
+The *order* of the system is given by max of $N$ and $M$. 
+
+## Advance and Delay Operators {.t}
+
+- Define the advance operator $E^m$ as shifting a DT
+function by positive $m$, i.e. $E^m x[n] = x[n+m]$
+- Define the delay operator
+$D^m$ as shifting a DT function by negative $m$, i.e.
+$D^m x[n] = x[n-m]$.
+
+## Iterative solution of LCCDEs {.t}
+
+To perform an iterative solution we need the difference equation in
+delay form
+
+$$y[n] =  - \left(\frac{a_1}{a_0}y[n-1] + \cdots \frac{a_N}{a_0} y[n-N]\right) + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0}x[n-M]$$
+
+Given an input and initial conditions for $y[n_0 - 1] \cdots y[n_0 - N]$ we can simulate $y[n]$ for $n \geq n_0$.
+
+## Solution of the homogeneous LCCDE {.t}
+
+- The iterative solution does not give us (directly) an analytical
+expression for the output at arbitrary $n$. We have to start at the
+initial conditions and compute our way up to $n$. 
+- We now consider an analytical solution when the input is zero, the solution to the
+*homogeneous* difference equation
+$$Q(E)\, y = a_0y[n+N] + a_1y[n+N-1] + \cdots a_N y[n] = 0 \; .$$ given
+$N$ sequential auxiliary conditions on $y$.
+
+## {.t}
+
+- Similar to differential equations, the homogeneous solution depends on
+the roots of the characteristic equation $Q(E)=0$ whose roots are either
+real or occur in complex conjugate pairs. 
+- Let $\lambda_i$ be the $i$-th
+root of $Q(E) = 0$, then the solution is of the form
+$$y[n] = \sum\limits_{i=1}^N C_i \lambda_i^{n}$$ where the parameters
+$C_i$ are determined from the auxiliary conditions.
+
+- For a real system (when the coefficients of the difference equation are
+real) and when the roots are complex
+$\lambda_{1,2} = |\lambda|e^{\pm j\beta}$, it is cleaner to assume a
+form for those terms as $$y[n] = C |\lambda|^n\cos(\beta n + \theta)$$
+for constants $C$ and $\theta$.
+
+## Example: 
+
+
+## Impulse response from LCCDE {.t}
+
+To find the solution to $Q(E)y=P(E)x$ when $x[n] = \delta[n]$ assuming $y[n] = 0$ for $n < 0$, giving the *impulse
+response* $y[n] = h[n]$.
+
+**Step 1:** Let $y_h$ be the homogeneous solution to $Q(E)y_h=0$ for
+$n > N$.
+
+**Step 2:** Assume a form for $h[n]$ given by
+$$h[n] = \frac{b_N}{a_N}\delta[n] + y_h[n]u[n]$$
+
+**Step 3:** Using the iterative procedure above find the $N$ auxiliary
+conditions we need by,
+
+- first, rewrite the equation in delay form and solve for $y[n]$,
+
+- then let $x[n] = \delta[n]$ and manually compute $h[0]$ assuming
+  $h[n] = 0$ for $n < 0$,
+
+- repeating the previous step for $h[1]$, continuing up to $h[N-1]$.
+
+**Step 4:** Using the auxillary conditions in step 3, solve for the
+constants in the solution $h[n]$ from step 2.
+
+Note we can check our solution for as many $n$ values as desired using the recursive form.
+
+## Examples:
+
+## LCCDE and impulse response for IIR filters
+
+
+## LCCDE and impulse response for FIR filters
+
+
+## Examples:
+

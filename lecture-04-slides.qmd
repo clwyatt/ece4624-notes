@@ -249,8 +249,6 @@ We can then digitally low-pass filter to remove some of this noise. This improve
 
 For example if K=4, then we get a modest 6 dB improvement.
 
-
-
 ## Sigma-Delta Modulation {.t}
 
 We can "shape" the noise power spectral density using a modulator to push more of it into the digital filter stop band.
@@ -358,6 +356,20 @@ Switched-capacitor DACs can use arrays of identical, unit-sized capacitors.
 
 Most SAR ADC devices use a capactive DAC internally to reach 12-14 bits of precision.
 
+## Glitches
+
+- The charging and discharging in capacitive DACs can lead to "glitches"
+- These can be pronounced when there are large changes (high order bits)
+
+## Segmented DACS
+
+One approach to reducing glitches is to use a segmented DAC
+
+- Higher order bits use a themometer coded DAC
+- lower order bits use a binary weighted capacitive DAC
+- the two outputs are summed
+
+
 ## Anti-imaging (reconstruction) filter {.t}
 
 The zero-order hold is followed by the reconstruction (anti-imaging)
@@ -377,4 +389,5 @@ The Sigma-Delta ADC can effectively be reversed to get a Sigma-Delta DAC for mor
 
 * [Understanding SAR ADCs: Their Architecture and Comparison with Other ADCs ](https://www.analog.com/en/resources/technical-articles/successive-approximation-registers-sar-and-flash-adcs.html)
 Analog Devices Technical Article
-* Sigma-Delta ADCs and DACs, Analog Devices Application Note AN283
+* [Sigma-Delta ADCs and DACs](https://www.analog.com/media/en/technical-documentation/application-notes/292524291525717245054923680458171an283.pdf), Analog Devices Application Note AN283
+
