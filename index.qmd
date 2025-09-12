@@ -7,18 +7,18 @@ toc: false
 2. [CT and DT Signals](lecture-02-notes.html)
 3. [CT Fourier Transform](lecture-03-notes.html)
 4. [Sampling and Reconstruction](lecture-04-notes.html)
-5. Microcontroller Programming for DSP
-6. DT Systems as LCCDE and Impulse Response
-7. Software Design for DSP
-8. Time Domain Analysis of DT LTI Systems
-9. DT Fourier Series and Fourier Transform
-10. DT Frequency Response and Frequency Selective Filters
-11. Z Transform
-12. DT System Analysis using Z-Transform
-13. DT Block diagrams and Signal Flow Graphs
-14. The Discrete Fourier Transform
-15. Applications of DFT
-16. Fast Fourier Transform
+5. [Microcontroller Programming for DSP](lecture-05-notes.html)
+6. [DT Systems as LCCDE and Impulse Response](lecture-06-notes.html)
+7. Time Domain Analysis of DT LTI Systems
+8. DT Fourier Series and Fourier Transform
+9. DT Frequency Response and Frequency Selective Filters
+10. Z Transform
+11. DT System Analysis using Z-Transform
+12. DT Block diagrams and Signal Flow Graphs
+13. The Discrete Fourier Transform
+14. Applications of DFT
+15. Fast Fourier Transform
+
 18. FIR Filter Structures
 19. IIR Filter Structures
 20. Quantization and Round-Off Effects
