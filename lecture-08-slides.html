@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.7.23">
 
   <meta name="author" content="Chris Wyatt">
-  <meta name="dcterms.date" content="2025-08-22">
+  <meta name="dcterms.date" content="2025-09-17">
   <title>ECE 4624: DSP and Filter Design -- Fall 2025 – ECE 4624: Meeting 8</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -129,7 +129,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">ECE 4624: Meeting 8</h1>
-  <p class="subtitle">Time Domain Analysis of DT LTI Systems</p>
+  <p class="subtitle">DT Fourier Series and Fourier Transform</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,25 +145,180 @@ Chris Wyatt
     </div>
 </div>
 
-  <p class="date">2025-08-22</p>
+  <p class="date">2025-09-17</p>
 </section>
-<section id="section" class="slide level2">
+<section id="section" class="slide level2 t">
 <h2></h2>
-<p>Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.</p>
-<p>READING: ?</p>
+<p>Today we will review the Fourier representation of DT signals and Fourier analysis of stable DT systems.</p>
+<p>READING:</p>
+<ul>
+<li>PM 4.3 - 4.5</li>
+<li>ECE 2714 Supplementary Notes Chapters 15 and 17</li>
+</ul>
+<p>Topics:</p>
+<ul>
+<li>DT Fourier Series / Discrete Fourier Transform</li>
+<li>DT Fourier Transform</li>
+<li>Frequency Domain Analysis of DT systems</li>
+</ul>
 </section>
-<section id="dt-lti-systems-and-convolution" class="title-slide slide level1 center">
-<h1>DT-LTI Systems and Convolution</h1>
-
+<section id="section-1" class="slide level2 t">
+<h2></h2>
+<p>A DT signal <span class="math inline">\(x[n]\)</span> is periodic if <span class="math inline">\(x[n] = x[n+kN]\)</span> for integer multiple <span class="math inline">\(k\)</span> and fundamental period <span class="math inline">\(N \in \mathbb{Z}\)</span>.</p>
+<ul>
+<li>the fundamental frequency is <span class="math inline">\(\omega_0 = \frac{2\pi}{N}\)</span> rad/sec</li>
+</ul>
 </section>
-
-<section id="eigenfunction-for-dt-lti-systems" class="title-slide slide level1 center">
-<h1>Eigenfunction for DT-LTI Systems</h1>
-
+<section id="section-2" class="slide level2 t">
+<h2></h2>
+<p>When <span class="math inline">\(x[n]\)</span> is periodic the complex base of the Eigenfunction becomes <span class="math inline">\(z_k = e^{jk\omega_0}\)</span>, and the decomposition is a finite sum.</p>
+<p>This gives the input-output relationship for a stable DT LTI system as</p>
+<p><span class="math display">\[
+x[n] = \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0n} \;\longrightarrow\;  y[n] = \sum\limits_{k = N_0}^{N_0 + N-1} H\left(e^{j k\omega_0}\right) a_k e^{jk\omega_0 n}
+\]</span> where <span class="math inline">\(H\left(e^{j k\omega_0}\right)\)</span> are the Eigenvalues or DT frequency response.</p>
 </section>
-
-<section id="correlation" class="title-slide slide level1 center">
-<h1>Correlation</h1>
+<section id="fourier-series-synthesis-equation" class="slide level2 t">
+<h2>Fourier Series Synthesis Equation</h2>
+<p><span class="math display">\[
+x[n] = \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0n}
+\]</span></p>
+<ul>
+<li>the <span class="math inline">\(a_k\)</span> are the Fourier series coefficients</li>
+</ul>
+</section>
+<section id="fourier-series-analysis-equation" class="slide level2 t">
+<h2>Fourier Series Analysis Equation</h2>
+<p><span class="math display">\[
+a_k = \frac{1}{N} \sum\limits_{n = N_0}^{N_0+N-1} x[n]e^{-j\frac{2\pi}{N} k n }
+\]</span></p>
+<aside class="notes">
+<p>Note the coefficients themselves are periodic in <span class="math inline">\(k\)</span>, with period <span class="math inline">\(N\)</span> and can be viewed as a discrete-frequency signal.</p>
+<p>This is only one of three ways we can find the Fourier Series coefficients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-the-fourier-series-coefficients-using-linear-algebra" class="slide level2 t">
+<h2>Finding the Fourier series coefficients using linear algebra</h2>
+<p><span class="math display">\[\begin{align*}
+  x[N_0] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0N_0}\\
+  x[N_0+1] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0(N_0+1)}\\
+  \vdots\hspace{2em} &amp;= \hspace{2em}\vdots\\
+  x[N_0+N-1] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0(N_0+N-1)}\\
+\end{align*}\]</span></p>
+<aside class="notes">
+<p>Another approach to find the coefficients <span class="math inline">\(a_k\)</span> is to note that there are a finite number of terms in the summation and the signal has a finite number of values over one period. This gives a system of <span class="math inline">\(N\)</span> linear equations in <span class="math inline">\(N\)</span> unknowns (the <span class="math inline">\(a_k\)</span>’s) which can be solved to find the coefficients using linear algebra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="relationship-between-fourier-series-coefficients-and-discrete-fourier-transform" class="slide level2">
+<h2>Relationship between Fourier series coefficients and Discrete Fourier Transform</h2>
+<p>Given a finite-length sequence of real or complex numbers <span class="math inline">\(x[n]\)</span>, indexed from <span class="math inline">\(0\)</span> to <span class="math inline">\(N-1\)</span>, the or DFT is given by <span class="math display">\[
+X[k] = \sum_{n = 0}^{N-1}  x[n] e^{-j \frac{2\pi}{N}k n}
+\]</span> for <span class="math inline">\(k = 0, 1, 2, \cdots, N-1\)</span>. When <span class="math inline">\(N\)</span> is a power of 2, an efficient algorithm to compute this result exists and is called the or FFT.</p>
+<p>Note the similarity to the DT Fourier Series when <span class="math inline">\(N_0 = 0\)</span> <span class="math display">\[
+a_k = \frac{1}{N}\sum\limits_{n = N_0}^{N_0 + N - 1} x[n] e^{-j\frac{2\pi}{N}kn} =  \frac{1}{N}\sum\limits_{n = 0}^{N - 1} x[n] e^{-j\frac{2\pi}{N}kn} = \frac{1}{N} X[k]
+\]</span></p>
+<aside class="notes">
+<p>The computation of the Fourier series coefficents and the Discrete Fourier Transform of a finite length signal are the same up to a constant. This gives yet another approach to finding the <span class="math inline">\(a_k\)</span>’s that is very efficient via the FFT.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="spectrum" class="slide level2 t">
+<h2>Spectrum</h2>
+<ul>
+<li>a plot of <span class="math inline">\(|a_k|\)</span> versus <span class="math inline">\(k\)</span> is called the amplitude spectrum</li>
+<li>a plot of <span class="math inline">\(\angle a_k\)</span> versus <span class="math inline">\(k\)</span> is called the phase spectrum</li>
+<li>together they are just the spectrum</li>
+<li>a plot of <span class="math inline">\(|a_k|^2\)</span> versus <span class="math inline">\(k\)</span> is called the power spectrum</li>
+</ul>
+<aside class="notes">
+<p>The sum of all the terms in the power spectrum, by Parsevals theorem, is the Power of the DT signal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="properties-of-the-dt-fourier-series" class="slide level2">
+<h2>Properties of the DT Fourier Series</h2>
+<p>Given two signals <span class="math inline">\(x[n]\)</span> and <span class="math inline">\(y[n]\)</span> periodic in <span class="math inline">\(N\)</span> with <span class="math inline">\(\omega_0 = \frac{2\pi}{N}\)</span>, having DT Fourier coefficients <span class="math inline">\(a_k\)</span> and <span class="math inline">\(b_k\)</span> respectively.</p>
+<ul>
+<li><p>Linearity. The coefficients of the signal <span class="math display">\[z[n] = Ax[n] + By[n] \mbox{ for constants } A,B\]</span> are <span class="math inline">\(Aa_k + Bb_k\)</span></p></li>
+<li><p>Index Shifting. The coefficients of <span class="math display">\[z[n] = x[n-n_0] \mbox{ are } e^{-jk\omega_0 n_0}a_k\]</span> that is, it adds a phase shift.</p></li>
+<li><p>Frequency Shift. The coefficients of <span class="math display">\[z[n] = x[n]e^{jm\omega_0n} \mbox{ are } a_{k-m}\]</span></p></li>
+<li><p>Index Reversal. The coefficients of <span class="math display">\[z[n] = x[-n] \mbox{ are } a_{-k}\]</span></p></li>
+</ul>
+</section>
+<section id="properties-of-the-dt-fourier-series-1" class="slide level2">
+<h2>Properties of the DT Fourier Series</h2>
+<ul>
+<li><p>Multiplication. The coefficients of <span class="math display">\[z[n] = x[n] \cdot y[n] \mbox{ are } \sum\limits_{m = N_0}^{N_0 + N -1} a_m\cdot b_{k-m}\]</span> the discrete convolution of the individual signals’ coefficients.</p></li>
+<li><p>Convolution. The coefficients of <span class="math display">\[z[n] = x[n] * y[n] \mbox{ are } N a_k b_k\]</span></p></li>
+<li><p>Conjugate Symmetry. The coefficients of <span class="math display">\[z[n] = x^*[n] = \Re{x[n]} - j\Im{x[n]} \mbox{ are } a_{-k}^*\]</span> A consequence of this property is that real, even signals have real, even <span class="math inline">\(a_k\)</span>; and real, odd signals have purely imaginary, odd <span class="math inline">\(a_k\)</span>. Thus if <span class="math inline">\(x[n]\)</span> is real <span class="math inline">\(|a_k|\)</span> is an even periodic function of <span class="math inline">\(k\)</span> and <span class="math inline">\(\angle a_k\)</span> is an odd periodic function of <span class="math inline">\(k\)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-the-dt-fourier-series-2" class="slide level2 t">
+<h2>Properties of the DT Fourier Series</h2>
+<ul>
+<li>Parseval’s Relation. The power of the signal with Fourier series coefficients is <span class="math display">\[\frac{1}{N} \sum\limits_{n = N_0}^{N_0 + N -1} |x[n]|^2\;dt = \sum\limits_{k = N_0}^{N_0+N-1} |a_k|^2\]</span></li>
+</ul>
+</section>
+<section id="dt-fourier-transform" class="slide level2">
+<h2>DT Fourier Transform</h2>
+<ul>
+<li><p>Recall the complex exponential <span class="math inline">\(z^{n}\)</span> for <span class="math inline">\(z\in\mathbb{C}\)</span> is the Eigenfunction of DT LTI systems. If we can decompose an input into a sum of such signals, we can easily determine the output using the superposition principle. We consider such a decomposition when the input is now aperiodic, called the DT Fourier Transform (DTFT).</p></li>
+<li><p>In contrast to the DT Fourier series, in this case the complex exponent of the Eigenfunction becomes <span class="math inline">\(z = e^{j\omega}\)</span> a continuous variable, and the decomposition is an uncountably infinite sum (integral). This gives the input-output relationship for a stable DT LTI system as</p></li>
+</ul>
+<p><span class="math display">\[
+x[n] = \frac{1}{2\pi}\int\limits_{2\pi} X\left(e^{j\omega}\right) \, e^{j \omega n}\; d\omega \;\longrightarrow\; y[n] = \frac{1}{2\pi}\int\limits_{2\pi} H\left(e^{j\omega}\right) X\left(e^{j\omega}\right) \, e^{j \omega n}\; d\omega
+\]</span></p>
+<p>where <span class="math inline">\(H\left(e^{j \omega}\right)\)</span> are the Eigenvalues, again called the .</p>
+<aside class="notes">
+<p>The notation <span class="math inline">\(X\left(e^{j\omega}\right)\)</span> can be confusing. It just emphasizes that <span class="math inline">\(z \rightarrow e^{j\omega}\)</span>. The expressions are functions of the independent variable <span class="math inline">\(\omega\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

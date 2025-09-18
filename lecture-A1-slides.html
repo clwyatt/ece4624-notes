@@ -29,72 +29,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-c1359389e42036122689ea063f993fec.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -195,7 +129,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">ECE 4624: Meeting 7</h1>
-  <p class="subtitle">Time Domain Analysis of DT LTI Systems</p>
+  <p class="subtitle">Software Design for DSP</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,173 +147,58 @@ Chris Wyatt
 
   <p class="date">2025-09-18</p>
 </section>
-<section id="section" class="slide level2 t">
+<section id="section" class="slide level2">
 <h2></h2>
-<p>Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.</p>
-<p>READING:</p>
-<ul>
-<li>PM 2.3 and 2.6</li>
-<li>ECE 2714 Supplementary Notes Chapters 9 and 13</li>
-</ul>
-<p>Topics:</p>
-<ul>
-<li>Convolution</li>
-<li>DT time-domain analysis</li>
-<li>Correlation</li>
-<li>Eigen-Function for DT systems</li>
-</ul>
+<p>Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.</p>
+<p>READING: ?</p>
 </section>
-<section id="review-dt-lti-systems-and-superposition-property" class="slide level2 t">
-<h2>Review DT LTI systems and superposition property</h2>
-<p>If a DT system is LTI then the superposition property holds. Given a system where <span class="math display">\[x_i[n] \mapsto y_i[n] \; \forall\; i\]</span> then <span class="math display">\[\sum\limits_{i} a_i x_i[n] \mapsto \sum\limits_{i} a_i y_i[n]\]</span></p>
+<section id="computation-of-the-lccde-output" class="title-slide slide level1 center">
+<h1>Computation of the LCCDE output</h1>
+
 </section>
-<section id="convolution-sum" class="slide level2 t">
-<h2>Convolution Sum</h2>
-<p>Let <span class="math inline">\(h[n]\)</span> be the DT impulse response. Then if the system is LTI the output for an input <span class="math inline">\(x[n]\)</span> is given by</p>
-<p><span class="math display">\[y[n] = \sum\limits_{m = -\infty}^{\infty} x[m]h[n-m] = x[n] * h[n]\]</span></p>
-<p>This is called the convolution sum.</p>
+
+<section id="core-data-structure-ring-buffers" class="title-slide slide level1 center">
+<h1>Core data structure: ring buffers</h1>
+
 </section>
-<section id="graphical-view-of-the-convolution-sum." class="slide level2 t">
-<h2>Graphical View of the Convolution Sum.</h2>
+
+<section id="basic-operation-mac" class="title-slide slide level1 center">
+<h1>Basic operation: MAC</h1>
+
 </section>
-<section id="example" class="slide level2 t">
-<h2>Example</h2>
-<p>Find the convolution of two unit step functions.</p>
+
+<section id="general-purpose-computer-implementation-in-floating-point-and-fixed-point" class="title-slide slide level1 center">
+<h1>General-purpose computer implementation in floating-point and fixed-point</h1>
+<p>Aside: advice on development and debugging</p>
 </section>
-<section id="example-1" class="slide level2 t">
-<h2>Example</h2>
-<p>Find the convolution if the signals</p>
-<p><span class="math display">\[
-x_1[n] = \gamma^n\, u[n] \mbox{ for } \gamma \in\mathbb{R}
-\]</span> and <span class="math display">\[
-x_2[n] = u[n]
-\]</span></p>
+
+<section id="using-simd-on-gp-cpus" class="title-slide slide level1 center">
+<h1>using SIMD on GP CPUs</h1>
+
 </section>
-<section id="properties-of-dt-convolution" class="slide level2">
-<h2>Properties of DT Convolution</h2>
-<p>There are several useful properties of convolution. We do not prove these here, but it is not terribly difficult to do so. Given signals <span class="math inline">\(x_1[n]\)</span>, <span class="math inline">\(x_2[n]\)</span>, and <span class="math inline">\(x_3[n]\)</span>:</p>
-<dl>
-<dt>Commutative Property</dt>
-<dd>
-<p>The ordering of the signals does not matter. <span class="math display">\[x_1[n] * x_2[n] = x_2[n] * x_1[n]\]</span></p>
-</dd>
-<dt>Distributive Propery</dt>
-<dd>
-<p>Convolution is distributed over addition. <span class="math display">\[x_1[n] * \left(x_2[n] + x_3[n]\right) = \left(x_1[n] * x_2[n] \right) + \left(x_1[n] * x_3[n] \right)\]</span></p>
-</dd>
-<dt>Associative Property</dt>
-<dd>
-<p>The order of convolution does not matter. <span class="math display">\[x_1[n] * \left(x_2[n] * x_3[n]\right) = \left(x_1[n] * x_2[n] \right) * x_3[n]\]</span></p>
-</dd>
-<dt>Index Shift</dt>
-<dd>
-<p>Given <span class="math inline">\(x_3[n] = x_1[n] * x_2[n]\)</span> then for index shifts <span class="math inline">\(m_1, m_2 \in \mathbb{R}\)</span> <span class="math display">\[x_1[n-m_1] * x_2[n-m_2] = x_3[n-m_1 - m_2]\]</span></p>
-</dd>
-<dt>Multiplicative Scaling</dt>
-<dd>
-<p>Given <span class="math inline">\(x_3[n] = x_1[n] * x_2[n]\)</span> then for constants <span class="math inline">\(a,b \in \mathbb{C}\)</span> <span class="math display">\[\left(a\, x_1[n]\right) * \left(b\, x_2[n]\right) = a\, b\, x_3[n]\]</span></p>
-</dd>
-</dl>
-<aside class="notes">
-<p>These properties can be used in combination with a table like that above to compute the convolution of a wide variety of signals without evaluating the summations.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+
+<section id="microcontroller-implementation-in-fixed-point" class="title-slide slide level1 center">
+<h1>microcontroller implementation in fixed-point</h1>
+<p>polling vs interrupts vs DMA</p>
 </section>
-<section id="example-2" class="slide level2 t">
-<h2>Example</h2>
-<p>Suppose an LTI system has an impulse response</p>
-<p><span class="math display">\[
-h[n] = \delta[n+1] - 2\delta[n] + \delta[n-1]
-\]</span> What is the output if the input is <span class="math display">\[
-x[n] = \left(\frac{1}{2}\right)^{|n|}
-\]</span></p>
+
+<section id="simd-in-cortex-m4" class="title-slide slide level1 center">
+<h1>SIMD in Cortex-M4</h1>
+<p>The Cortex-M4’s SIMD capabilities enable it to process multiple data elements with a single instruction. This is particularly useful for tasks involving vectors, matrices, and other data structures commonly encountered in digital signal processing.</p>
 </section>
-<section id="dt-convolution-of-finite-length-signals" class="slide level2 t">
-<h2>DT Convolution of Finite-Length Signals</h2>
-<ul>
-<li>For finite-length signals, DT convolution gives us an algorithm to determine their convolution.</li>
-<li>Suppose the signal <span class="math inline">\(x_1\)</span> is non-zero only over the interval <span class="math inline">\([N_1,M_1]\)</span>, and the signal <span class="math inline">\(x_2\)</span> is non-zero only over the interval <span class="math inline">\([N_2,M_2]\)</span>.</li>
-<li>The <em>length</em> of the signals are <span class="math inline">\(L_1 = M_1-N_1+1\)</span> and <span class="math inline">\(L_2 = M_2-N_2+1\)</span> respectively.</li>
-<li>The non-zero terms of the convolution sum (when the signals overlap) is then the range <span class="math inline">\([N_1+N_2,M_1+M_2]\)</span> and the sum can be truncated as:</li>
-</ul>
-<p><span class="math display">\[x_1[n] * x_2[n] = \sum\limits_{m = N_1+N_2}^{M_1+M_2} x_1[m]x_2[n-m]\]</span></p>
-<ul>
-<li>It is common to shift both signals so that they both start at index <span class="math inline">\(0\)</span> , zero-padding them both to have length <span class="math inline">\(L=L_1+L_2-1\)</span>.</li>
-<li>Then the convolution becomes <span class="math display">\[y = x_1 * x_2 = \sum\limits_{m = 0}^{L-1} x_1[m]x_2[L + n-m]\]</span> where the indexing of <span class="math inline">\(x_2\)</span> is modulo the signal length.</li>
-<li>The resulting signal after convolution, <span class="math inline">\(y\)</span>, is also of length <span class="math inline">\(L\)</span>, and can then be shifted back to start at <span class="math inline">\(N_1+N_2\)</span>.</li>
-</ul>
+
+<section id="dsp-extensions" class="title-slide slide level1 center">
+<h1>DSP Extensions</h1>
+<p>The Cortex-M4 builds upon the Armv7E-M architecture, which includes DSP extensions. These extensions include saturating arithmetic, single-cycle MAC instructions, and the optional single-precision floating-point unit (FPU), all contributing to efficient signal processing.</p>
 </section>
-<section id="example-3" class="slide level2 t">
-<h2>Example</h2>
-<p>Compute the convolution of the DT signals <span class="math inline">\(\{1,-1,1\}\)</span> and <span class="math inline">\(\{1,1,1,1\}\)</span></p>
+
+<section id="cmsis" class="title-slide slide level1 center">
+<h1>CMSIS</h1>
+<p>The Cortex Microcontroller Software Interface Standard (CMSIS) provides intrinsic functions that map directly to the Cortex-M4’s SIMD instructions. These functions allow developers to easily leverage SIMD capabilities within their C/C++ code.</p>
 </section>
-<section id="code-for-convolution-of-two-finite-length-signals" class="slide level2">
-<h2>Code for Convolution of two finite length signals</h2>
-<p>For the example above:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> L <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">//L1=3, L2=4, so L=6</span></span>
-<span id="cb1-2"><a></a><span class="dt">double</span> x1<span class="op">[</span>L<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span></span>
-<span id="cb1-3"><a></a><span class="dt">double</span> x2<span class="op">[</span>L<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span></span>
-<span id="cb1-4"><a></a><span class="dt">double</span> y<span class="op">[</span>L<span class="op">];</span></span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a><span class="cf">for</span><span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> n <span class="op">&lt;</span> L<span class="op">;</span> n<span class="op">++){</span></span>
-<span id="cb1-7"><a></a>   <span class="dt">double</span> sum <span class="op">=</span> <span class="fl">0.</span><span class="op">;</span></span>
-<span id="cb1-8"><a></a>   <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> m <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> m <span class="op">&lt;</span> L<span class="op">;</span> m<span class="op">++){</span></span>
-<span id="cb1-9"><a></a>      <span class="dt">int</span> idx <span class="op">=</span> <span class="op">(</span>L<span class="op">+</span>n<span class="op">-</span>m<span class="op">)</span> <span class="op">%</span> L<span class="op">;</span></span>
-<span id="cb1-10"><a></a>      sum <span class="op">+=</span> x1<span class="op">[</span>m<span class="op">]*</span>x2<span class="op">[</span>idx<span class="op">];</span></span>
-<span id="cb1-11"><a></a>   <span class="op">}</span></span>
-<span id="cb1-12"><a></a>   y<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> sum<span class="op">;</span></span>
-<span id="cb1-13"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="correlation" class="slide level2 t">
-<h2>Correlation</h2>
-<p>An operation very similar to convolution is <em>correlation</em>. Given two signals <span class="math inline">\(x[n]\)</span> and <span class="math inline">\(y[n]\)</span></p>
-<ul>
-<li><p>their cross-correlation is <span class="math display">\[
-r_{xy}[l] = \sum\limits_{n = -\infty}^{\infty} x[n]y[n-l]
-\]</span> where <span class="math inline">\(l\)</span> is called the “lag”.</p></li>
-<li><p>note that <span class="math display">\[
-r_{yx}[l] = \sum\limits_{n = -\infty}^{\infty} y[n]x[n-l] = r_{xy}[-l]
-\]</span></p></li>
-<li><p>if <span class="math inline">\(x = y\)</span> we get the auto-correlation <span class="math inline">\(r_{xx}[l]\)</span></p></li>
-<li><p>the normalized autocorrelation and cross-correlation are given by <span class="math display">\[
-\rho_{xx}[l] = \frac{r_{xx}[l]}{r_{xx}[0]}
-\]</span> <span class="math display">\[
-\rho_{xy}[l] = \frac{r_{xy}[l]}{\left(r_{xx}[l] \cdot r_{yy}[l]\right)^\frac{1}{2}}
-\]</span></p></li>
-</ul>
-</section>
-<section id="correlation-of-input-and-output-of-lti-system" class="slide level2 t">
-<h2>Correlation of input and output of LTI system</h2>
-<p>Given an LTI system with impulse response <span class="math inline">\(h[n]\)</span> then</p>
-<p><span class="math display">\[
-r_{yx}[l] = h[n] * r_{xx}[l]
-\]</span></p>
-</section>
-<section id="applications-of-correlation" class="slide level2 t">
-<h2>Applications of correlation</h2>
-<ul>
-<li>“radar” equation</li>
-<li>The Fourier transform of the auto/cross correlation is the power spectral density. This forms the basis of working with random signals.</li>
-</ul>
-</section>
-<section id="eigenfunction-for-dt-lti-systems" class="slide level2 t">
-<h2>Eigenfunction for DT-LTI Systems</h2>
-<p>Let <span class="math inline">\(x[n] = z^n\)</span> for <span class="math inline">\(z\in \mathbb{C}\)</span>, then <span class="math inline">\(y[n] = h[n] * x[n] = x[n] * h[n]\)</span> and by the definition of DT convolution <span class="math display">\[\begin{align*}
-  y[n] &amp; = \sum\limits_{m = -\infty}^{\infty}h[m]x[n-m]\\
-  &amp;= \sum\limits_{m = -\infty}^{\infty}h[m]z^{n-m} = \sum\limits_{m = -\infty}^{\infty}h[m]z^{n}z^{-m}\\
-  &amp;= z^{n} \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\\
-  &amp;= z^{n}H(z)
-\end{align*}\]</span> where <span class="math inline">\(H(z) = \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\)</span> is the of the impulse response, <span class="math inline">\(h[n]\)</span>.</p>
-<p><span class="math inline">\(H(z)\)</span> is called the or of the system and <span class="math inline">\(z^{n}\)</span> is the for DT LTI systems.</p>
+
+<section id="lab-1" class="title-slide slide level1 center">
+<h1>Lab 1</h1>
 
 
 </section>

@@ -1397,21 +1397,217 @@
     "href": "lecture-07-slides.html#section",
     "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING:\n\nPM 2.3 and 2.6\nECE 2714 Supplementary Notes Chapters 9 and 13\n\nTopics:\n\nConvolution\nDT time-domain analysis\nCorrelation\nEigen-Function for DT systems"
+  },
+  {
+    "objectID": "lecture-07-slides.html#review-dt-lti-systems-and-superposition-property",
+    "href": "lecture-07-slides.html#review-dt-lti-systems-and-superposition-property",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Review DT LTI systems and superposition property",
+    "text": "Review DT LTI systems and superposition property\nIf a DT system is LTI then the superposition property holds. Given a system where \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i\\] then \\[\\sum\\limits_{i} a_i x_i[n] \\mapsto \\sum\\limits_{i} a_i y_i[n]\\]"
+  },
+  {
+    "objectID": "lecture-07-slides.html#convolution-sum",
+    "href": "lecture-07-slides.html#convolution-sum",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Convolution Sum",
+    "text": "Convolution Sum\nLet \\(h[n]\\) be the DT impulse response. Then if the system is LTI the output for an input \\(x[n]\\) is given by\n\\[y[n] = \\sum\\limits_{m = -\\infty}^{\\infty} x[m]h[n-m] = x[n] * h[n]\\]\nThis is called the convolution sum."
+  },
+  {
+    "objectID": "lecture-07-slides.html#graphical-view-of-the-convolution-sum.",
+    "href": "lecture-07-slides.html#graphical-view-of-the-convolution-sum.",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Graphical View of the Convolution Sum.",
+    "text": "Graphical View of the Convolution Sum."
+  },
+  {
+    "objectID": "lecture-07-slides.html#example",
+    "href": "lecture-07-slides.html#example",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nFind the convolution of two unit step functions."
+  },
+  {
+    "objectID": "lecture-07-slides.html#example-1",
+    "href": "lecture-07-slides.html#example-1",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nFind the convolution if the signals\n\\[\nx_1[n] = \\gamma^n\\, u[n] \\mbox{ for } \\gamma \\in\\mathbb{R}\n\\] and \\[\nx_2[n] = u[n]\n\\]"
+  },
+  {
+    "objectID": "lecture-07-slides.html#properties-of-dt-convolution",
+    "href": "lecture-07-slides.html#properties-of-dt-convolution",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Properties of DT Convolution",
+    "text": "Properties of DT Convolution\nThere are several useful properties of convolution. We do not prove these here, but it is not terribly difficult to do so. Given signals \\(x_1[n]\\), \\(x_2[n]\\), and \\(x_3[n]\\):\n\nCommutative Property\n\nThe ordering of the signals does not matter. \\[x_1[n] * x_2[n] = x_2[n] * x_1[n]\\]\n\nDistributive Propery\n\nConvolution is distributed over addition. \\[x_1[n] * \\left(x_2[n] + x_3[n]\\right) = \\left(x_1[n] * x_2[n] \\right) + \\left(x_1[n] * x_3[n] \\right)\\]\n\nAssociative Property\n\nThe order of convolution does not matter. \\[x_1[n] * \\left(x_2[n] * x_3[n]\\right) = \\left(x_1[n] * x_2[n] \\right) * x_3[n]\\]\n\nIndex Shift\n\nGiven \\(x_3[n] = x_1[n] * x_2[n]\\) then for index shifts \\(m_1, m_2 \\in \\mathbb{R}\\) \\[x_1[n-m_1] * x_2[n-m_2] = x_3[n-m_1 - m_2]\\]\n\nMultiplicative Scaling\n\nGiven \\(x_3[n] = x_1[n] * x_2[n]\\) then for constants \\(a,b \\in \\mathbb{C}\\) \\[\\left(a\\, x_1[n]\\right) * \\left(b\\, x_2[n]\\right) = a\\, b\\, x_3[n]\\]\n\n\n\nThese properties can be used in combination with a table like that above to compute the convolution of a wide variety of signals without evaluating the summations."
+  },
+  {
+    "objectID": "lecture-07-slides.html#example-2",
+    "href": "lecture-07-slides.html#example-2",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nSuppose an LTI system has an impulse response\n\\[\nh[n] = \\delta[n+1] - 2\\delta[n] + \\delta[n-1]\n\\] What is the output if the input is \\[\nx[n] = \\left(\\frac{1}{2}\\right)^{|n|}\n\\]"
+  },
+  {
+    "objectID": "lecture-07-slides.html#dt-convolution-of-finite-length-signals",
+    "href": "lecture-07-slides.html#dt-convolution-of-finite-length-signals",
+    "title": "ECE 4624: Meeting 7",
+    "section": "DT Convolution of Finite-Length Signals",
+    "text": "DT Convolution of Finite-Length Signals\n\nFor finite-length signals, DT convolution gives us an algorithm to determine their convolution.\nSuppose the signal \\(x_1\\) is non-zero only over the interval \\([N_1,M_1]\\), and the signal \\(x_2\\) is non-zero only over the interval \\([N_2,M_2]\\).\nThe length of the signals are \\(L_1 = M_1-N_1+1\\) and \\(L_2 = M_2-N_2+1\\) respectively.\nThe non-zero terms of the convolution sum (when the signals overlap) is then the range \\([N_1+N_2,M_1+M_2]\\) and the sum can be truncated as:\n\n\\[x_1[n] * x_2[n] = \\sum\\limits_{m = N_1+N_2}^{M_1+M_2} x_1[m]x_2[n-m]\\]\n\nIt is common to shift both signals so that they both start at index \\(0\\) , zero-padding them both to have length \\(L=L_1+L_2-1\\).\nThen the convolution becomes \\[y = x_1 * x_2 = \\sum\\limits_{m = 0}^{L-1} x_1[m]x_2[L + n-m]\\] where the indexing of \\(x_2\\) is modulo the signal length.\nThe resulting signal after convolution, \\(y\\), is also of length \\(L\\), and can then be shifted back to start at \\(N_1+N_2\\)."
+  },
+  {
+    "objectID": "lecture-07-slides.html#example-3",
+    "href": "lecture-07-slides.html#example-3",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nCompute the convolution of the DT signals \\(\\{1,-1,1\\}\\) and \\(\\{1,1,1,1\\}\\)"
+  },
+  {
+    "objectID": "lecture-07-slides.html#code-for-convolution-of-two-finite-length-signals",
+    "href": "lecture-07-slides.html#code-for-convolution-of-two-finite-length-signals",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Code for Convolution of two finite length signals",
+    "text": "Code for Convolution of two finite length signals\nFor the example above:\nconst unsigned int L = 6; //L1=3, L2=4, so L=6\ndouble x1[L] = {1., -1., 1., 0, 0, 0};\ndouble x2[L] = {1., 1., 1., 1., 0, 0};\ndouble y[L];\n\nfor(int n = 0; n &lt; L; n++){\n   double sum = 0.;\n   for(int m = 0; m &lt; L; m++){\n      int idx = (L+n-m) % L;\n      sum += x1[m]*x2[idx];\n   }\n   y[n] = sum;\n}"
+  },
+  {
+    "objectID": "lecture-07-slides.html#correlation",
+    "href": "lecture-07-slides.html#correlation",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Correlation",
+    "text": "Correlation\nAn operation very similar to convolution is correlation. Given two signals \\(x[n]\\) and \\(y[n]\\)\n\ntheir cross-correlation is \\[\nr_{xy}[l] = \\sum\\limits_{n = -\\infty}^{\\infty} x[n]y[n-l]\n\\] where \\(l\\) is called the “lag”.\nnote that \\[\nr_{yx}[l] = \\sum\\limits_{n = -\\infty}^{\\infty} y[n]x[n-l] = r_{xy}[-l]\n\\]\nif \\(x = y\\) we get the auto-correlation \\(r_{xx}[l]\\)\nthe normalized autocorrelation and cross-correlation are given by \\[\n\\rho_{xx}[l] = \\frac{r_{xx}[l]}{r_{xx}[0]}\n\\] \\[\n\\rho_{xy}[l] = \\frac{r_{xy}[l]}{\\left(r_{xx}[l] \\cdot r_{yy}[l]\\right)^\\frac{1}{2}}\n\\]"
+  },
+  {
+    "objectID": "lecture-07-slides.html#correlation-of-input-and-output-of-lti-system",
+    "href": "lecture-07-slides.html#correlation-of-input-and-output-of-lti-system",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Correlation of input and output of LTI system",
+    "text": "Correlation of input and output of LTI system\nGiven an LTI system with impulse response \\(h[n]\\) then\n\\[\nr_{yx}[l] = h[n] * r_{xx}[l]\n\\]"
+  },
+  {
+    "objectID": "lecture-07-slides.html#applications-of-correlation",
+    "href": "lecture-07-slides.html#applications-of-correlation",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Applications of correlation",
+    "text": "Applications of correlation\n\n“radar” equation\nThe Fourier transform of the auto/cross correlation is the power spectral density. This forms the basis of working with random signals."
+  },
+  {
+    "objectID": "lecture-07-slides.html#eigenfunction-for-dt-lti-systems",
+    "href": "lecture-07-slides.html#eigenfunction-for-dt-lti-systems",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Eigenfunction for DT-LTI Systems",
+    "text": "Eigenfunction for DT-LTI Systems\nLet \\(x[n] = z^n\\) for \\(z\\in \\mathbb{C}\\), then \\(y[n] = h[n] * x[n] = x[n] * h[n]\\) and by the definition of DT convolution \\[\\begin{align*}\n  y[n] & = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]x[n-m]\\\\\n  &= \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{n-m} = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{n}z^{-m}\\\\\n  &= z^{n} \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{-m}\\\\\n  &= z^{n}H(z)\n\\end{align*}\\] where \\(H(z) = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{-m}\\) is the of the impulse response, \\(h[n]\\).\n\\(H(z)\\) is called the or of the system and \\(z^{n}\\) is the for DT LTI systems."
   },
   {
     "objectID": "lecture-07-notes.html",
     "href": "lecture-07-notes.html",
     "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING:\n\nPM 2.3 and 2.6\nECE 2714 Supplementary Notes Chapters 9 and 13\n\nTopics:\n\nConvolution\nDT time-domain analysis\nCorrelation\nEigen-Function for DT systems"
   },
   {
     "objectID": "lecture-07-notes.html#section",
     "href": "lecture-07-notes.html#section",
     "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING:\n\nPM 2.3 and 2.6\nECE 2714 Supplementary Notes Chapters 9 and 13\n\nTopics:\n\nConvolution\nDT time-domain analysis\nCorrelation\nEigen-Function for DT systems"
+  },
+  {
+    "objectID": "lecture-07-notes.html#review-dt-lti-systems-and-superposition-property",
+    "href": "lecture-07-notes.html#review-dt-lti-systems-and-superposition-property",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Review DT LTI systems and superposition property",
+    "text": "Review DT LTI systems and superposition property\nIf a DT system is LTI then the superposition property holds. Given a system where \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i\\] then \\[\\sum\\limits_{i} a_i x_i[n] \\mapsto \\sum\\limits_{i} a_i y_i[n]\\]"
+  },
+  {
+    "objectID": "lecture-07-notes.html#convolution-sum",
+    "href": "lecture-07-notes.html#convolution-sum",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Convolution Sum",
+    "text": "Convolution Sum\nLet \\(h[n]\\) be the DT impulse response. Then if the system is LTI the output for an input \\(x[n]\\) is given by\n\\[y[n] = \\sum\\limits_{m = -\\infty}^{\\infty} x[m]h[n-m] = x[n] * h[n]\\]\nThis is called the convolution sum."
+  },
+  {
+    "objectID": "lecture-07-notes.html#graphical-view-of-the-convolution-sum.",
+    "href": "lecture-07-notes.html#graphical-view-of-the-convolution-sum.",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Graphical View of the Convolution Sum.",
+    "text": "Graphical View of the Convolution Sum."
+  },
+  {
+    "objectID": "lecture-07-notes.html#example",
+    "href": "lecture-07-notes.html#example",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nFind the convolution of two unit step functions."
+  },
+  {
+    "objectID": "lecture-07-notes.html#example-1",
+    "href": "lecture-07-notes.html#example-1",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nFind the convolution if the signals\n\\[\nx_1[n] = \\gamma^n\\, u[n] \\mbox{ for } \\gamma \\in\\mathbb{R}\n\\] and \\[\nx_2[n] = u[n]\n\\]"
+  },
+  {
+    "objectID": "lecture-07-notes.html#properties-of-dt-convolution",
+    "href": "lecture-07-notes.html#properties-of-dt-convolution",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Properties of DT Convolution",
+    "text": "Properties of DT Convolution\nThere are several useful properties of convolution. We do not prove these here, but it is not terribly difficult to do so. Given signals \\(x_1[n]\\), \\(x_2[n]\\), and \\(x_3[n]\\):\n\nCommutative Property\n\nThe ordering of the signals does not matter. \\[x_1[n] * x_2[n] = x_2[n] * x_1[n]\\]\n\nDistributive Propery\n\nConvolution is distributed over addition. \\[x_1[n] * \\left(x_2[n] + x_3[n]\\right) = \\left(x_1[n] * x_2[n] \\right) + \\left(x_1[n] * x_3[n] \\right)\\]\n\nAssociative Property\n\nThe order of convolution does not matter. \\[x_1[n] * \\left(x_2[n] * x_3[n]\\right) = \\left(x_1[n] * x_2[n] \\right) * x_3[n]\\]\n\nIndex Shift\n\nGiven \\(x_3[n] = x_1[n] * x_2[n]\\) then for index shifts \\(m_1, m_2 \\in \\mathbb{R}\\) \\[x_1[n-m_1] * x_2[n-m_2] = x_3[n-m_1 - m_2]\\]\n\nMultiplicative Scaling\n\nGiven \\(x_3[n] = x_1[n] * x_2[n]\\) then for constants \\(a,b \\in \\mathbb{C}\\) \\[\\left(a\\, x_1[n]\\right) * \\left(b\\, x_2[n]\\right) = a\\, b\\, x_3[n]\\]\n\n\n\nThese properties can be used in combination with a table like that above to compute the convolution of a wide variety of signals without evaluating the summations."
+  },
+  {
+    "objectID": "lecture-07-notes.html#example-2",
+    "href": "lecture-07-notes.html#example-2",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nSuppose an LTI system has an impulse response\n\\[\nh[n] = \\delta[n+1] - 2\\delta[n] + \\delta[n-1]\n\\] What is the output if the input is \\[\nx[n] = \\left(\\frac{1}{2}\\right)^{|n|}\n\\]"
+  },
+  {
+    "objectID": "lecture-07-notes.html#dt-convolution-of-finite-length-signals",
+    "href": "lecture-07-notes.html#dt-convolution-of-finite-length-signals",
+    "title": "ECE 4624: Meeting 7",
+    "section": "DT Convolution of Finite-Length Signals",
+    "text": "DT Convolution of Finite-Length Signals\n\nFor finite-length signals, DT convolution gives us an algorithm to determine their convolution.\nSuppose the signal \\(x_1\\) is non-zero only over the interval \\([N_1,M_1]\\), and the signal \\(x_2\\) is non-zero only over the interval \\([N_2,M_2]\\).\nThe length of the signals are \\(L_1 = M_1-N_1+1\\) and \\(L_2 = M_2-N_2+1\\) respectively.\nThe non-zero terms of the convolution sum (when the signals overlap) is then the range \\([N_1+N_2,M_1+M_2]\\) and the sum can be truncated as:\n\n\\[x_1[n] * x_2[n] = \\sum\\limits_{m = N_1+N_2}^{M_1+M_2} x_1[m]x_2[n-m]\\]\n\nIt is common to shift both signals so that they both start at index \\(0\\) , zero-padding them both to have length \\(L=L_1+L_2-1\\).\nThen the convolution becomes \\[y = x_1 * x_2 = \\sum\\limits_{m = 0}^{L-1} x_1[m]x_2[L + n-m]\\] where the indexing of \\(x_2\\) is modulo the signal length.\nThe resulting signal after convolution, \\(y\\), is also of length \\(L\\), and can then be shifted back to start at \\(N_1+N_2\\)."
+  },
+  {
+    "objectID": "lecture-07-notes.html#example-3",
+    "href": "lecture-07-notes.html#example-3",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Example",
+    "text": "Example\nCompute the convolution of the DT signals \\(\\{1,-1,1\\}\\) and \\(\\{1,1,1,1\\}\\)"
+  },
+  {
+    "objectID": "lecture-07-notes.html#code-for-convolution-of-two-finite-length-signals",
+    "href": "lecture-07-notes.html#code-for-convolution-of-two-finite-length-signals",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Code for Convolution of two finite length signals",
+    "text": "Code for Convolution of two finite length signals\nFor the example above:\nconst unsigned int L = 6; //L1=3, L2=4, so L=6\ndouble x1[L] = {1., -1., 1., 0, 0, 0};\ndouble x2[L] = {1., 1., 1., 1., 0, 0};\ndouble y[L];\n\nfor(int n = 0; n &lt; L; n++){\n   double sum = 0.;\n   for(int m = 0; m &lt; L; m++){\n      int idx = (L+n-m) % L;\n      sum += x1[m]*x2[idx];\n   }\n   y[n] = sum;\n}"
+  },
+  {
+    "objectID": "lecture-07-notes.html#correlation",
+    "href": "lecture-07-notes.html#correlation",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Correlation",
+    "text": "Correlation\nAn operation very similar to convolution is correlation. Given two signals \\(x[n]\\) and \\(y[n]\\)\n\ntheir cross-correlation is \\[\nr_{xy}[l] = \\sum\\limits_{n = -\\infty}^{\\infty} x[n]y[n-l]\n\\] where \\(l\\) is called the “lag”.\nnote that \\[\nr_{yx}[l] = \\sum\\limits_{n = -\\infty}^{\\infty} y[n]x[n-l] = r_{xy}[-l]\n\\]\nif \\(x = y\\) we get the auto-correlation \\(r_{xx}[l]\\)\nthe normalized autocorrelation and cross-correlation are given by \\[\n\\rho_{xx}[l] = \\frac{r_{xx}[l]}{r_{xx}[0]}\n\\] \\[\n\\rho_{xy}[l] = \\frac{r_{xy}[l]}{\\left(r_{xx}[l] \\cdot r_{yy}[l]\\right)^\\frac{1}{2}}\n\\]"
+  },
+  {
+    "objectID": "lecture-07-notes.html#correlation-of-input-and-output-of-lti-system",
+    "href": "lecture-07-notes.html#correlation-of-input-and-output-of-lti-system",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Correlation of input and output of LTI system",
+    "text": "Correlation of input and output of LTI system\nGiven an LTI system with impulse response \\(h[n]\\) then\n\\[\nr_{yx}[l] = h[n] * r_{xx}[l]\n\\]"
+  },
+  {
+    "objectID": "lecture-07-notes.html#applications-of-correlation",
+    "href": "lecture-07-notes.html#applications-of-correlation",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Applications of correlation",
+    "text": "Applications of correlation\n\n“radar” equation\nThe Fourier transform of the auto/cross correlation is the power spectral density. This forms the basis of working with random signals."
+  },
+  {
+    "objectID": "lecture-07-notes.html#eigenfunction-for-dt-lti-systems",
+    "href": "lecture-07-notes.html#eigenfunction-for-dt-lti-systems",
+    "title": "ECE 4624: Meeting 7",
+    "section": "Eigenfunction for DT-LTI Systems",
+    "text": "Eigenfunction for DT-LTI Systems\nLet \\(x[n] = z^n\\) for \\(z\\in \\mathbb{C}\\), then \\(y[n] = h[n] * x[n] = x[n] * h[n]\\) and by the definition of DT convolution \\[\\begin{align*}\n  y[n] & = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]x[n-m]\\\\\n  &= \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{n-m} = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{n}z^{-m}\\\\\n  &= z^{n} \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{-m}\\\\\n  &= z^{n}H(z)\n\\end{align*}\\] where \\(H(z) = \\sum\\limits_{m = -\\infty}^{\\infty}h[m]z^{-m}\\) is the of the impulse response, \\(h[n]\\).\n\\(H(z)\\) is called the or of the system and \\(z^{n}\\) is the for DT LTI systems."
   },
   {
     "objectID": "lecture-13-slides.html#section",
@@ -1523,21 +1719,175 @@
     "href": "lecture-08-slides.html#section",
     "title": "ECE 4624: Meeting 8",
     "section": "",
-    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+    "text": "Today we will review the Fourier representation of DT signals and Fourier analysis of stable DT systems.\nREADING:\n\nPM 4.3 - 4.5\nECE 2714 Supplementary Notes Chapters 15 and 17\n\nTopics:\n\nDT Fourier Series / Discrete Fourier Transform\nDT Fourier Transform\nFrequency Domain Analysis of DT systems"
+  },
+  {
+    "objectID": "lecture-08-slides.html#section-1",
+    "href": "lecture-08-slides.html#section-1",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "A DT signal \\(x[n]\\) is periodic if \\(x[n] = x[n+kN]\\) for integer multiple \\(k\\) and fundamental period \\(N \\in \\mathbb{Z}\\).\n\nthe fundamental frequency is \\(\\omega_0 = \\frac{2\\pi}{N}\\) rad/sec"
+  },
+  {
+    "objectID": "lecture-08-slides.html#section-2",
+    "href": "lecture-08-slides.html#section-2",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "When \\(x[n]\\) is periodic the complex base of the Eigenfunction becomes \\(z_k = e^{jk\\omega_0}\\), and the decomposition is a finite sum.\nThis gives the input-output relationship for a stable DT LTI system as\n\\[\nx[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0n} \\;\\longrightarrow\\;  y[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} H\\left(e^{j k\\omega_0}\\right) a_k e^{jk\\omega_0 n}\n\\] where \\(H\\left(e^{j k\\omega_0}\\right)\\) are the Eigenvalues or DT frequency response."
+  },
+  {
+    "objectID": "lecture-08-slides.html#fourier-series-synthesis-equation",
+    "href": "lecture-08-slides.html#fourier-series-synthesis-equation",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Fourier Series Synthesis Equation",
+    "text": "Fourier Series Synthesis Equation\n\\[\nx[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0n}\n\\]\n\nthe \\(a_k\\) are the Fourier series coefficients"
+  },
+  {
+    "objectID": "lecture-08-slides.html#fourier-series-analysis-equation",
+    "href": "lecture-08-slides.html#fourier-series-analysis-equation",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Fourier Series Analysis Equation",
+    "text": "Fourier Series Analysis Equation\n\\[\na_k = \\frac{1}{N} \\sum\\limits_{n = N_0}^{N_0+N-1} x[n]e^{-j\\frac{2\\pi}{N} k n }\n\\]\n\nNote the coefficients themselves are periodic in \\(k\\), with period \\(N\\) and can be viewed as a discrete-frequency signal.\nThis is only one of three ways we can find the Fourier Series coefficients."
+  },
+  {
+    "objectID": "lecture-08-slides.html#finding-the-fourier-series-coefficients-using-linear-algebra",
+    "href": "lecture-08-slides.html#finding-the-fourier-series-coefficients-using-linear-algebra",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Finding the Fourier series coefficients using linear algebra",
+    "text": "Finding the Fourier series coefficients using linear algebra\n\\[\\begin{align*}\n  x[N_0] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0N_0}\\\\\n  x[N_0+1] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0(N_0+1)}\\\\\n  \\vdots\\hspace{2em} &= \\hspace{2em}\\vdots\\\\\n  x[N_0+N-1] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0(N_0+N-1)}\\\\\n\\end{align*}\\]\n\nAnother approach to find the coefficients \\(a_k\\) is to note that there are a finite number of terms in the summation and the signal has a finite number of values over one period. This gives a system of \\(N\\) linear equations in \\(N\\) unknowns (the \\(a_k\\)’s) which can be solved to find the coefficients using linear algebra."
+  },
+  {
+    "objectID": "lecture-08-slides.html#relationship-between-fourier-series-coefficients-and-discrete-fourier-transform",
+    "href": "lecture-08-slides.html#relationship-between-fourier-series-coefficients-and-discrete-fourier-transform",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Relationship between Fourier series coefficients and Discrete Fourier Transform",
+    "text": "Relationship between Fourier series coefficients and Discrete Fourier Transform\nGiven a finite-length sequence of real or complex numbers \\(x[n]\\), indexed from \\(0\\) to \\(N-1\\), the or DFT is given by \\[\nX[k] = \\sum_{n = 0}^{N-1}  x[n] e^{-j \\frac{2\\pi}{N}k n}\n\\] for \\(k = 0, 1, 2, \\cdots, N-1\\). When \\(N\\) is a power of 2, an efficient algorithm to compute this result exists and is called the or FFT.\nNote the similarity to the DT Fourier Series when \\(N_0 = 0\\) \\[\na_k = \\frac{1}{N}\\sum\\limits_{n = N_0}^{N_0 + N - 1} x[n] e^{-j\\frac{2\\pi}{N}kn} =  \\frac{1}{N}\\sum\\limits_{n = 0}^{N - 1} x[n] e^{-j\\frac{2\\pi}{N}kn} = \\frac{1}{N} X[k]\n\\]\n\nThe computation of the Fourier series coefficents and the Discrete Fourier Transform of a finite length signal are the same up to a constant. This gives yet another approach to finding the \\(a_k\\)’s that is very efficient via the FFT."
+  },
+  {
+    "objectID": "lecture-08-slides.html#spectrum",
+    "href": "lecture-08-slides.html#spectrum",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Spectrum",
+    "text": "Spectrum\n\na plot of \\(|a_k|\\) versus \\(k\\) is called the amplitude spectrum\na plot of \\(\\angle a_k\\) versus \\(k\\) is called the phase spectrum\ntogether they are just the spectrum\na plot of \\(|a_k|^2\\) versus \\(k\\) is called the power spectrum\n\n\nThe sum of all the terms in the power spectrum, by Parsevals theorem, is the Power of the DT signal."
+  },
+  {
+    "objectID": "lecture-08-slides.html#properties-of-the-dt-fourier-series",
+    "href": "lecture-08-slides.html#properties-of-the-dt-fourier-series",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\nGiven two signals \\(x[n]\\) and \\(y[n]\\) periodic in \\(N\\) with \\(\\omega_0 = \\frac{2\\pi}{N}\\), having DT Fourier coefficients \\(a_k\\) and \\(b_k\\) respectively.\n\nLinearity. The coefficients of the signal \\[z[n] = Ax[n] + By[n] \\mbox{ for constants } A,B\\] are \\(Aa_k + Bb_k\\)\nIndex Shifting. The coefficients of \\[z[n] = x[n-n_0] \\mbox{ are } e^{-jk\\omega_0 n_0}a_k\\] that is, it adds a phase shift.\nFrequency Shift. The coefficients of \\[z[n] = x[n]e^{jm\\omega_0n} \\mbox{ are } a_{k-m}\\]\nIndex Reversal. The coefficients of \\[z[n] = x[-n] \\mbox{ are } a_{-k}\\]"
+  },
+  {
+    "objectID": "lecture-08-slides.html#properties-of-the-dt-fourier-series-1",
+    "href": "lecture-08-slides.html#properties-of-the-dt-fourier-series-1",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\n\nMultiplication. The coefficients of \\[z[n] = x[n] \\cdot y[n] \\mbox{ are } \\sum\\limits_{m = N_0}^{N_0 + N -1} a_m\\cdot b_{k-m}\\] the discrete convolution of the individual signals’ coefficients.\nConvolution. The coefficients of \\[z[n] = x[n] * y[n] \\mbox{ are } N a_k b_k\\]\nConjugate Symmetry. The coefficients of \\[z[n] = x^*[n] = \\Re{x[n]} - j\\Im{x[n]} \\mbox{ are } a_{-k}^*\\] A consequence of this property is that real, even signals have real, even \\(a_k\\); and real, odd signals have purely imaginary, odd \\(a_k\\). Thus if \\(x[n]\\) is real \\(|a_k|\\) is an even periodic function of \\(k\\) and \\(\\angle a_k\\) is an odd periodic function of \\(k\\)."
+  },
+  {
+    "objectID": "lecture-08-slides.html#properties-of-the-dt-fourier-series-2",
+    "href": "lecture-08-slides.html#properties-of-the-dt-fourier-series-2",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\n\nParseval’s Relation. The power of the signal with Fourier series coefficients is \\[\\frac{1}{N} \\sum\\limits_{n = N_0}^{N_0 + N -1} |x[n]|^2\\;dt = \\sum\\limits_{k = N_0}^{N_0+N-1} |a_k|^2\\]"
+  },
+  {
+    "objectID": "lecture-08-slides.html#dt-fourier-transform",
+    "href": "lecture-08-slides.html#dt-fourier-transform",
+    "title": "ECE 4624: Meeting 8",
+    "section": "DT Fourier Transform",
+    "text": "DT Fourier Transform\n\nRecall the complex exponential \\(z^{n}\\) for \\(z\\in\\mathbb{C}\\) is the Eigenfunction of DT LTI systems. If we can decompose an input into a sum of such signals, we can easily determine the output using the superposition principle. We consider such a decomposition when the input is now aperiodic, called the DT Fourier Transform (DTFT).\nIn contrast to the DT Fourier series, in this case the complex exponent of the Eigenfunction becomes \\(z = e^{j\\omega}\\) a continuous variable, and the decomposition is an uncountably infinite sum (integral). This gives the input-output relationship for a stable DT LTI system as\n\n\\[\nx[n] = \\frac{1}{2\\pi}\\int\\limits_{2\\pi} X\\left(e^{j\\omega}\\right) \\, e^{j \\omega n}\\; d\\omega \\;\\longrightarrow\\; y[n] = \\frac{1}{2\\pi}\\int\\limits_{2\\pi} H\\left(e^{j\\omega}\\right) X\\left(e^{j\\omega}\\right) \\, e^{j \\omega n}\\; d\\omega\n\\]\nwhere \\(H\\left(e^{j \\omega}\\right)\\) are the Eigenvalues, again called the .\n\nThe notation \\(X\\left(e^{j\\omega}\\right)\\) can be confusing. It just emphasizes that \\(z \\rightarrow e^{j\\omega}\\). The expressions are functions of the independent variable \\(\\omega\\)."
   },
   {
     "objectID": "lecture-08-notes.html",
     "href": "lecture-08-notes.html",
     "title": "ECE 4624: Meeting 8",
     "section": "",
-    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+    "text": "Today we will review the Fourier representation of DT signals and Fourier analysis of stable DT systems.\nREADING:\n\nPM 4.3 - 4.5\nECE 2714 Supplementary Notes Chapters 15 and 17\n\nTopics:\n\nDT Fourier Series / Discrete Fourier Transform\nDT Fourier Transform\nFrequency Domain Analysis of DT systems"
   },
   {
     "objectID": "lecture-08-notes.html#section",
     "href": "lecture-08-notes.html#section",
     "title": "ECE 4624: Meeting 8",
     "section": "",
-    "text": "Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.\nREADING: ?"
+    "text": "Today we will review the Fourier representation of DT signals and Fourier analysis of stable DT systems.\nREADING:\n\nPM 4.3 - 4.5\nECE 2714 Supplementary Notes Chapters 15 and 17\n\nTopics:\n\nDT Fourier Series / Discrete Fourier Transform\nDT Fourier Transform\nFrequency Domain Analysis of DT systems"
+  },
+  {
+    "objectID": "lecture-08-notes.html#section-1",
+    "href": "lecture-08-notes.html#section-1",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "A DT signal \\(x[n]\\) is periodic if \\(x[n] = x[n+kN]\\) for integer multiple \\(k\\) and fundamental period \\(N \\in \\mathbb{Z}\\).\n\nthe fundamental frequency is \\(\\omega_0 = \\frac{2\\pi}{N}\\) rad/sec"
+  },
+  {
+    "objectID": "lecture-08-notes.html#section-2",
+    "href": "lecture-08-notes.html#section-2",
+    "title": "ECE 4624: Meeting 8",
+    "section": "",
+    "text": "When \\(x[n]\\) is periodic the complex base of the Eigenfunction becomes \\(z_k = e^{jk\\omega_0}\\), and the decomposition is a finite sum.\nThis gives the input-output relationship for a stable DT LTI system as\n\\[\nx[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0n} \\;\\longrightarrow\\;  y[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} H\\left(e^{j k\\omega_0}\\right) a_k e^{jk\\omega_0 n}\n\\] where \\(H\\left(e^{j k\\omega_0}\\right)\\) are the Eigenvalues or DT frequency response."
+  },
+  {
+    "objectID": "lecture-08-notes.html#fourier-series-synthesis-equation",
+    "href": "lecture-08-notes.html#fourier-series-synthesis-equation",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Fourier Series Synthesis Equation",
+    "text": "Fourier Series Synthesis Equation\n\\[\nx[n] = \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0n}\n\\]\n\nthe \\(a_k\\) are the Fourier series coefficients"
+  },
+  {
+    "objectID": "lecture-08-notes.html#fourier-series-analysis-equation",
+    "href": "lecture-08-notes.html#fourier-series-analysis-equation",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Fourier Series Analysis Equation",
+    "text": "Fourier Series Analysis Equation\n\\[\na_k = \\frac{1}{N} \\sum\\limits_{n = N_0}^{N_0+N-1} x[n]e^{-j\\frac{2\\pi}{N} k n }\n\\]\n\nNote the coefficients themselves are periodic in \\(k\\), with period \\(N\\) and can be viewed as a discrete-frequency signal.\nThis is only one of three ways we can find the Fourier Series coefficients."
+  },
+  {
+    "objectID": "lecture-08-notes.html#finding-the-fourier-series-coefficients-using-linear-algebra",
+    "href": "lecture-08-notes.html#finding-the-fourier-series-coefficients-using-linear-algebra",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Finding the Fourier series coefficients using linear algebra",
+    "text": "Finding the Fourier series coefficients using linear algebra\n\\[\\begin{align*}\n  x[N_0] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0N_0}\\\\\n  x[N_0+1] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0(N_0+1)}\\\\\n  \\vdots\\hspace{2em} &= \\hspace{2em}\\vdots\\\\\n  x[N_0+N-1] &= \\sum\\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\\omega_0(N_0+N-1)}\\\\\n\\end{align*}\\]\n\nAnother approach to find the coefficients \\(a_k\\) is to note that there are a finite number of terms in the summation and the signal has a finite number of values over one period. This gives a system of \\(N\\) linear equations in \\(N\\) unknowns (the \\(a_k\\)’s) which can be solved to find the coefficients using linear algebra."
+  },
+  {
+    "objectID": "lecture-08-notes.html#relationship-between-fourier-series-coefficients-and-discrete-fourier-transform",
+    "href": "lecture-08-notes.html#relationship-between-fourier-series-coefficients-and-discrete-fourier-transform",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Relationship between Fourier series coefficients and Discrete Fourier Transform",
+    "text": "Relationship between Fourier series coefficients and Discrete Fourier Transform\nGiven a finite-length sequence of real or complex numbers \\(x[n]\\), indexed from \\(0\\) to \\(N-1\\), the or DFT is given by \\[\nX[k] = \\sum_{n = 0}^{N-1}  x[n] e^{-j \\frac{2\\pi}{N}k n}\n\\] for \\(k = 0, 1, 2, \\cdots, N-1\\). When \\(N\\) is a power of 2, an efficient algorithm to compute this result exists and is called the or FFT.\nNote the similarity to the DT Fourier Series when \\(N_0 = 0\\) \\[\na_k = \\frac{1}{N}\\sum\\limits_{n = N_0}^{N_0 + N - 1} x[n] e^{-j\\frac{2\\pi}{N}kn} =  \\frac{1}{N}\\sum\\limits_{n = 0}^{N - 1} x[n] e^{-j\\frac{2\\pi}{N}kn} = \\frac{1}{N} X[k]\n\\]\n\nThe computation of the Fourier series coefficents and the Discrete Fourier Transform of a finite length signal are the same up to a constant. This gives yet another approach to finding the \\(a_k\\)’s that is very efficient via the FFT."
+  },
+  {
+    "objectID": "lecture-08-notes.html#spectrum",
+    "href": "lecture-08-notes.html#spectrum",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Spectrum",
+    "text": "Spectrum\n\na plot of \\(|a_k|\\) versus \\(k\\) is called the amplitude spectrum\na plot of \\(\\angle a_k\\) versus \\(k\\) is called the phase spectrum\ntogether they are just the spectrum\na plot of \\(|a_k|^2\\) versus \\(k\\) is called the power spectrum\n\n\nThe sum of all the terms in the power spectrum, by Parsevals theorem, is the Power of the DT signal."
+  },
+  {
+    "objectID": "lecture-08-notes.html#properties-of-the-dt-fourier-series",
+    "href": "lecture-08-notes.html#properties-of-the-dt-fourier-series",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\nGiven two signals \\(x[n]\\) and \\(y[n]\\) periodic in \\(N\\) with \\(\\omega_0 = \\frac{2\\pi}{N}\\), having DT Fourier coefficients \\(a_k\\) and \\(b_k\\) respectively.\n\nLinearity. The coefficients of the signal \\[z[n] = Ax[n] + By[n] \\mbox{ for constants } A,B\\] are \\(Aa_k + Bb_k\\)\nIndex Shifting. The coefficients of \\[z[n] = x[n-n_0] \\mbox{ are } e^{-jk\\omega_0 n_0}a_k\\] that is, it adds a phase shift.\nFrequency Shift. The coefficients of \\[z[n] = x[n]e^{jm\\omega_0n} \\mbox{ are } a_{k-m}\\]\nIndex Reversal. The coefficients of \\[z[n] = x[-n] \\mbox{ are } a_{-k}\\]"
+  },
+  {
+    "objectID": "lecture-08-notes.html#properties-of-the-dt-fourier-series-1",
+    "href": "lecture-08-notes.html#properties-of-the-dt-fourier-series-1",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\n\nMultiplication. The coefficients of \\[z[n] = x[n] \\cdot y[n] \\mbox{ are } \\sum\\limits_{m = N_0}^{N_0 + N -1} a_m\\cdot b_{k-m}\\] the discrete convolution of the individual signals’ coefficients.\nConvolution. The coefficients of \\[z[n] = x[n] * y[n] \\mbox{ are } N a_k b_k\\]\nConjugate Symmetry. The coefficients of \\[z[n] = x^*[n] = \\Re{x[n]} - j\\Im{x[n]} \\mbox{ are } a_{-k}^*\\] A consequence of this property is that real, even signals have real, even \\(a_k\\); and real, odd signals have purely imaginary, odd \\(a_k\\). Thus if \\(x[n]\\) is real \\(|a_k|\\) is an even periodic function of \\(k\\) and \\(\\angle a_k\\) is an odd periodic function of \\(k\\)."
+  },
+  {
+    "objectID": "lecture-08-notes.html#properties-of-the-dt-fourier-series-2",
+    "href": "lecture-08-notes.html#properties-of-the-dt-fourier-series-2",
+    "title": "ECE 4624: Meeting 8",
+    "section": "Properties of the DT Fourier Series",
+    "text": "Properties of the DT Fourier Series\n\nParseval’s Relation. The power of the signal with Fourier series coefficients is \\[\\frac{1}{N} \\sum\\limits_{n = N_0}^{N_0 + N -1} |x[n]|^2\\;dt = \\sum\\limits_{k = N_0}^{N_0+N-1} |a_k|^2\\]"
+  },
+  {
+    "objectID": "lecture-08-notes.html#dt-fourier-transform",
+    "href": "lecture-08-notes.html#dt-fourier-transform",
+    "title": "ECE 4624: Meeting 8",
+    "section": "DT Fourier Transform",
+    "text": "DT Fourier Transform\n\nRecall the complex exponential \\(z^{n}\\) for \\(z\\in\\mathbb{C}\\) is the Eigenfunction of DT LTI systems. If we can decompose an input into a sum of such signals, we can easily determine the output using the superposition principle. We consider such a decomposition when the input is now aperiodic, called the DT Fourier Transform (DTFT).\nIn contrast to the DT Fourier series, in this case the complex exponent of the Eigenfunction becomes \\(z = e^{j\\omega}\\) a continuous variable, and the decomposition is an uncountably infinite sum (integral). This gives the input-output relationship for a stable DT LTI system as\n\n\\[\nx[n] = \\frac{1}{2\\pi}\\int\\limits_{2\\pi} X\\left(e^{j\\omega}\\right) \\, e^{j \\omega n}\\; d\\omega \\;\\longrightarrow\\; y[n] = \\frac{1}{2\\pi}\\int\\limits_{2\\pi} H\\left(e^{j\\omega}\\right) X\\left(e^{j\\omega}\\right) \\, e^{j \\omega n}\\; d\\omega\n\\]\nwhere \\(H\\left(e^{j \\omega}\\right)\\) are the Eigenvalues, again called the .\n\nThe notation \\(X\\left(e^{j\\omega}\\right)\\) can be confusing. It just emphasizes that \\(z \\rightarrow e^{j\\omega}\\). The expressions are functions of the independent variable \\(\\omega\\)."
   },
   {
     "objectID": "lecture-06-slides.html#section",
@@ -1845,7 +2195,7 @@
     "href": "index.html",
     "title": "Table of Contents",
     "section": "",
-    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT Fourier Series and Fourier Transform\nDT Frequency Response and Frequency Selective Filters\nZ Transform\nDT System Analysis using Z-Transform\nDT Block diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform\nApplications of DFT\nFast Fourier Transform\nFIR Filter Structures\nIIR Filter Structures\nQuantization and Round-Off Effects\nFIR Filter Design\nLowpass IIR Filter Design\nTransformations of IIR Filters\nProbability Primer\nStationary Random Processes\nWiener Filter\nAdaptive Filtering using LMS"
+    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems"
   },
   {
     "objectID": "lecture-22-slides.html#section",
@@ -1888,6 +2238,27 @@
     "title": "ECE 4624: Meeting 16",
     "section": "",
     "text": "Today we dive deeper into the FFT algorithms and examine the radix-2 decimation in time FFT in detail. We also discuss Lab 2.\nREADING: ?\nTake from old notes."
+  },
+  {
+    "objectID": "lecture-A1-slides.html#section",
+    "href": "lecture-A1-slides.html#section",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-A1-notes.html",
+    "href": "lecture-A1-notes.html",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+  },
+  {
+    "objectID": "lecture-A1-notes.html#section",
+    "href": "lecture-A1-notes.html#section",
+    "title": "ECE 4624: Meeting 7",
+    "section": "",
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
     "objectID": "lecture-03-notes.html",
