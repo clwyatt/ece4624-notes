@@ -9,11 +9,9 @@ toc: false
 4. [Sampling and Reconstruction](lecture-04-notes.html)
 5. [Microcontroller Programming for DSP](lecture-05-notes.html)
 6. [DT Systems as LCCDE and Impulse Response](lecture-06-notes.html)
-7. Time Domain Analysis of DT LTI Systems
-8. DT Fourier Series and Fourier Transform
-9. DT Frequency Response and Frequency Selective Filters
-10. Z Transform
-11. DT System Analysis using Z-Transform
+7. [Time Domain Analysis of DT LTI Systems](lecture-07-notes.html)
+
+<!--
 12. DT Block diagrams and Signal Flow Graphs
 13. The Discrete Fourier Transform
 14. Applications of DFT
@@ -29,6 +27,7 @@ toc: false
 25. Stationary Random Processes
 26. Wiener Filter
 27. Adaptive Filtering using LMS
+-->
 
 
 

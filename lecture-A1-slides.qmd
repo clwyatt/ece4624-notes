@@ -1,0 +1,62 @@
+---
+title: "ECE 4624: Meeting 7"
+subtitle: "Software Design for DSP"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+    
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: true
+    theme: 
+      - clw-slide-style.scss
+    footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
+    
+  html:
+    output-file: lecture-A1-notes.html
+    toc: false
+    
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+##
+
+Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.
+   
+READING: ?
+
+# Computation of the LCCDE output
+
+# Core data structure: ring buffers
+
+# Basic operation: MAC
+
+# General-purpose computer implementation in floating-point and fixed-point
+
+Aside: advice on development and debugging
+
+# using SIMD on GP CPUs
+
+# microcontroller implementation in fixed-point
+
+polling vs interrupts vs DMA
+
+# SIMD in Cortex-M4
+
+The Cortex-M4's SIMD capabilities enable it to process multiple data elements with a single instruction. This is particularly useful for tasks involving vectors, matrices, and other data structures commonly encountered in digital signal processing. 
+
+# DSP Extensions
+
+The Cortex-M4 builds upon the Armv7E-M architecture, which includes DSP extensions. These extensions include saturating arithmetic, single-cycle MAC instructions, and the optional single-precision floating-point unit (FPU), all contributing to efficient signal processing. 
+
+# CMSIS
+
+The Cortex Microcontroller Software Interface Standard (CMSIS) provides intrinsic functions that map directly to the Cortex-M4's SIMD instructions. These functions allow developers to easily leverage SIMD capabilities within their C/C++ code. 
+
+# Lab 1
+

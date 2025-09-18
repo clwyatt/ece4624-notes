@@ -1,62 +1,235 @@
 ---
 title: "ECE 4624: Meeting 7"
-subtitle: "Software Design for DSP"
+subtitle: "Time Domain Analysis of DT LTI Systems"
 date: last-modified
 author:
   - name: Chris Wyatt
     email: clwyatt@vt.edu
     affiliations: ECE@Virginia Tech
-    
+
 format: 
   revealjs:
     self-contained: false
     slide-number: true
+    default-image-extension: svg
     theme: 
       - clw-slide-style.scss
     footer: "[ECE 4624: DSP and Filter Design](index.qmd)"
     
   html:
+    default-image-extension: svg
     output-file: lecture-07-notes.html
     toc: false
-    
+    echo: false
+    format-links: false
+
+  beamer:
+    default-image-extension: pdf
+    output-file: lecture-07-slides.pdf
+    fontsize: 8pt
+
 html-math-method:
   method: mathjax
-  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
 ---
 
-##
+## {.t}
 
-Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.
-   
-READING: ?
+Today we review how to perform time-domain analysis of DT LTI systems using convolution and review the concept of an Eigenfunction.
 
-# Computation of the LCCDE output
+READING:
 
-# Core data structure: ring buffers
+* PM 2.3 and 2.6
+* ECE 2714 Supplementary Notes Chapters 9 and 13 
 
-# Basic operation: MAC
+Topics:
 
-# General-purpose computer implementation in floating-point and fixed-point
+- Convolution
+- DT time-domain analysis
+- Correlation
+- Eigen-Function for DT systems
 
-Aside: advice on development and debugging
+## Review DT LTI systems and superposition property {.t}
 
-# using SIMD on GP CPUs
+If a DT system is LTI then the superposition property holds. Given a system where
+$$x_i[n] \mapsto y_i[n] \; \forall\; i$$ then
+$$\sum\limits_{i} a_i x_i[n] \mapsto \sum\limits_{i} a_i y_i[n]$$
 
-# microcontroller implementation in fixed-point
+## Convolution Sum {.t}
 
-polling vs interrupts vs DMA
+Let $h[n]$ be the DT impulse response. Then if the system is LTI the
+output for an input $x[n]$ is given by
 
-# SIMD in Cortex-M4
+$$y[n] = \sum\limits_{m = -\infty}^{\infty} x[m]h[n-m] = x[n] * h[n]$$
 
-The Cortex-M4's SIMD capabilities enable it to process multiple data elements with a single instruction. This is particularly useful for tasks involving vectors, matrices, and other data structures commonly encountered in digital signal processing. 
+This is called the convolution sum.
 
-# DSP Extensions
 
-The Cortex-M4 builds upon the Armv7E-M architecture, which includes DSP extensions. These extensions include saturating arithmetic, single-cycle MAC instructions, and the optional single-precision floating-point unit (FPU), all contributing to efficient signal processing. 
+## Graphical View of the Convolution Sum. {.t}
 
-# CMSIS
 
-The Cortex Microcontroller Software Interface Standard (CMSIS) provides intrinsic functions that map directly to the Cortex-M4's SIMD instructions. These functions allow developers to easily leverage SIMD capabilities within their C/C++ code. 
+## Example {.t}
 
-# Lab 1
+Find the convolution of two unit step functions.
 
+
+## Example {.t}
+
+Find the convolution if the signals
+
+$$
+x_1[n] = \gamma^n\, u[n] \mbox{ for } \gamma \in\mathbb{R}
+$$
+and
+$$
+x_2[n] = u[n]
+$$
+
+## Properties of DT Convolution
+
+There are several useful properties of convolution. We do not prove
+these here, but it is not terribly difficult to do so. Given signals
+$x_1[n]$, $x_2[n]$, and $x_3[n]$:
+
+Commutative Property
+
+:   The ordering of the signals does not matter.
+    $$x_1[n] * x_2[n] = x_2[n] * x_1[n]$$
+
+Distributive Propery
+
+:   Convolution is distributed over addition.
+    $$x_1[n] * \left(x_2[n] + x_3[n]\right) = \left(x_1[n] * x_2[n] \right) + \left(x_1[n] * x_3[n] \right)$$
+
+Associative Property
+
+:   The order of convolution does not matter.
+    $$x_1[n] * \left(x_2[n] * x_3[n]\right) = \left(x_1[n] * x_2[n] \right) * x_3[n]$$
+
+Index Shift
+
+:   Given $x_3[n] = x_1[n] * x_2[n]$ then for index shifts
+    $m_1, m_2 \in \mathbb{R}$
+    $$x_1[n-m_1] * x_2[n-m_2] = x_3[n-m_1 - m_2]$$
+
+Multiplicative Scaling
+
+:   Given $x_3[n] = x_1[n] * x_2[n]$ then for constants
+    $a,b \in \mathbb{C}$
+    $$\left(a\, x_1[n]\right) * \left(b\, x_2[n]\right) = a\, b\, x_3[n]$$
+
+::: notes
+These properties can be used in combination with a table like that above
+to compute the convolution of a wide variety of signals without
+evaluating the summations.
+:::
+
+## Example {.t}
+Suppose an LTI system has an impulse response
+
+$$
+h[n] = \delta[n+1] - 2\delta[n] + \delta[n-1]
+$$
+What is the output if the input is
+$$
+x[n] = \left(\frac{1}{2}\right)^{|n|}
+$$
+
+
+## DT Convolution of Finite-Length Signals {.t}
+
+- For finite-length signals, DT convolution gives us an algorithm to
+determine their convolution.
+- Suppose the signal $x_1$ is non-zero only
+over the interval $[N_1,M_1]$, and the signal $x_2$ is non-zero only
+over the interval $[N_2,M_2]$.
+- The *length* of the signals are
+$L_1 = M_1-N_1+1$ and $L_2 = M_2-N_2+1$ respectively.
+- The non-zero terms
+of the convolution sum (when the signals overlap) is then the range
+$[N_1+N_2,M_1+M_2]$ and the sum can be truncated as:
+
+$$x_1[n] * x_2[n] = \sum\limits_{m = N_1+N_2}^{M_1+M_2} x_1[m]x_2[n-m]$$
+
+- It is common to shift both signals so that they both start at index $0$ , zero-padding them both to have length
+$L=L_1+L_2-1$.
+- Then the convolution becomes
+$$y = x_1 * x_2 = \sum\limits_{m = 0}^{L-1} x_1[m]x_2[L + n-m]$$
+where the indexing of $x_2$ is modulo the signal length.
+- The resulting signal after convolution, $y$, is also of length $L$, and can then be shifted back to start at $N_1+N_2$.
+
+## Example {.t}
+
+Compute the convolution of the DT signals $\{1,-1,1\}$ and $\{1,1,1,1\}$
+
+
+## Code for Convolution of two finite length signals
+
+For the example above:
+
+```{.cpp}
+const unsigned int L = 6; //L1=3, L2=4, so L=6
+double x1[L] = {1., -1., 1., 0, 0, 0};
+double x2[L] = {1., 1., 1., 1., 0, 0};
+double y[L];
+
+for(int n = 0; n < L; n++){
+   double sum = 0.;
+   for(int m = 0; m < L; m++){
+      int idx = (L+n-m) % L;
+      sum += x1[m]*x2[idx];
+   }
+   y[n] = sum;
+}
+```
+
+## Correlation {.t}
+
+An operation very similar to convolution is *correlation*. Given two signals $x[n]$ and $y[n]$
+
+- their cross-correlation is
+  $$
+r_{xy}[l] = \sum\limits_{n = -\infty}^{\infty} x[n]y[n-l]
+  $$
+  where $l$ is called the "lag".
+- note that
+  $$
+r_{yx}[l] = \sum\limits_{n = -\infty}^{\infty} y[n]x[n-l] = r_{xy}[-l]
+  $$
+- if $x = y$ we get the auto-correlation $r_{xx}[l]$
+
+- the normalized autocorrelation and cross-correlation are given by
+  $$
+  \rho_{xx}[l] = \frac{r_{xx}[l]}{r_{xx}[0]}
+  $$
+  $$
+  \rho_{xy}[l] = \frac{r_{xy}[l]}{\left(r_{xx}[l] \cdot r_{yy}[l]\right)^\frac{1}{2}}
+  $$
+
+## Correlation of input and output of LTI system {.t}
+
+Given an LTI system with impulse response $h[n]$ then
+
+$$
+r_{yx}[l] = h[n] * r_{xx}[l]
+$$
+
+## Applications of correlation {.t}
+
+- "radar" equation
+- The Fourier transform of the auto/cross correlation is the power spectral density. This forms the basis of working with random signals.
+
+
+## Eigenfunction for DT-LTI Systems {.t}
+
+Let $x[n] = z^n$ for $z\in \mathbb{C}$, then $y[n] = h[n] * x[n] = x[n] * h[n]$ and by the definition of DT convolution
+\begin{align*}
+  y[n] & = \sum\limits_{m = -\infty}^{\infty}h[m]x[n-m]\\
+  &= \sum\limits_{m = -\infty}^{\infty}h[m]z^{n-m} = \sum\limits_{m = -\infty}^{\infty}h[m]z^{n}z^{-m}\\
+  &= z^{n} \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\\
+  &= z^{n}H(z)
+\end{align*}
+where $H(z) = \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}$ is the \emph{Z Transform} of the impulse response, $h[n]$.
+
+
+$H(z)$ is called the \emph{transfer function} or \emph{Eigenvalue} of the system and $z^{n}$ is the \emph{Eigenfunction} for DT LTI systems.
