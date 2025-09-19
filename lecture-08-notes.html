@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chris Wyatt">
-<meta name="dcterms.date" content="2025-09-17">
+<meta name="dcterms.date" content="2025-09-19">
 
 <title>ECE 4624: Meeting 8 – ECE 4624: DSP and Filter Design – Fall 2025</title>
 <style>
@@ -102,7 +102,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -134,14 +134,46 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#z-transform" id="toc-z-transform" class="nav-link active" data-scroll-target="#z-transform">Z Transform</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3</a></li>
+  </ul></li>
+  <li><a href="#properties-of-the-z-transform" id="toc-properties-of-the-z-transform" class="nav-link" data-scroll-target="#properties-of-the-z-transform">Properties of the Z-transform</a>
+  <ul class="collapse">
+  <li><a href="#linearity" id="toc-linearity" class="nav-link" data-scroll-target="#linearity">Linearity</a></li>
+  <li><a href="#index-shift" id="toc-index-shift" class="nav-link" data-scroll-target="#index-shift">Index Shift</a></li>
+  <li><a href="#convolution" id="toc-convolution" class="nav-link" data-scroll-target="#convolution">Convolution</a></li>
+  <li><a href="#fir-and-iir-transfer-functions" id="toc-fir-and-iir-transfer-functions" class="nav-link" data-scroll-target="#fir-and-iir-transfer-functions">FIR and IIR Transfer Functions</a>
+  <ul class="collapse">
+  <li><a href="#fir-systems" id="toc-fir-systems" class="nav-link" data-scroll-target="#fir-systems">FIR Systems</a></li>
+  <li><a href="#iir-systems" id="toc-iir-systems" class="nav-link" data-scroll-target="#iir-systems">IIR Systems</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#stability-of-causal-systems-from-the-transfer-function" id="toc-stability-of-causal-systems-from-the-transfer-function" class="nav-link" data-scroll-target="#stability-of-causal-systems-from-the-transfer-function">Stability of Causal Systems from the Transfer Function</a></li>
+  <li><a href="#system-analysis-using-the-z-transform" id="toc-system-analysis-using-the-z-transform" class="nav-link" data-scroll-target="#system-analysis-using-the-z-transform">System Analysis using the Z-Transform</a></li>
+  <li><a href="#inverse-z-transform" id="toc-inverse-z-transform" class="nav-link" data-scroll-target="#inverse-z-transform">Inverse Z-Transform</a>
+  <ul class="collapse">
+  <li><a href="#power-series" id="toc-power-series" class="nav-link" data-scroll-target="#power-series">Power Series</a></li>
+  <li><a href="#properties-and-table-of-transforms" id="toc-properties-and-table-of-transforms" class="nav-link" data-scroll-target="#properties-and-table-of-transforms">Properties and Table of Transforms</a></li>
+  <li><a href="#using-the-definition" id="toc-using-the-definition" class="nav-link" data-scroll-target="#using-the-definition">Using the Definition</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">ECE 4624: Meeting 8</h1>
-<p class="subtitle lead">DT Fourier Series and Fourier Transform</p>
+<p class="subtitle lead">DT System Analysis using Z-Transform</p>
 </div>
 
 
@@ -165,7 +197,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 17, 2025</p>
+      <p class="date">September 19, 2025</p>
     </div>
   </div>
   
@@ -177,130 +209,236 @@ window.Quarto = {
 </header>
 
 
-<section id="section" class="level2 t">
-<h2 class="t anchored" data-anchor-id="section"></h2>
-<p>Today we will review the Fourier representation of DT signals and Fourier analysis of stable DT systems.</p>
-<p>READING:</p>
-<ul>
-<li>PM 4.3 - 4.5</li>
-<li>ECE 2714 Supplementary Notes Chapters 15 and 17</li>
-</ul>
-<p>Topics:</p>
-<ul>
-<li>DT Fourier Series / Discrete Fourier Transform</li>
-<li>DT Fourier Transform</li>
-<li>Frequency Domain Analysis of DT systems</li>
-</ul>
-</section>
-<section id="section-1" class="level2 t">
-<h2 class="t anchored" data-anchor-id="section-1"></h2>
-<p>A DT signal <span class="math inline">\(x[n]\)</span> is periodic if <span class="math inline">\(x[n] = x[n+kN]\)</span> for integer multiple <span class="math inline">\(k\)</span> and fundamental period <span class="math inline">\(N \in \mathbb{Z}\)</span>.</p>
-<ul>
-<li>the fundamental frequency is <span class="math inline">\(\omega_0 = \frac{2\pi}{N}\)</span> rad/sec</li>
-</ul>
-</section>
-<section id="section-2" class="level2 t">
-<h2 class="t anchored" data-anchor-id="section-2"></h2>
-<p>When <span class="math inline">\(x[n]\)</span> is periodic the complex base of the Eigenfunction becomes <span class="math inline">\(z_k = e^{jk\omega_0}\)</span>, and the decomposition is a finite sum.</p>
-<p>This gives the input-output relationship for a stable DT LTI system as</p>
-<p><span class="math display">\[
-x[n] = \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0n} \;\longrightarrow\;  y[n] = \sum\limits_{k = N_0}^{N_0 + N-1} H\left(e^{j k\omega_0}\right) a_k e^{jk\omega_0 n}
-\]</span> where <span class="math inline">\(H\left(e^{j k\omega_0}\right)\)</span> are the Eigenvalues or DT frequency response.</p>
-</section>
-<section id="fourier-series-synthesis-equation" class="level2 t">
-<h2 class="t anchored" data-anchor-id="fourier-series-synthesis-equation">Fourier Series Synthesis Equation</h2>
-<p><span class="math display">\[
-x[n] = \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0n}
-\]</span></p>
-<ul>
-<li>the <span class="math inline">\(a_k\)</span> are the Fourier series coefficients</li>
-</ul>
-</section>
-<section id="fourier-series-analysis-equation" class="level2 t">
-<h2 class="t anchored" data-anchor-id="fourier-series-analysis-equation">Fourier Series Analysis Equation</h2>
-<p><span class="math display">\[
-a_k = \frac{1}{N} \sum\limits_{n = N_0}^{N_0+N-1} x[n]e^{-j\frac{2\pi}{N} k n }
-\]</span></p>
-<div class="notes">
-<p>Note the coefficients themselves are periodic in <span class="math inline">\(k\)</span>, with period <span class="math inline">\(N\)</span> and can be viewed as a discrete-frequency signal.</p>
-<p>This is only one of three ways we can find the Fourier Series coefficients.</p>
-</div>
-</section>
-<section id="finding-the-fourier-series-coefficients-using-linear-algebra" class="level2 t">
-<h2 class="t anchored" data-anchor-id="finding-the-fourier-series-coefficients-using-linear-algebra">Finding the Fourier series coefficients using linear algebra</h2>
+<section id="z-transform" class="level1">
+<h1>Z Transform</h1>
+<p>Recall the Eigenfunction for DT LTI systems is <span class="math inline">\(z^n\)</span> for <span class="math inline">\(z\in \mathbb{C}\)</span>.</p>
 <p><span class="math display">\[\begin{align*}
-  x[N_0] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0N_0}\\
-  x[N_0+1] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0(N_0+1)}\\
-  \vdots\hspace{2em} &amp;= \hspace{2em}\vdots\\
-  x[N_0+N-1] &amp;= \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0(N_0+N-1)}\\
-\end{align*}\]</span></p>
-<div class="notes">
-<p>Another approach to find the coefficients <span class="math inline">\(a_k\)</span> is to note that there are a finite number of terms in the summation and the signal has a finite number of values over one period. This gives a system of <span class="math inline">\(N\)</span> linear equations in <span class="math inline">\(N\)</span> unknowns (the <span class="math inline">\(a_k\)</span>’s) which can be solved to find the coefficients using linear algebra.</p>
-</div>
-</section>
-<section id="relationship-between-fourier-series-coefficients-and-discrete-fourier-transform" class="level2">
-<h2 class="anchored" data-anchor-id="relationship-between-fourier-series-coefficients-and-discrete-fourier-transform">Relationship between Fourier series coefficients and Discrete Fourier Transform</h2>
-<p>Given a finite-length sequence of real or complex numbers <span class="math inline">\(x[n]\)</span>, indexed from <span class="math inline">\(0\)</span> to <span class="math inline">\(N-1\)</span>, the or DFT is given by <span class="math display">\[
-X[k] = \sum_{n = 0}^{N-1}  x[n] e^{-j \frac{2\pi}{N}k n}
-\]</span> for <span class="math inline">\(k = 0, 1, 2, \cdots, N-1\)</span>. When <span class="math inline">\(N\)</span> is a power of 2, an efficient algorithm to compute this result exists and is called the or FFT.</p>
-<p>Note the similarity to the DT Fourier Series when <span class="math inline">\(N_0 = 0\)</span> <span class="math display">\[
-a_k = \frac{1}{N}\sum\limits_{n = N_0}^{N_0 + N - 1} x[n] e^{-j\frac{2\pi}{N}kn} =  \frac{1}{N}\sum\limits_{n = 0}^{N - 1} x[n] e^{-j\frac{2\pi}{N}kn} = \frac{1}{N} X[k]
-\]</span></p>
-<div class="notes">
-<p>The computation of the Fourier series coefficents and the Discrete Fourier Transform of a finite length signal are the same up to a constant. This gives yet another approach to finding the <span class="math inline">\(a_k\)</span>’s that is very efficient via the FFT.</p>
-</div>
-</section>
-<section id="spectrum" class="level2 t">
-<h2 class="t anchored" data-anchor-id="spectrum">Spectrum</h2>
-<ul>
-<li>a plot of <span class="math inline">\(|a_k|\)</span> versus <span class="math inline">\(k\)</span> is called the amplitude spectrum</li>
-<li>a plot of <span class="math inline">\(\angle a_k\)</span> versus <span class="math inline">\(k\)</span> is called the phase spectrum</li>
-<li>together they are just the spectrum</li>
-<li>a plot of <span class="math inline">\(|a_k|^2\)</span> versus <span class="math inline">\(k\)</span> is called the power spectrum</li>
-</ul>
-<div class="notes">
-<p>The sum of all the terms in the power spectrum, by Parsevals theorem, is the Power of the DT signal.</p>
-</div>
-</section>
-<section id="properties-of-the-dt-fourier-series" class="level2">
-<h2 class="anchored" data-anchor-id="properties-of-the-dt-fourier-series">Properties of the DT Fourier Series</h2>
-<p>Given two signals <span class="math inline">\(x[n]\)</span> and <span class="math inline">\(y[n]\)</span> periodic in <span class="math inline">\(N\)</span> with <span class="math inline">\(\omega_0 = \frac{2\pi}{N}\)</span>, having DT Fourier coefficients <span class="math inline">\(a_k\)</span> and <span class="math inline">\(b_k\)</span> respectively.</p>
-<ul>
-<li><p>Linearity. The coefficients of the signal <span class="math display">\[z[n] = Ax[n] + By[n] \mbox{ for constants } A,B\]</span> are <span class="math inline">\(Aa_k + Bb_k\)</span></p></li>
-<li><p>Index Shifting. The coefficients of <span class="math display">\[z[n] = x[n-n_0] \mbox{ are } e^{-jk\omega_0 n_0}a_k\]</span> that is, it adds a phase shift.</p></li>
-<li><p>Frequency Shift. The coefficients of <span class="math display">\[z[n] = x[n]e^{jm\omega_0n} \mbox{ are } a_{k-m}\]</span></p></li>
-<li><p>Index Reversal. The coefficients of <span class="math display">\[z[n] = x[-n] \mbox{ are } a_{-k}\]</span></p></li>
-</ul>
-</section>
-<section id="properties-of-the-dt-fourier-series-1" class="level2">
-<h2 class="anchored" data-anchor-id="properties-of-the-dt-fourier-series-1">Properties of the DT Fourier Series</h2>
-<ul>
-<li><p>Multiplication. The coefficients of <span class="math display">\[z[n] = x[n] \cdot y[n] \mbox{ are } \sum\limits_{m = N_0}^{N_0 + N -1} a_m\cdot b_{k-m}\]</span> the discrete convolution of the individual signals’ coefficients.</p></li>
-<li><p>Convolution. The coefficients of <span class="math display">\[z[n] = x[n] * y[n] \mbox{ are } N a_k b_k\]</span></p></li>
-<li><p>Conjugate Symmetry. The coefficients of <span class="math display">\[z[n] = x^*[n] = \Re{x[n]} - j\Im{x[n]} \mbox{ are } a_{-k}^*\]</span> A consequence of this property is that real, even signals have real, even <span class="math inline">\(a_k\)</span>; and real, odd signals have purely imaginary, odd <span class="math inline">\(a_k\)</span>. Thus if <span class="math inline">\(x[n]\)</span> is real <span class="math inline">\(|a_k|\)</span> is an even periodic function of <span class="math inline">\(k\)</span> and <span class="math inline">\(\angle a_k\)</span> is an odd periodic function of <span class="math inline">\(k\)</span>.</p></li>
-</ul>
-</section>
-<section id="properties-of-the-dt-fourier-series-2" class="level2 t">
-<h2 class="t anchored" data-anchor-id="properties-of-the-dt-fourier-series-2">Properties of the DT Fourier Series</h2>
-<ul>
-<li>Parseval’s Relation. The power of the signal with Fourier series coefficients is <span class="math display">\[\frac{1}{N} \sum\limits_{n = N_0}^{N_0 + N -1} |x[n]|^2\;dt = \sum\limits_{k = N_0}^{N_0+N-1} |a_k|^2\]</span></li>
-</ul>
-</section>
-<section id="dt-fourier-transform" class="level2">
-<h2 class="anchored" data-anchor-id="dt-fourier-transform">DT Fourier Transform</h2>
-<ul>
-<li><p>Recall the complex exponential <span class="math inline">\(z^{n}\)</span> for <span class="math inline">\(z\in\mathbb{C}\)</span> is the Eigenfunction of DT LTI systems. If we can decompose an input into a sum of such signals, we can easily determine the output using the superposition principle. We consider such a decomposition when the input is now aperiodic, called the DT Fourier Transform (DTFT).</p></li>
-<li><p>In contrast to the DT Fourier series, in this case the complex exponent of the Eigenfunction becomes <span class="math inline">\(z = e^{j\omega}\)</span> a continuous variable, and the decomposition is an uncountably infinite sum (integral). This gives the input-output relationship for a stable DT LTI system as</p></li>
-</ul>
+  y[n] &amp; = \sum\limits_{m = -\infty}^{\infty}h[m]x[n-m]\\
+  &amp;= \sum\limits_{m = -\infty}^{\infty}h[m]z^{n-m} = \sum\limits_{m = -\infty}^{\infty}h[m]z^{n}z^{-m}\\
+  &amp;= z^{n} \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\\
+  &amp;= z^{n}H(z)
+\end{align*}\]</span> where <span class="math inline">\(H(z) = \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\)</span> is the bilateral (two-sided) Z Transform of the impulse response, <span class="math inline">\(h[n]\)</span>, denoted <span class="math inline">\(\mathcal{Z}\{h[n]\}\)</span>. In addition to the expression in the complex variable <span class="math inline">\(z\)</span>, the transform result includes a region-of-convergence (ROC), the allowed values of <span class="math inline">\(z\)</span> in the domain of the function.</p>
+<p><span class="math inline">\(H(z)\)</span> is called the transfer function, system function, or Eigenvalue of the system.</p>
+<p>If <span class="math inline">\(h[n]\)</span> is causal then <span class="math inline">\(H(z) = \sum\limits_{m = 0}^{\infty}h[m]z^{-m}\)</span> is the unilateral (one-sided) Z-transform.</p>
+<p>The ROC is a ring in the complex plane for the bilateral Z Transform, and a region outside some radius for the unilateral transform.</p>
+<p>FIGURE HERE</p>
+<p>Another view of the one-sided transform is as the Laplace transform of a sampled causal signal. Recall the unilateral Laplace transform of a causal CT signal <span class="math inline">\(x(t)\)</span> is</p>
 <p><span class="math display">\[
-x[n] = \frac{1}{2\pi}\int\limits_{2\pi} X\left(e^{j\omega}\right) \, e^{j \omega n}\; d\omega \;\longrightarrow\; y[n] = \frac{1}{2\pi}\int\limits_{2\pi} H\left(e^{j\omega}\right) X\left(e^{j\omega}\right) \, e^{j \omega n}\; d\omega
+X(s) = \int\limits_{0}^{\infty} x(t)\, e^{-st}\; dt
 \]</span></p>
-<p>where <span class="math inline">\(H\left(e^{j \omega}\right)\)</span> are the Eigenvalues, again called the .</p>
-<div class="notes">
-<p>The notation <span class="math inline">\(X\left(e^{j\omega}\right)\)</span> can be confusing. It just emphasizes that <span class="math inline">\(z \rightarrow e^{j\omega}\)</span>. The expressions are functions of the independent variable <span class="math inline">\(\omega\)</span>.</p>
-</div>
+<p>Consider a sampled version of the signal, with sample spacing <span class="math inline">\(T\)</span> seconds</p>
+<p><span class="math display">\[
+x[n] = x(nT) = \sum\limits_{n=0}^{\infty} x(t)\, \delta(t - nT)
+\]</span></p>
+<p>Taking the Laplace transform</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{L}\left\{x(nT) \right\} &amp; = \int\limits_{0}^{\infty} \sum\limits_{n=0}^{\infty} x(t)\, \delta(t - nT) \, e^{-st}\; dt\\
+&amp; = \sum\limits_{n=0}^{\infty} \int\limits_{0}^{\infty}  x(t)\, \delta(t - nT) \, e^{-st}\; dt\\
+&amp; = \sum\limits_{n=0}^{\infty}  x(nT) e^{-snT}\\
+&amp; = \sum\limits_{n=0}^{\infty}  x[n] z^{n}\\
+\end{aligned}
+\]</span> where <span class="math inline">\(z = e^{sT}\)</span>.</p>
+<p>From this we see the ROC of the unilateral Laplace, <span class="math inline">\(\text{Re}(s) &gt; a\)</span> becomes <span class="math inline">\(|z| &gt; e^{at}\)</span>. Thus singularities in the left-hand of the <span class="math inline">\(s\)</span>-plane map to singularities inside the unit-circle of the <span class="math inline">\(z\)</span>-plane, while singularities in the right-hand side of the <span class="math inline">\(s\)</span>-plane map to singularities outside the unit circle of the <span class="math inline">\(z\)</span>-plane.</p>
+<p>FIGURE HERE</p>
+<p>Some standard examples to remind us of the techniques involved.</p>
+<section id="example-1" class="level2">
+<h2 class="anchored" data-anchor-id="example-1">Example 1</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\mathcal{Z}\left\{ \delta[n] \right\} &amp; = \sum\limits_{n = -\infty}^{\infty}\delta[n]z^{-n}\\
+&amp; = z^{-0}\\
+&amp; = 1
+\end{aligned}
+\]</span> and the ROC is the entire <span class="math inline">\(z\)</span>-plane.</p>
+</section>
+<section id="example-2" class="level2">
+<h2 class="anchored" data-anchor-id="example-2">Example 2</h2>
+<span class="math display">\[\begin{aligned}
+\mathcal{Z}\left\{ u[n] \right\} &amp; = \sum\limits_{n = -\infty}^{\infty}u[n]z^{-n}\\
+&amp; = \sum\limits_{n = 0}^{\infty}z^{-n}\\
+&amp; = \lim_{N \rightarrow \infty} \sum\limits_{n = 0}^{N}z^{-n}\\
+&amp; = \lim_{N \rightarrow \infty} \frac{z^{-(N+1)} - 1}{z^{-1} - 1}\\
+&amp; = \frac{-1}{z^{-1} - 1} \quad \text{for } |z| &gt; 1\\
+&amp; = \frac{z}{z-1}
+\end{aligned}\]</span>
+<p>where the ROC, determined from the convergence criteria is <span class="math inline">\(|z| &gt; 1\)</span>.</p>
+</section>
+<section id="example-3" class="level2">
+<h2 class="anchored" data-anchor-id="example-3">Example 3</h2>
+<span class="math display">\[\begin{aligned}
+\mathcal{Z}\left\{ a^n\,u[n] \right\} &amp; = \sum\limits_{n - 0}^{\infty}a^n\, z^{-n}\\
+&amp; = \sum\limits_{n = 0}^{\infty}\left(\frac{z}{a}\right)^{-n}\\
+&amp; = \lim_{N \rightarrow \infty} \frac{\left(\frac{z}{a}\right)^{-(N+1)} - 1}{\left(\frac{z}{a}\right)^{-1} - 1}\\
+&amp; = \frac{-1}{\left(\frac{z}{a}\right)^{-1} - 1} \quad \text{for } |z| &gt; |a|\\
+&amp; = \frac{z}{z-a}
+\end{aligned}\]</span>
+<p>where the ROC, determined from the convergence criteria is <span class="math inline">\(|z| &gt; |a|\)</span>.</p>
+</section>
+</section>
+<section id="properties-of-the-z-transform" class="level1">
+<h1>Properties of the Z-transform</h1>
+<p>Here are a few properties of the Z-transform that we will use frequently.</p>
+<section id="linearity" class="level2">
+<h2 class="anchored" data-anchor-id="linearity">Linearity</h2>
+<p>If <span class="math inline">\(\mathcal{Z}\left\{ x_1[n] \right\} = X_1(z)\)</span> with ROC <span class="math inline">\(R_1\)</span>, and <span class="math inline">\(\mathcal{Z}\left\{ x_2[n] \right\} = X_2(z)\)</span> with ROC <span class="math inline">\(R_2\)</span>, then</p>
+<p><span class="math display">\[
+\mathcal{Z}\left\{ a\, x_1[n] + b\, x_2[n] \right\} = a\, X_1(z) + b\, X_2(z)
+\]</span> for <span class="math inline">\(a,b\in\mathbb{C}\)</span>. The ROC is the intersection of <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>.</p>
+</section>
+<section id="index-shift" class="level2">
+<h2 class="anchored" data-anchor-id="index-shift">Index Shift</h2>
+<p>Given <span class="math inline">\(\mathcal{Z}\left\{ x[n] \right\} = X(z)\)</span>, for any <span class="math inline">\(k\in\mathbb{Z}\)</span></p>
+<p><span class="math display">\[
+\mathcal{Z}\left\{ x[n-k] \right\} = z^{-k} X(z)
+\]</span> with the same ROC except</p>
+<ul>
+<li><span class="math inline">\(z=0\)</span> if <span class="math inline">\(k &gt; 0\)</span> (delay removes the origin from the ROC if present)</li>
+<li><span class="math inline">\(z=\infty\)</span> if <span class="math inline">\(k &lt; 0\)</span> (advance removes <span class="math inline">\(\infty\)</span> from the ROC of present)</li>
+</ul>
+</section>
+<section id="convolution" class="level2">
+<h2 class="anchored" data-anchor-id="convolution">Convolution</h2>
+<p>If <span class="math inline">\(\mathcal{Z}\left\{ x_1[n] \right\} = X_1(z)\)</span> with ROC <span class="math inline">\(R_1\)</span>, and <span class="math inline">\(\mathcal{Z}\left\{ x_2[n] \right\} = X_2(z)\)</span> with ROC <span class="math inline">\(R_2\)</span>, then</p>
+<p><span class="math display">\[
+\mathcal{Z}\left\{ x_1[n] * x_2[n] \right\} = X_1(z) \cdot X_2(z)
+\]</span></p>
+<p>and ROC is the intersection of <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>. When one of the signals is the impulse response the result of the convolution is the system output and we can see the transfer function is</p>
+<p><span class="math display">\[
+H(z) = \frac{Y(z)}{X(z)}
+\]</span></p>
+<hr>
+<p>These properties allow us to easily derive the transfer function for LCCDE’s and thus for FIR and IIR systems.</p>
+<p>Consider the case of an LCCDE in delay form:</p>
+<p><span class="math display">\[\sum\limits_{k = 0}^N a_k y[n-k] = \sum\limits_{k = 0}^M b_k x[n-k]\]</span></p>
+<p>Taking the Z-transform</p>
+<p><span class="math display">\[\sum\limits_{k = 0}^N a_k z^{-k} Y(z) = \sum\limits_{k = 0}^M b_k z^{-k}X(z)\]</span></p>
+<p>Rearranging we the the transfer function</p>
+<p><span class="math display">\[
+H(z) = \frac{Y(z)}{X(z)} = \frac{\sum\limits_{k = 0}^M b_k z^{-k}}{\sum\limits_{k = 0}^N a_k z^{-k}}
+\]</span></p>
+<p>Similarly for the advance form and assuming <span class="math inline">\(N &gt; M\)</span></p>
+<p><span class="math display">\[
+\sum\limits_{k = 0}^N a_k y[n+N-k] = \sum\limits_{k = 0}^M b_k x[n+N-k]
+\]</span></p>
+<p>Taking the Z-transform</p>
+<p><span class="math display">\[\sum\limits_{k = 0}^N a_k z^{N-k} Y(z) = \sum\limits_{k = 0}^M b_k z^{N-k}X(z)\]</span></p>
+<p>Rearranging we the the transfer function</p>
+<p><span class="math display">\[
+H(z) = \frac{Y(z)}{X(z)} = \frac{\sum\limits_{k = 0}^M b_k z^{N-k}}{\sum\limits_{k = 0}^N a_k z^{N-k}}
+\]</span></p>
+<p>Finally the case for the recursive form</p>
+<p><span class="math display">\[
+y[n] = - \frac{a_1}{a_0} y[n-1] - \cdots -\frac{a_N}{a_0} y[n-N] + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0} x[n-M]
+\]</span></p>
+<p>Taking the Z-transform</p>
+<p><span class="math display">\[
+Y(z) = \sum\limits_{k = 1}^N -\frac{a_k}{a_0} z^{-k} Y(z) + \sum\limits_{k = 0}^M \frac{b_k}{a_0} z^{-k}X(z)
+\]</span></p>
+<p>Rearranging we the the transfer function</p>
+<p><span class="math display">\[
+H(z) = \frac{\sum\limits_{k = 0}^M \frac{b_k}{a_0} z^{-k}}{1 + \sum\limits_{k = 1}^N \frac{a_k}{a_0} z^{-k}}
+\]</span></p>
+<p>It is easy to verify the transfer functions are the same in each case by an algebraic transformation.</p>
+</section>
+<section id="fir-and-iir-transfer-functions" class="level2">
+<h2 class="anchored" data-anchor-id="fir-and-iir-transfer-functions">FIR and IIR Transfer Functions</h2>
+<p>Note that the transfer function is a rational complex function of <span class="math inline">\(z\)</span> and can be expressed as a ratio of polynomials in <span class="math inline">\(z\)</span></p>
+<p><span class="math display">\[
+H(z) = \frac{P(z)}{Q(z)}
+\]</span></p>
+<p>The roots of <span class="math inline">\(P(z)\)</span> are called the zeros of the system, while the roots of <span class="math inline">\((Q(z)\)</span> are called the poles. Note that this definition assumes an expansion in <span class="math inline">\(z\)</span>, not <span class="math inline">\(z^{-1}\)</span>, so some care is needed to ensure the correct coefficients are used.</p>
+<p>The location of the zeros and poles tells us a lot about the qualitative behavior of the system in the time domain, and the pattern of poles and zeros determines the frequency selective filter type, order, stability, and shape of the frequency response.</p>
+<p>For example, consider an all-pole system with a single real pole at <span class="math inline">\(a\in\mathbb{R}\)</span></p>
+<p><span class="math display">\[
+H(z) = \frac{1}{1-az^{-1}} = \frac{z}{z-a}
+\]</span></p>
+<ul>
+<li>for <span class="math inline">\(0 &lt; a &lt; 1\)</span> the impulse response is monotonically decreasing</li>
+<li>for <span class="math inline">\(a &gt; 1\)</span> the impulse response is monotonically increasing</li>
+<li>for <span class="math inline">\(-1 &lt; a &lt; 0\)</span> the impulse response is oscillatory with a monotonically decreasing envelope</li>
+<li>for <span class="math inline">\(a &lt; -1\)</span> the impulse response is oscillatory with a monotonically increasing envelope</li>
+<li>for <span class="math inline">\(a = 1\)</span> the impulse response is constant</li>
+<li>for <span class="math inline">\(a = -1\)</span> the impulse response is oscillatory with a constant envelope</li>
+</ul>
+<section id="fir-systems" class="level3">
+<h3 class="anchored" data-anchor-id="fir-systems">FIR Systems</h3>
+<p>For an FIR filter the form of the transfer function can be derived easily from the recursive form above or by direct application of the transform to the canonical impulse response of an FIR system</p>
+<p><span class="math display">\[
+H(z) = \mathcal{Z}\left\{ h[n] \right\} = \mathcal{Z}\left\{ \sum_{k = 0}^{M} b_k x[n-k] \right\} = \sum\limits_{k = 0}^M b_k z^{-k}
+\]</span></p>
+<p>FIR systems are called all-zero systems since there are no poles in the transfer function.</p>
+</section>
+<section id="iir-systems" class="level3">
+<h3 class="anchored" data-anchor-id="iir-systems">IIR Systems</h3>
+<p>For IIR systems the transfer function includes poles and any of the above forms are applicable. If there are no zeros (<span class="math inline">\(M = 1\)</span>) then it is called an all-pole system.</p>
+</section>
+</section>
+</section>
+<section id="stability-of-causal-systems-from-the-transfer-function" class="level1">
+<h1>Stability of Causal Systems from the Transfer Function</h1>
+<p>The location of poles relative to unit circle tell us the BIBO stability of the system. Writing the transfer function as factors of <span class="math inline">\(P(z)\)</span> and <span class="math inline">\(Q(z)\)</span></p>
+<p><span class="math display">\[
+H(z) = \frac{\sum\limits_{k = 0}^{M} (z-q_k)}{\sum\limits_{k = 0}^{N} (z-p_k)}
+\]</span> the <span class="math inline">\(q_k\in\mathbb{C}\)</span> are the zeros and <span class="math inline">\(p_k\in\mathbb{C}\)</span> are the poles.</p>
+<p>The system is</p>
+<ul>
+<li>stable if <strong>all</strong> <span class="math inline">\(|p_k| &lt; 1\)</span> (all poles inside the unit circle)</li>
+<li>unstable if <strong>any</strong> <span class="math inline">\(|p_k| &gt; 1\)</span> (any pole outside the unit circle)</li>
+<li>marginally stable if all <span class="math inline">\(|p_k| \leq 1\)</span> and any <span class="math inline">\(|p_k| = 1\)</span></li>
+</ul>
+</section>
+<section id="system-analysis-using-the-z-transform" class="level1">
+<h1>System Analysis using the Z-Transform</h1>
+<p>To use the Z Transform for system analysis we</p>
+<ol type="1">
+<li><p>obtain the transfer function from the impulse response, LCCDE, or block diagram/signal-flow graph</p></li>
+<li><p>Take the Z-transform of the input</p></li>
+<li><p>Use the convolution property to find the output in the z-domain <span class="math inline">\(Y(z)\)</span></p></li>
+<li><p>Take the inverse Z-transform, if the output is needed in the time domain</p></li>
+</ol>
+<p>FIGURE HERE</p>
+<p>Two broad classes of problems can be solved this way.</p>
+<p>The first is causal systems with causal inputs. This is the simplest since the ROC does not have to be explicitly taken into account.</p>
+<p>The second is a causal system with a non-causal input (more common) of a non-causal system with a causal or non-casual input (less common). This requires careful tracking of terms in the Z-transform arising from anti-causal and causal components of the signals and the corresponding ROC’s. In most cases if the overall ROC includes the unit circle it is better to perform this kind of analysis using Fourier Transforms.</p>
+</section>
+<section id="inverse-z-transform" class="level1">
+<h1>Inverse Z-Transform</h1>
+<p>The inverse Z-transform can be done one of three ways:</p>
+<section id="power-series" class="level2">
+<h2 class="anchored" data-anchor-id="power-series">Power Series</h2>
+<p>Write</p>
+<p><span class="math display">\[
+Y(z) = r_0 + r_1 z^{-1} + r_2 z^{-2} + r_3 z^{-3} + \cdots
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+y[n] = r_0 \delta[n] + r_1 \delta[n-1] + r_2 \delta[n-2] + r_3 \delta[n-3] + \cdots
+\]</span></p>
+<p>This works well for FIR systems with finite-length inputs, and can be used to check the inverse for a few index values <span class="math inline">\(n\)</span> in the general case.</p>
+</section>
+<section id="properties-and-table-of-transforms" class="level2">
+<h2 class="anchored" data-anchor-id="properties-and-table-of-transforms">Properties and Table of Transforms</h2>
+<p>Write</p>
+<p><span class="math display">\[
+Y(z) = r_1 Y_1(z) + r_2 Y_2(z) + \cdots + r_I Y_I(z)
+\]</span> where each <span class="math inline">\(Y_i\)</span> is in a table of transforms.</p>
+<p>Then by the linearity property</p>
+<p><span class="math display">\[
+y[n] = r_1 y_1[n] + r_2 y_2[n] + \cdots + r_I y_I[n]
+\]</span></p>
+<p>This approach works well for causal systems with causal inputs and is facilitated by performing a partial fraction expansion of <span class="math inline">\(Y(z)\)</span>.</p>
+</section>
+<section id="using-the-definition" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-definition">Using the Definition</h2>
+<p>This approach uses the definition of the inverse transform</p>
+<p><span class="math display">\[
+y[n] = \frac{1}{2\pi j}\oint_C X(z)\, z^{n-1}\; dz
+\]</span></p>
+<p>which requires a basic knowledge of complex analysis and the residue theorem.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
