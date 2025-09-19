@@ -1,0 +1,326 @@
+---
+title: "ECE 4624: Meeting 8"
+subtitle: "DT System Analysis using Z-Transform"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+
+format: 
+    
+  html:
+    default-image-extension: svg
+    toc: true
+    echo: false
+    format-links: false
+
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+# Z Transform
+
+Recall the Eigenfunction for DT LTI systems is $z^n$ for $z\in \mathbb{C}$.
+
+\begin{align*}
+  y[n] & = \sum\limits_{m = -\infty}^{\infty}h[m]x[n-m]\\
+  &= \sum\limits_{m = -\infty}^{\infty}h[m]z^{n-m} = \sum\limits_{m = -\infty}^{\infty}h[m]z^{n}z^{-m}\\
+  &= z^{n} \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}\\
+  &= z^{n}H(z)
+\end{align*}
+where $H(z) = \sum\limits_{m = -\infty}^{\infty}h[m]z^{-m}$ is the bilateral (two-sided) Z Transform of the impulse response, $h[n]$, denoted $\mathcal{Z}\{h[n]\}$. In addition to the expression in the complex variable $z$, the transform result includes a region-of-convergence (ROC), the allowed values of $z$ in the domain of the function.
+
+$H(z)$ is called the transfer function, system function, or Eigenvalue of the system.
+
+If $h[n]$ is causal then $H(z) = \sum\limits_{m = 0}^{\infty}h[m]z^{-m}$ is the unilateral (one-sided) Z-transform.
+
+The ROC is a ring in the complex plane for the bilateral Z Transform, and a region outside some radius for the unilateral transform.
+
+FIGURE HERE
+
+Another view of the one-sided transform is as the Laplace transform of a sampled causal signal. Recall the unilateral Laplace transform of a causal CT signal $x(t)$ is
+
+$$
+X(s) = \int\limits_{0}^{\infty} x(t)\, e^{-st}\; dt
+$$
+
+Consider a sampled version of the signal, with sample spacing $T$ seconds
+
+$$
+x[n] = x(nT) = \sum\limits_{n=0}^{\infty} x(t)\, \delta(t - nT)
+$$
+
+Taking the Laplace transform
+
+$$
+\begin{aligned}
+\mathcal{L}\left\{x(nT) \right\} & = \int\limits_{0}^{\infty} \sum\limits_{n=0}^{\infty} x(t)\, \delta(t - nT) \, e^{-st}\; dt\\
+& = \sum\limits_{n=0}^{\infty} \int\limits_{0}^{\infty}  x(t)\, \delta(t - nT) \, e^{-st}\; dt\\
+& = \sum\limits_{n=0}^{\infty}  x(nT) e^{-snT}\\
+& = \sum\limits_{n=0}^{\infty}  x[n] z^{n}\\
+\end{aligned}
+$$
+where $z = e^{sT}$.
+
+From this we see the ROC of the unilateral Laplace, $\text{Re}(s) > a$ becomes $|z| > e^{at}$. Thus singularities in the left-hand of the $s$-plane map to singularities inside the unit-circle of the $z$-plane, while singularities in the right-hand side of the $s$-plane map to singularities outside the unit circle of the $z$-plane. 
+
+FIGURE HERE
+
+Some standard examples to remind us of the techniques involved.
+
+## Example 1
+
+$$
+\begin{aligned}
+\mathcal{Z}\left\{ \delta[n] \right\} & = \sum\limits_{n = -\infty}^{\infty}\delta[n]z^{-n}\\
+& = z^{-0}\\
+& = 1
+\end{aligned}
+$$
+and the ROC is the entire $z$-plane.
+
+## Example 2
+
+\begin{aligned}
+\mathcal{Z}\left\{ u[n] \right\} & = \sum\limits_{n = -\infty}^{\infty}u[n]z^{-n}\\
+& = \sum\limits_{n = 0}^{\infty}z^{-n}\\
+& = \lim_{N \rightarrow \infty} \sum\limits_{n = 0}^{N}z^{-n}\\
+& = \lim_{N \rightarrow \infty} \frac{z^{-(N+1)} - 1}{z^{-1} - 1}\\
+& = \frac{-1}{z^{-1} - 1} \quad \text{for } |z| > 1\\
+& = \frac{z}{z-1}
+\end{aligned}
+
+where the ROC, determined from the convergence criteria is $|z| > 1$.
+
+## Example 3
+
+\begin{aligned}
+\mathcal{Z}\left\{ a^n\,u[n] \right\} & = \sum\limits_{n - 0}^{\infty}a^n\, z^{-n}\\
+& = \sum\limits_{n = 0}^{\infty}\left(\frac{z}{a}\right)^{-n}\\
+& = \lim_{N \rightarrow \infty} \frac{\left(\frac{z}{a}\right)^{-(N+1)} - 1}{\left(\frac{z}{a}\right)^{-1} - 1}\\
+& = \frac{-1}{\left(\frac{z}{a}\right)^{-1} - 1} \quad \text{for } |z| > |a|\\
+& = \frac{z}{z-a}
+\end{aligned}
+
+where the ROC, determined from the convergence criteria is $|z| > |a|$.
+
+# Properties of the Z-transform
+
+Here are a few properties of the Z-transform that we will use frequently.
+
+## Linearity
+
+If $\mathcal{Z}\left\{ x_1[n] \right\} = X_1(z)$ with ROC $R_1$, and $\mathcal{Z}\left\{ x_2[n] \right\} = X_2(z)$ with ROC $R_2$, then
+
+$$
+\mathcal{Z}\left\{ a\, x_1[n] + b\, x_2[n] \right\} = a\, X_1(z) + b\, X_2(z)
+$$
+for $a,b\in\mathbb{C}$. The ROC is the intersection of $R_1$ and $R_2$.
+
+## Index Shift
+
+Given $\mathcal{Z}\left\{ x[n] \right\} = X(z)$, for any $k\in\mathbb{Z}$
+
+$$
+\mathcal{Z}\left\{ x[n-k] \right\} = z^{-k} X(z)
+$$
+with the same ROC except
+
+* $z=0$ if $k > 0$ (delay removes the origin from the ROC if present)
+* $z=\infty$ if $k < 0$ (advance removes $\infty$ from the ROC of present)
+
+## Convolution
+
+If $\mathcal{Z}\left\{ x_1[n] \right\} = X_1(z)$ with ROC $R_1$, and $\mathcal{Z}\left\{ x_2[n] \right\} = X_2(z)$ with ROC $R_2$, then
+
+$$
+\mathcal{Z}\left\{ x_1[n] * x_2[n] \right\} = X_1(z) \cdot X_2(z)
+$$
+
+and ROC is the intersection of $R_1$ and $R_2$. When one of the signals is the impulse response the result of the convolution is the system output and we can see the transfer function is
+
+$$
+H(z) = \frac{Y(z)}{X(z)} 
+$$
+
+---
+
+These properties allow us to easily derive the transfer function for LCCDE's and thus for FIR and IIR systems.
+
+Consider the case of an LCCDE in delay form:
+
+$$\sum\limits_{k = 0}^N a_k y[n-k] = \sum\limits_{k = 0}^M b_k x[n-k]$$
+
+Taking the Z-transform
+
+$$\sum\limits_{k = 0}^N a_k z^{-k} Y(z) = \sum\limits_{k = 0}^M b_k z^{-k}X(z)$$
+
+Rearranging we the the transfer function
+
+$$
+H(z) = \frac{Y(z)}{X(z)} = \frac{\sum\limits_{k = 0}^M b_k z^{-k}}{\sum\limits_{k = 0}^N a_k z^{-k}}
+$$
+
+
+Similarly for the advance form and assuming $N > M$
+
+$$
+\sum\limits_{k = 0}^N a_k y[n+N-k] = \sum\limits_{k = 0}^M b_k x[n+N-k]
+$$
+
+Taking the Z-transform
+
+$$\sum\limits_{k = 0}^N a_k z^{N-k} Y(z) = \sum\limits_{k = 0}^M b_k z^{N-k}X(z)$$
+
+Rearranging we the the transfer function
+
+$$
+H(z) = \frac{Y(z)}{X(z)} = \frac{\sum\limits_{k = 0}^M b_k z^{N-k}}{\sum\limits_{k = 0}^N a_k z^{N-k}}
+$$
+
+Finally the case for the recursive form
+
+$$
+y[n] = - \frac{a_1}{a_0} y[n-1] - \cdots -\frac{a_N}{a_0} y[n-N] + \frac{b_0}{a_0} x[n] + \cdots \frac{b_M}{a_0} x[n-M]
+$$
+
+Taking the Z-transform
+
+$$
+Y(z) = \sum\limits_{k = 1}^N -\frac{a_k}{a_0} z^{-k} Y(z) + \sum\limits_{k = 0}^M \frac{b_k}{a_0} z^{-k}X(z)
+$$
+
+Rearranging we the the transfer function
+
+$$
+H(z) = \frac{\sum\limits_{k = 0}^M \frac{b_k}{a_0} z^{-k}}{1 + \sum\limits_{k = 1}^N \frac{a_k}{a_0} z^{-k}}
+$$
+
+It is easy to verify the transfer functions are the same in each case by an algebraic transformation.
+
+
+## FIR and IIR Transfer Functions
+
+Note that the transfer function is a rational complex function of $z$ and can be expressed as a ratio of polynomials in $z$
+
+$$
+H(z) = \frac{P(z)}{Q(z)}
+$$
+
+The roots of $P(z)$ are called the zeros of the system, while the roots of $(Q(z)$ are called the poles. Note that this definition assumes an expansion in $z$, not $z^{-1}$, so some care is needed to ensure the correct coefficients are used.
+
+The location of the zeros and poles tells us a lot about the qualitative behavior of the system in the time domain, and the pattern of poles and zeros determines the frequency selective filter type, order, stability, and shape of the frequency response. 
+
+For example, consider an all-pole system with a single real pole at $a\in\mathbb{R}$
+
+$$
+H(z) = \frac{1}{1-az^{-1}} = \frac{z}{z-a}
+$$
+
+* for $0 < a < 1$ the impulse response is monotonically decreasing
+* for $a > 1$ the impulse response is monotonically increasing
+* for $-1 < a < 0$ the impulse response is oscillatory with a monotonically decreasing envelope
+* for $a < -1$ the impulse response is oscillatory with a monotonically increasing envelope
+* for $a = 1$ the impulse response is constant
+* for $a = -1$ the impulse response is oscillatory with a constant envelope
+
+### FIR Systems
+
+For an FIR filter the form of the transfer function can be derived easily from the recursive form above or by direct application of the transform to the canonical impulse response of an FIR system
+
+$$
+H(z) = \mathcal{Z}\left\{ h[n] \right\} = \mathcal{Z}\left\{ \sum_{k = 0}^{M} b_k x[n-k] \right\} = \sum\limits_{k = 0}^M b_k z^{-k}
+$$
+
+FIR systems are called all-zero systems since there are no poles in the transfer function.
+
+### IIR Systems
+
+For IIR systems the transfer function includes poles and any of the above forms are applicable. If there are no zeros ($M = 1$) then it is called an all-pole system.
+
+# Stability of Causal Systems from the Transfer Function
+
+The location of poles relative to unit circle tell us the BIBO stability of the system. Writing the transfer function as factors of $P(z)$ and $Q(z)$
+
+$$
+H(z) = \frac{\sum\limits_{k = 0}^{M} (z-q_k)}{\sum\limits_{k = 0}^{N} (z-p_k)} 
+$$
+the $q_k\in\mathbb{C}$ are the zeros and $p_k\in\mathbb{C}$ are the poles.
+
+The system is
+
+* stable if **all** $|p_k| < 1$ (all poles inside the unit circle)
+* unstable if **any** $|p_k| > 1$ (any pole outside the unit circle)
+* marginally stable if all $|p_k| \leq 1$ and any $|p_k| = 1$
+
+# System Analysis using the Z-Transform
+  
+To use the Z Transform for system analysis we 
+
+1. obtain the transfer function from the impulse response, LCCDE, or block diagram/signal-flow graph
+
+2. Take the Z-transform of the input
+
+4. Use the convolution property to find the output in the z-domain $Y(z)$
+
+5. Take the inverse Z-transform, if the output is needed in the time domain
+
+FIGURE HERE
+
+Two broad classes of problems can be solved this way.
+
+The first is causal systems with causal inputs. This is the simplest since the ROC does not have to be explicitly taken into account.
+
+The second is a causal system with a non-causal input (more common) of a non-causal system with a causal or non-casual input (less common). This requires careful tracking of terms in the Z-transform arising from anti-causal and causal components of the signals and the corresponding ROC's. In most cases if the overall ROC includes the unit circle it is better to perform this kind of analysis using Fourier Transforms.
+
+# Inverse Z-Transform
+
+The inverse Z-transform can be done one of three ways:
+
+## Power Series
+
+Write 
+
+$$
+Y(z) = r_0 + r_1 z^{-1} + r_2 z^{-2} + r_3 z^{-3} + \cdots
+$$
+
+Then
+
+$$
+y[n] = r_0 \delta[n] + r_1 \delta[n-1] + r_2 \delta[n-2] + r_3 \delta[n-3] + \cdots
+$$
+
+This works well for FIR systems with finite-length inputs, and can be used to check the inverse for a few index values $n$ in the general case.
+
+## Properties and Table of Transforms
+
+Write 
+
+$$
+Y(z) = r_1 Y_1(z) + r_2 Y_2(z) + \cdots + r_I Y_I(z) 
+$$
+where each $Y_i$ is in a table of transforms.
+
+Then by the linearity property
+
+$$
+y[n] = r_1 y_1[n] + r_2 y_2[n] + \cdots + r_I y_I[n]
+$$
+
+This approach works well for causal systems with causal inputs and is facilitated by performing a partial fraction expansion of $Y(z)$.
+
+## Using the Definition
+
+This approach uses the definition of the inverse transform
+
+$$
+y[n] = \frac{1}{2\pi j}\oint_C X(z)\, z^{n-1}\; dz
+$$
+
+which requires a basic knowledge of complex analysis and the residue theorem.
+
+
+

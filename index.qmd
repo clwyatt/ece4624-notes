@@ -10,7 +10,8 @@ toc: false
 5. [Microcontroller Programming for DSP](lecture-05-notes.html)
 6. [DT Systems as LCCDE and Impulse Response](lecture-06-notes.html)
 7. [Time Domain Analysis of DT LTI Systems](lecture-07-notes.html)
-
+8. [DT System Analysis using Z-Transform](lecture-08-notes.html)
+9. DT Frequency Response and Frequency Selective Filters
 <!--
 12. DT Block diagrams and Signal Flow Graphs
 13. The Discrete Fourier Transform
