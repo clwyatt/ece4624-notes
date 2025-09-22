@@ -1,0 +1,204 @@
+---
+title: "ECE 4624: Meeting 9"
+subtitle: "DT Frequency Analysis"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+
+format: 
+    
+  html:
+    default-image-extension: svg
+    toc: true
+    echo: false
+    format-links: false
+
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"    
+---
+
+The Z-transform is a powerful tool for analysis of DT LTI systems but 
+
+1. It is cumbersome to use for non-causal signals where there is no natural time reference.
+2. It is less intutitive that Fourier (real frequency) analysis.
+
+In this lecture we review Fourier analysis of DT Signals and Systems, its relationship to the Z-transform, and the real frequency response of DT filters.
+
+# DT Fourier Series
+
+Recall a periodic signal is one where the relationship $x[n] = X[n+N]$ for all indices $n$ and fixed integer $N$. The smallest such $N$ is called the fundamental period. The fundamental frequency is then $\omega_0 = \frac{2\pi}{N}$. Any periodic DT signal with finite power can be represented by a finite sum of weighted complex exponentials whose real frequencies are harmonics of the fundamental.
+
+$$
+x[n] = \sum\limits_{k = N_0}^{N_0 + N-1} a_k e^{jk\omega_0 n}
+$$
+where $N$ is the period and $N_0$ is any starting index for the sum. The DTFS coefficients are defined by
+
+$$
+a_k = \frac{1}{N} \sum\limits_{n = N_0}^{N_0+N-1} x[n]e^{-j\frac{2\pi}{N} k n }
+$$
+and can be found via linear algebra, inspection, or simiplification of the sum.
+
+As with the CT Fourier Series a plot of the amplitude and phase of the $a_k$ as a function of $k$ is called the spectrum of the signal, and a plot of $|a_k|^2$ is called the power spectrum.
+
+Note the DT Fourier Series coefficients are periodic in $2\pi$ and the synthesis and analysis equation sum is over any range of $k$ of length $N$.
+
+The DTFS is roughly equivalent to the Discrete Fourier Transform of a finite length signal, where the samples over one period of the periodic signal define the values of the finite-length sequence. We will return to this later when we cover the FFT and applications to DSP.
+
+# DT Fourier Transform
+
+When the DT signal is a-periodic and is an energy signal it can be decomposed into an infinite number of weighted complex exponentials at real frequencies.
+
+$$
+x[n] = \frac{1}{2\pi} \int_{2\pi} X\left(e^{j\omega}\right) e^{j\omega n} \; d\omega
+$$
+where the weights are given by the DT Fourier transform
+$$
+X\left(e^{j\omega}\right) = \sum\limits_{n = -\infty}^{\infty} x[n] e^{-j\omega n}
+$$
+
+Note the DT Fourier Transform $X\left(e^{j\omega}\right)$ is periodic in $2\pi$ and the synthesis equation integral is over any $2\pi$ range.
+
+Recall the frequency response of a DT system is the DT Fourier transform of the impulse function.
+
+# Properties of DT Fourier Transform
+
+There are several useful properties of the DT Fourier Transform that,
+when combined with a table of transforms allow us to take the Fourier transform of wide array of signals, and provide insights into the behavior of signals in the time and Fourier domains. One property, the convolution property, is particaulrly important as it allows us to determine the
+output of a system in the frequency domain easily.
+
+We state these here without proof or elaboration. See the ECE 2714 notes for more details.
+
+- Linearity Property. Let
+  $x_1[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X_1\left(e^{j\omega}\right)$
+  and
+  $x_2[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X_2\left(e^{j\omega}\right)$
+  then for $a,b\in\mathbb{C}$
+  $$a x_1[n] + b x_2[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; a X_1\left(e^{j\omega}\right) + b X_2\left(e^{j\omega}\right)$$
+
+- Time-shift Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$x[n-n_0] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; e^{-j\omega n_0} X\left(e^{j\omega}\right)$$
+
+- Frequency Shift Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$e^{j\omega_0 n} x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j(\omega-\omega_0)}\right)$$
+
+- Conjugation Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$x^*[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X^{*}\left(e^{-j\omega}\right)$$
+  Thus, if $x[n]$ is real $X\left(e^{j\omega}\right)$ has conjugate
+  symmetry $$X\left(e^{-j\omega}\right) = X^*\left(e^{j\omega}\right)$$
+  and the magnitude spectrum is an even function and the phase spectrum
+  is an odd function.
+
+- Differencing and Accumulation Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$x[n] - x[n-1] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right) - e^{-j\omega} X\left(e^{j\omega}\right) = \left(1-e^{-j\omega}\right)X\left(e^{j\omega}\right)$$
+  and
+  $$\sum\limits_{m = -\infty}^{n} x[m] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; \frac{1}{1-e^{-j\omega}}X\left(e^{j\omega}\right) + \pi X\left(e^{j0}\right)\sum\limits_{k = -\infty}^{\infty} \delta(\omega - 2\pi k)$$
+
+- Time Expansion Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$x_{(k)}[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{jk\omega}\right)$$
+  where $$x_{(k)}[n] = \left\{ \begin{array}{lc}
+      x[n/k] & \text{if}\; n = \; \text{multiple of}\; k\\
+      0 & \text{if}\; n \neq \; \text{multiple of}\; k\\ 
+    \end{array}
+  \right.$$
+
+- Frequency Differentiation Property Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$n\, x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; j \frac{d}{d\omega} X\left(e^{j\omega}\right)$$
+
+- Parseval's Relation. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  then
+  $$\sum\limits_{n = -\infty}^{\infty} |x[n]|^2 \; \stackrel{\mathcal{F}}{\longleftrightarrow} \;
+    \frac{1}{2\pi} \int_{2\pi} \left| X\left(e^{j\omega}\right) \right|^2 \; d\omega$$
+  The energy is also the integral over one period of the DTFT magnitude
+  squared.
+
+- Convolution Property. Recall for a DT LTI system with impulse response
+  $h[n]$ the output is $$y[n] = h[n]*x[n]$$ In the frequency domain this
+  is equivalent to
+  $$Y\left(e^{j\omega}\right) = H\left(e^{j\omega}\right) \, X\left(e^{j\omega}\right)$$
+
+- Multiplication (modulation) Property. Let
+  $$x[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; X\left(e^{j\omega}\right)$$
+  and
+  $$y[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; Y\left(e^{j\omega}\right)$$
+  then
+  $$x[n]\,y[n] \; \stackrel{\mathcal{F}}{\longleftrightarrow} \; \frac{1}{2\pi} \int_{2\pi} X\left(e^{j\theta}\right)\, Y\left(e^{j(\omega-\theta)}\right)\; d\theta$$
+
+# Relationship between Z-Transform and Fourier Transform
+
+When the ROC of a Z-transform includes the unit circle then we can evaluate the Z-transform for those values, where $z = e^{j\omega}$. Under this substitution the Z-transform becomes equivalent to the DT Fourier Transform.
+
+$$
+\left. X(z) \right|_{z = e^{j\omega}} = \left. \sum\limits_{n = -\infty}^{\infty} x[n] \, z^{-n} \right|_{z = e^{j\omega}} = \sum\limits_{n = -\infty}^{\infty} x[n] \, \left(e^{j\omega}\right)^{-n} = \sum\limits_{n = -\infty}^{\infty} x[n] \, e^{-j\omega n} = X\left(e^{j\omega}\right)
+$$
+
+When the signal is the impulse response and the resulting Z-transform is the transfer function, the ROC including the unit circle corresponds to a stable system. In this case the transfer function, evaluated on the unit circle, is equivalent to the frequency response.
+
+This give a general approach to analysis of DT LTI systems, in which the Z-transform is used to derive the transfer function and determine stability. If found to be stable then the frequency response can be determined by evaluating the transfer function on the unit circle.
+
+# DT Transfer Function, Frequency Response, and Frequency Selective Filters
+
+You know from previous courses that the frequency response can be designed to have a shape that corresponds to a frequency selective filter: low-pass, high-pass, band-pass, or band-stop, and other variations (e.g. comb). Further the frequency response is related to the transfer functio via the unit circle in the complex plane, and the coefficients of the rational function representing the transfer function determine its utimate shape. This implies the loations of poles and zeros of the transfer function are related to the filter type, order, and parameters.
+
+Filter Design can the thought of as placement of poles and zeros, with an overall gain adjusted as needed.
+
+Example: lowpass (first order, second order, third order)
+
+Example: highpass (first order, second order, third order)
+
+A systematic approach to this gives us the filter design methods we will see soon.
+
+## two-pole resonator
+
+A common bandpass filter is the two-pole resonator
+
+$$
+H(z) = \frac{Kz^2}{\left(z-re^{j\omega_0} \right)\left(z-re^{-j\omega_0} \right)} = \frac{K z^2}{z^2 - 2r\cos(\omega_0)z + r^2}
+$$
+
+where $r < 1$ and $\omega_0$ determines the center frequency. We see it has two zeros at the origin and two complex conjugate poles. This systems is real, stable and the frequency response is
+
+$$
+H\left(e^{j\omega}\right) = \frac{K e^{j2\omega}}{e^{2j\omega} - 2r\cos(\omega_0)e^{j\omega} + r^2}
+$$
+
+We choose the $K$ so that $\left| H\left(e^{j\omega}\right) \right\| \approx 1$ and the center frequency.
+
+## inverse two pole resonator
+
+A common band-stop filter is the notch. It is the inverse of the two-pole resonator. The zeros at the origin become poles and the conjugate poles become zeros, but now $r = 1$. The transfer function is then
+
+$$
+H(z) = \frac{K\left(z-e^{j\omega_0} \right)\left(z-e^{-j\omega_0}\right)}{z^2} = K \frac{z^2 - 2\cos(\omega_0)z + 1}{z^2}
+$$
+
+where $\omega_0$ determines the notch frequency.
+
+We can see this corresponds to an FIR filter by doing the power series expansion
+
+$$
+H(z) = K\left(1-2\cos(\omega_0)z^{-1} + z^{-2} \right)
+$$
+
+Since this filter is always stable (ROC is $|z| > 0$) the frequency response is
+
+$$
+H\left(e^{j\omega}\right) = K\left(1-2\cos(\omega_0)e^{-j\omega} + e^{-j2\omega} \right)
+$$
+
+By moving the poles closer to the zeros we improve the filter sharpness. By placement of additional zeros and poles in the same pattern at different center frequencies that are harmonics of one another we get a comb filter.
