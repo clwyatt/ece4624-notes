@@ -1,6 +1,6 @@
 ---
 title: "ECE 4624: Meeting 9"
-subtitle: "DT Frequency Analysis"
+subtitle: "DT Frequency Response and Frequency Selective Filters"
 date: last-modified
 author:
   - name: Chris Wyatt
