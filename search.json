@@ -791,32 +791,256 @@
     "text": "Examples:"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Table of Contents",
+    "objectID": "lecture-09-notes.html",
+    "href": "lecture-09-notes.html",
+    "title": "ECE 4624: Meeting 9",
     "section": "",
-    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT System Analysis using Z-Transform\nDT Frequency Response and Frequency Selective Filters"
+    "text": "The Z-transform is a powerful tool for analysis of DT LTI systems but\nIn this lecture we review Fourier analysis of DT Signals and Systems, its relationship to the Z-transform, and the real frequency response of DT filters."
   },
   {
-    "objectID": "lecture-A1-slides.html#section",
-    "href": "lecture-A1-slides.html#section",
-    "title": "ECE 4624: Meeting 7",
-    "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "objectID": "lecture-09-notes.html#two-pole-resonator",
+    "href": "lecture-09-notes.html#two-pole-resonator",
+    "title": "ECE 4624: Meeting 9",
+    "section": "two-pole resonator",
+    "text": "two-pole resonator\nA common bandpass filter is the two-pole resonator\n\\[\nH(z) = \\frac{Kz^2}{\\left(z-re^{j\\omega_0} \\right)\\left(z-re^{-j\\omega_0} \\right)} = \\frac{K z^2}{z^2 - 2r\\cos(\\omega_0)z + r^2}\n\\]\nwhere \\(r &lt; 1\\) and \\(\\omega_0\\) determines the center frequency. We see it has two zeros at the origin and two complex conjugate poles. This systems is real, stable and the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = \\frac{K e^{j2\\omega}}{e^{2j\\omega} - 2r\\cos(\\omega_0)e^{j\\omega} + r^2}\n\\]\nWe choose the \\(K\\) so that \\(\\left| H\\left(e^{j\\omega}\\right) \\right\\| \\approx 1\\) and the center frequency."
   },
   {
-    "objectID": "lecture-A1-notes.html",
-    "href": "lecture-A1-notes.html",
-    "title": "ECE 4624: Meeting 7",
-    "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "objectID": "lecture-09-notes.html#inverse-two-pole-resonator",
+    "href": "lecture-09-notes.html#inverse-two-pole-resonator",
+    "title": "ECE 4624: Meeting 9",
+    "section": "inverse two pole resonator",
+    "text": "inverse two pole resonator\nA common band-stop filter is the notch. It is the inverse of the two-pole resonator. The zeros at the origin become poles and the conjugate poles become zeros, but now \\(r = 1\\). The transfer function is then\n\\[\nH(z) = \\frac{K\\left(z-e^{j\\omega_0} \\right)\\left(z-e^{-j\\omega_0}\\right)}{z^2} = K \\frac{z^2 - 2\\cos(\\omega_0)z + 1}{z^2}\n\\]\nwhere \\(\\omega_0\\) determines the notch frequency.\nWe can see this corresponds to an FIR filter by doing the power series expansion\n\\[\nH(z) = K\\left(1-2\\cos(\\omega_0)z^{-1} + z^{-2} \\right)\n\\]\nSince this filter is always stable (ROC is \\(|z| &gt; 0\\)) the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = K\\left(1-2\\cos(\\omega_0)e^{-j\\omega} + e^{-j2\\omega} \\right)\n\\]\nBy moving the poles closer to the zeros we improve the filter sharpness. By placement of additional zeros and poles in the same pattern at different center frequencies that are harmonics of one another we get a comb filter."
   },
   {
-    "objectID": "lecture-A1-notes.html#section",
-    "href": "lecture-A1-notes.html#section",
-    "title": "ECE 4624: Meeting 7",
+    "objectID": "lecture-03-slides.html#section",
+    "href": "lecture-03-slides.html#section",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Synthesis and Analysis Equations",
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-series-spectrum",
+    "href": "lecture-03-slides.html#fourier-series-spectrum",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Spectrum",
+    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-of-the-fourier-series",
+    "href": "lecture-03-slides.html#example-of-the-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example of the Fourier series",
+    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\nPlot of the example signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-1",
+    "href": "lecture-03-slides.html#section-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-2",
+    "href": "lecture-03-slides.html#section-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-3",
+    "href": "lecture-03-slides.html#section-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-4",
+    "href": "lecture-03-slides.html#section-4",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
+  },
+  {
+    "objectID": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "href": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Convergence of the CT Fourier Series",
+    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#ct-fourier-transform",
+    "href": "lecture-03-slides.html#ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CT Fourier Transform",
+    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-5",
+    "href": "lecture-03-slides.html#section-5",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-6",
+    "href": "lecture-03-slides.html#section-6",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-7",
+    "href": "lecture-03-slides.html#section-7",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-transform-pair",
+    "href": "lecture-03-slides.html#fourier-transform-pair",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Transform Pair",
+    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier Transform of the impulse.",
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier transform of the causal real exponential.",
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "href": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Existence of the CT Fourier Transform",
+    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft",
+    "href": "lecture-03-slides.html#properties-of-ctft",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-1",
+    "href": "lecture-03-slides.html#properties-of-ctft-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-2",
+    "href": "lecture-03-slides.html#properties-of-ctft-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-3",
+    "href": "lecture-03-slides.html#properties-of-ctft-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "href": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Frequency Response of CT LTI Systems",
+    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-8",
+    "href": "lecture-03-slides.html#section-8",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
+  },
+  {
+    "objectID": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "href": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Magnitude-phase representation of the CTFR",
+    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "href": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CTFR acting on sinusoids",
+    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-9",
+    "href": "lecture-03-slides.html#section-9",
+    "title": "ECE 4624: Meeting 3",
+    "section": "",
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
+  },
+  {
+    "objectID": "lecture-03-slides.html#bode-plots",
+    "href": "lecture-03-slides.html#bode-plots",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Bode plots",
+    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example",
+    "href": "lecture-03-slides.html#example",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example",
+    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#filters-in-ct",
+    "href": "lecture-03-slides.html#filters-in-ct",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Filters in CT",
+    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-ct-filters",
+    "href": "lecture-03-slides.html#lowpass-ct-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass CT Filters",
+    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
+  },
+  {
+    "objectID": "lecture-03-slides.html#practical-lowpass-filters",
+    "href": "lecture-03-slides.html#practical-lowpass-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Practical Lowpass Filters",
+    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification",
+    "href": "lecture-03-slides.html#lowpass-filter-specification",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "href": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification"
   },
   {
     "objectID": "lecture-03-notes.html",
@@ -1057,235 +1281,32 @@
     "text": "Lowpass Filter Specification\n\n\n/home/clwyatt/.local/lib/python3.10/site-packages/scipy/signal/_ltisys.py:599: BadCoefficients: Badly conditioned filter coefficients (numerator): the results may be meaningless\n  self.num, self.den = normalize(*system)"
   },
   {
-    "objectID": "lecture-03-slides.html#section",
-    "href": "lecture-03-slides.html#section",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-A1-notes.html",
+    "href": "lecture-A1-notes.html",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
-    "objectID": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
-    "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Series: Synthesis and Analysis Equations",
-    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
-  },
-  {
-    "objectID": "lecture-03-slides.html#fourier-series-spectrum",
-    "href": "lecture-03-slides.html#fourier-series-spectrum",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Series: Spectrum",
-    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
-  },
-  {
-    "objectID": "lecture-03-slides.html#example-of-the-fourier-series",
-    "href": "lecture-03-slides.html#example-of-the-fourier-series",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example of the Fourier series",
-    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\nPlot of the example signal."
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-1",
-    "href": "lecture-03-slides.html#section-1",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-A1-notes.html#section",
+    "href": "lecture-A1-notes.html#section",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
-    "objectID": "lecture-03-slides.html#section-2",
-    "href": "lecture-03-slides.html#section-2",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-A1-slides.html#section",
+    "href": "lecture-A1-slides.html#section",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
-    "objectID": "lecture-03-slides.html#section-3",
-    "href": "lecture-03-slides.html#section-3",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Table of Contents",
     "section": "",
-    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-4",
-    "href": "lecture-03-slides.html#section-4",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
-  },
-  {
-    "objectID": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
-    "href": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Convergence of the CT Fourier Series",
-    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#ct-fourier-transform",
-    "href": "lecture-03-slides.html#ct-fourier-transform",
-    "title": "ECE 4624: Meeting 3",
-    "section": "CT Fourier Transform",
-    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-5",
-    "href": "lecture-03-slides.html#section-5",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-6",
-    "href": "lecture-03-slides.html#section-6",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-7",
-    "href": "lecture-03-slides.html#section-7",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
-  },
-  {
-    "objectID": "lecture-03-slides.html#fourier-transform-pair",
-    "href": "lecture-03-slides.html#fourier-transform-pair",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Transform Pair",
-    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
-  },
-  {
-    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
-    "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example: Fourier Transform of the impulse.",
-    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
-    "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example: Fourier transform of the causal real exponential.",
-    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
-    "href": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Existence of the CT Fourier Transform",
-    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft",
-    "href": "lecture-03-slides.html#properties-of-ctft",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-1",
-    "href": "lecture-03-slides.html#properties-of-ctft-1",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-2",
-    "href": "lecture-03-slides.html#properties-of-ctft-2",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-3",
-    "href": "lecture-03-slides.html#properties-of-ctft-3",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
-  },
-  {
-    "objectID": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
-    "href": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Frequency Response of CT LTI Systems",
-    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-8",
-    "href": "lecture-03-slides.html#section-8",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
-  },
-  {
-    "objectID": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
-    "href": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Magnitude-phase representation of the CTFR",
-    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
-    "href": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
-    "title": "ECE 4624: Meeting 3",
-    "section": "CTFR acting on sinusoids",
-    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-9",
-    "href": "lecture-03-slides.html#section-9",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
-  },
-  {
-    "objectID": "lecture-03-slides.html#bode-plots",
-    "href": "lecture-03-slides.html#bode-plots",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Bode plots",
-    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
-  },
-  {
-    "objectID": "lecture-03-slides.html#example",
-    "href": "lecture-03-slides.html#example",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example",
-    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#filters-in-ct",
-    "href": "lecture-03-slides.html#filters-in-ct",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Filters in CT",
-    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-ct-filters",
-    "href": "lecture-03-slides.html#lowpass-ct-filters",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass CT Filters",
-    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
-  },
-  {
-    "objectID": "lecture-03-slides.html#practical-lowpass-filters",
-    "href": "lecture-03-slides.html#practical-lowpass-filters",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Practical Lowpass Filters",
-    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-filter-specification",
-    "href": "lecture-03-slides.html#lowpass-filter-specification",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass Filter Specification",
-    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-filter-specification-1",
-    "href": "lecture-03-slides.html#lowpass-filter-specification-1",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass Filter Specification",
-    "text": "Lowpass Filter Specification"
+    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT System Analysis using Z-Transform\nDT Frequency Response and Frequency Selective Filters"
   },
   {
     "objectID": "lecture-05-notes.html",
