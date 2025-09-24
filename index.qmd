@@ -12,6 +12,7 @@ toc: false
 7. [Time Domain Analysis of DT LTI Systems](lecture-07-notes.html)
 8. [DT System Analysis using Z-Transform](lecture-08-notes.html)
 9. [DT Frequency Response and Frequency Selective Filters](lecture-09-notes.html)
+10. [DT Block Diagrams and Signal Flow Graphs](lecture-10-notes.html)
 <!--
 12. DT Block diagrams and Signal Flow Graphs
 13. The Discrete Fourier Transform
