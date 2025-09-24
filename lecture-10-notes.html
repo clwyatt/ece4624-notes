@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Chris Wyatt">
+<meta name="dcterms.date" content="2025-09-24">
 
-<title>Table of Contents – ECE 4624: DSP and Filter Design – Fall 2025</title>
+<title>ECE 4624: Meeting 10 – ECE 4624: DSP and Filter Design – Fall 2025</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -89,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -103,20 +105,57 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#review-of-block-diagrams" id="toc-review-of-block-diagrams" class="nav-link active" data-scroll-target="#review-of-block-diagrams">Review of Block Diagrams</a></li>
+  <li><a href="#signal-flow-graphs" id="toc-signal-flow-graphs" class="nav-link" data-scroll-target="#signal-flow-graphs">Signal Flow Graphs</a></li>
+  <li><a href="#system-realization-using-signal-flow-graphs" id="toc-system-realization-using-signal-flow-graphs" class="nav-link" data-scroll-target="#system-realization-using-signal-flow-graphs">System Realization using Signal Flow Graphs</a>
+  <ul class="collapse">
+  <li><a href="#direct-form-i" id="toc-direct-form-i" class="nav-link" data-scroll-target="#direct-form-i">Direct Form I</a></li>
+  <li><a href="#direct-form-ii" id="toc-direct-form-ii" class="nav-link" data-scroll-target="#direct-form-ii">Direct Form II</a></li>
+  <li><a href="#transposed-direct-form-ii" id="toc-transposed-direct-form-ii" class="nav-link" data-scroll-target="#transposed-direct-form-ii">Transposed Direct Form II</a></li>
+  <li><a href="#parallel-form" id="toc-parallel-form" class="nav-link" data-scroll-target="#parallel-form">Parallel Form</a></li>
+  <li><a href="#cascade-of-second-order-stages-sos" id="toc-cascade-of-second-order-stages-sos" class="nav-link" data-scroll-target="#cascade-of-second-order-stages-sos">Cascade of Second-Order Stages (SOS)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Table of Contents</h1>
+<h1 class="title">ECE 4624: Meeting 10</h1>
+<p class="subtitle lead">DT Block Diagrams and Signal Flow Graphs</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Chris Wyatt <a href="mailto:clwyatt@vt.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            ECE@Virginia Tech
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 24, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -126,36 +165,58 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Everything in DSP could be expressed purely as equations (difference equations, convolution sums, z-transforms). But graphical approaches, block diagrams and signal flow graphs in particular, provide structural clarity, implementation insight, and intuition that math alone hides.</p>
+<p>In this lecture we review the basics of block diagrams, a more compact version called signal-flow graphs, and discuss system realization (which may or may not be review).</p>
+<p>As we will see, FIR and IIR filters are often designed and implemented via SFGs, which reveal multiplier counts, delay elements, and numerical sensitivity. They are often referred to as the schematics or circuits of signal processing.</p>
+<section id="review-of-block-diagrams" class="level1">
+<h1>Review of Block Diagrams</h1>
+<p>See the corresponding <a href="https://clwyatt.github.io/notes-2714/11-dt-block.html">ECE 2714 Notes</a>.</p>
+</section>
+<section id="signal-flow-graphs" class="level1">
+<h1>Signal Flow Graphs</h1>
+<p>An alternative to block diagrams is a diagram called a signal-flow graph or SFG, also called a computation graph. They are easier to draw and have connections to graph theory and associated algorithms.</p>
+<p>Some basic terminology:</p>
+<ul>
+<li>A signal-flow graph is a weighted, directed graph consisting of nodes and edges (pairs of nodes).</li>
+<li>The direction of an edge is given by the ordering of the pair of nodes, with the first being the originating (starting) node and the second being the destination (ending) node, with the direction from first to second.</li>
+<li>Edges have a weight given by a transfer functions, which may be unity.</li>
+<li>Nodes with no incomming edges are called source nodes.</li>
+<li>Nodes with no outgoing edges are called sink nodes.</li>
+</ul>
+<p>This makes it possible to use graphy theory to reason and automate manipulations of SFGs.</p>
+<p>A SFG replaces the symbol for summations in block diagram with the graph nodes. The nodes represent signals, implicitly defined as the sum of the signals along incoming edges. Connections beteen nodes (edges) denote the direction by an arrow, and optionally a transfer function by an arrow label.</p>
+<p>The edges can be represented my an adjacency matrix, where the rows denote the originating node and the columns the destination node. This makes it easy to compute basic graph characteristics and manipulations.</p>
+<p>An important example is the graph transpose:</p>
 <ol type="1">
-<li><a href="lecture-01-notes.html">Course Introduction</a></li>
-<li><a href="lecture-02-notes.html">CT and DT Signals</a></li>
-<li><a href="lecture-03-notes.html">CT Fourier Transform</a></li>
-<li><a href="lecture-04-notes.html">Sampling and Reconstruction</a></li>
-<li><a href="lecture-05-notes.html">Microcontroller Programming for DSP</a></li>
-<li><a href="lecture-06-notes.html">DT Systems as LCCDE and Impulse Response</a></li>
-<li><a href="lecture-07-notes.html">Time Domain Analysis of DT LTI Systems</a></li>
-<li><a href="lecture-08-notes.html">DT System Analysis using Z-Transform</a></li>
-<li><a href="lecture-09-notes.html">DT Frequency Response and Frequency Selective Filters</a></li>
-<li><a href="lecture-10-notes.html">DT Block Diagrams and Signal Flow Graphs</a> <!--
-12. DT Block diagrams and Signal Flow Graphs
-13. The Discrete Fourier Transform
-14. Applications of DFT
-15. Fast Fourier Transform
-
-18. FIR Filter Structures
-19. IIR Filter Structures
-20. Quantization and Round-Off Effects
-21. FIR Filter Design
-22. Lowpass IIR Filter Design
-23. Transformations of IIR Filters
-24. Probability Primer
-25. Stationary Random Processes
-26. Wiener Filter
-27. Adaptive Filtering using LMS
---></li>
+<li>reverse the direction of all edges</li>
+<li>interchange the input and output (source becomes sink and sink becomes source)</li>
 </ol>
+<p>This is easily computed as the transpose of the adjacency matrix, leaving the transfer functions alone.</p>
+<p>Example: Convert the following block diagram to a SFG. List the nodes (label and value) and edges (pairs and weights). Include an adjacency matrix. Then compute the transpose graph.</p>
+</section>
+<section id="system-realization-using-signal-flow-graphs" class="level1">
+<h1>System Realization using Signal Flow Graphs</h1>
+<p>An important application of bllock diagrams and signal flow graphs is the implementation, or realization, of a system from a transfer function. This is because filter design is the process of specifying a transfer functions coefficients, while the implementation uses basic operations (MAC).</p>
+<p>Each of the following implementations are mathematically equivalent but vary in computational complexity, memory complexity, finite word-length effects, and low-level aspects like parallelism, pipelining, and cache usage.</p>
+<p>Today we will review the basic forms you may have seen in ECEC 3704. We will cover two others, namely the lattice and lattice-ladder, later in the course.</p>
+<section id="direct-form-i" class="level2">
+<h2 class="anchored" data-anchor-id="direct-form-i">Direct Form I</h2>
+</section>
+<section id="direct-form-ii" class="level2">
+<h2 class="anchored" data-anchor-id="direct-form-ii">Direct Form II</h2>
+</section>
+<section id="transposed-direct-form-ii" class="level2">
+<h2 class="anchored" data-anchor-id="transposed-direct-form-ii">Transposed Direct Form II</h2>
+</section>
+<section id="parallel-form" class="level2">
+<h2 class="anchored" data-anchor-id="parallel-form">Parallel Form</h2>
+</section>
+<section id="cascade-of-second-order-stages-sos" class="level2">
+<h2 class="anchored" data-anchor-id="cascade-of-second-order-stages-sos">Cascade of Second-Order Stages (SOS)</h2>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
