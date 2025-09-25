@@ -1,0 +1,30 @@
+---
+title: "ECE 4624: Meeting 11"
+subtitle: "Discrete Fourier Transform"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+
+format: 
+    
+  html:
+    default-image-extension: svg
+    toc: true
+    echo: false
+    format-links: false
+
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+See the corresponding [ECE 2714 Supplementary Notes](https://clwyatt.github.io/notes-2714/22-dft.html).
+
+
+
+
+
+
+

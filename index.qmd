@@ -13,9 +13,10 @@ toc: false
 8. [DT System Analysis using Z-Transform](lecture-08-notes.html)
 9. [DT Frequency Response and Frequency Selective Filters](lecture-09-notes.html)
 10. [DT Block Diagrams and Signal Flow Graphs](lecture-10-notes.html)
+11. [The Discrete Fourier Transform](lecture-11-notes.html)
 <!--
 12. DT Block diagrams and Signal Flow Graphs
-13. The Discrete Fourier Transform
+13. 
 14. Applications of DFT
 15. Fast Fourier Transform
 
