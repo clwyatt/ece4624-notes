@@ -1,0 +1,279 @@
+---
+title: "ECE 4624: Meeting 12"
+subtitle: "Applications of the DFT"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+
+format: 
+    
+  html:
+    default-image-extension: svg
+    toc: true
+    echo: false
+    format-links: false
+
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+# Motivation for DFT/FFT
+
+While the Z-transform and DTFT are useful for analytically/symbolically analyzing signals and LTI systems, they require mathematical models. This makes them less useful for experimental or computational analysis of either recorded signals or system approximation. This is what the DFT/FFT is best suited for.
+
+In this lecture we consider some important applications of the DFT. This also provides motivation for effort to improve the computational complexity of the associated algorithms (forward and inverse transforms), which we will cover next.
+
+## Notation
+
+Some notation used in this section.
+
+* $x[n]$ is a discrete time signal
+* $x_N[n]$ is a finite length DT signal of $N$ samples
+* $X_N[k]$ is the DFT of $x_N[n]$
+
+$$
+X_N[k] = \operatorname{DFT} \{ x_N[n] \} = \sum_{n = 0}^{N-1}  x_N[n] e^{-j \frac{2\pi}{N}k n}
+$$
+
+# Linear FIR Filtering
+
+Consider an FIR filter with impulse response
+
+$$
+h[n] = \sum\limits_{m = 0}^{N-1} a_m\delta[m-m]
+$$
+with the $N$ non-zero samples denoted $h_N[n]$.
+
+$$
+h[n] = \left\{ \begin{array}{cc}
+h_N[n] & 0 \leq n < N\\
+0 & \text{else}
+\end{array}\right.
+$$
+
+
+Further consider an input $x[n]$ so that
+
+$$
+y[n] = h[n] * x[n] \stackrel{\mathcal{F}}{\longleftrightarrow} H\left(e^{j\omega}\right)\cdot X\left(e^{j\omega}\right)
+$$
+
+Supppose the input is of finite length, i.e
+
+$$
+x[n] = \left\{ \begin{array}{cc}
+x_N[n] & 0 \leq n < N\\
+0 & \text{else}
+\end{array}\right.
+$$
+
+Then define the finite length signal
+
+$$
+y_N[n] = \operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\} 
+$$
+
+Is this the output of the system
+
+$$
+y[n] = \left\{ \begin{array}{cc}
+y_N[n] & 0 \leq n < N\\
+0 & \text{else}
+\end{array}\right. \quad ?
+$$
+
+No. To see this consider the definition of *circular* convolution that is consistent with $\operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}$
+
+$$
+y_N[n] = \sum\limits_{m=0}^{N-1} x_N[m]\cdot h_N[(n-m) \% N] \equiv x_N[n] \underset{N}{\circledast} h_N[n]
+$$
+
+where the signed modulus operator is defined as
+
+$$
+n \% N = \operatorname{remainder} \frac{|n|}{N}
+$$
+
+So in general $x_N[n] \underset{N}{\circledast} h_N[n] \neq x[n] \ast h[n]$.
+
+To make them equivalent can define the *zero-padded* or zero-extended signals. Consider the finite-length sequences $x_L[n]$ and $h_M[n]$ and let $N = L + M - 1$, so that
+
+$$
+x_N[n] = \left\{ \begin{array}{cc}
+x_L[n] & 0 \leq n < L\\
+0 & L \leq n < N
+\end{array}\right.
+$$
+
+and
+
+$$
+h_N[n] = \left\{ \begin{array}{cc}
+h_M[n] & 0 \leq n < M\\
+0 & M \leq n < N
+\end{array}\right.
+$$
+
+Then
+
+$$
+y_N[n] = x_N[n] \underset{N}{\circledast} h_N[n] = x[n] \ast h[n] = y[n] 
+$$
+
+and
+
+$$
+y[n] = \operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}
+$$
+
+Note this is an offline approach to filtering, assuming that the entire input length is available for computation, i.e taking DFT of input, multiplkicationm then taking the inverse DFT (the DFT of the filter impulse response could be precomputed). What if
+
+* the sequence $x_N[n]$ does not fit into memory, or
+* the output is needed in pseudo-real-time (with fixed delay) ?
+
+The solution is streaming, where the input is broken into blocks or frames
+
+TODO: FIGURE
+
+There are two possible implementations: overlap-save and overlap-add.
+
+## Overlap and Save
+
+Define the size of the input block as $N = L + M - 1$, with $L > M$ with the first $M-1$ entries consisting of the previous $M-1$ inputs follwed by the next $L$ new inputs. We take the DFT of this block, multiply by the precomputed DFT of the $N$ extended filter coefficients, and then take the IDFT to get the resulting block. Only the last $L$ values are then output (the first part of the block is just dropped).
+
+TODO: FIGURE
+
+## Overlap and Add
+
+Define the size of the input block as $L$ with $L > M$ and $N = L + M -1$ as before. Form a block consisting of the $L$ input samples, zero-extended to legth $N$ (append M-1 zeros). We take the DFT of this block, multiply by the precomputed DFT of the $N$ extended filter coefficients, and then take the IDFT to get the resulting block. We save the last $M-1$ values from this result. We add the first $L$ values of the result to the *previously* saved block, to obtain the $L$ output values.
+
+TODO: FIGURE
+
+# Comparison to the LCCDE
+
+Recall the FIR filter output can be computed directly using the recursive LCCDE
+
+$$
+y[n] = a_0 x[n] + a_1 x[n-1] + \cdots + a_{M-1} x[n-M-1]
+$$
+
+which requires for each output
+
+* $M$ complex multiplies ($4M$ real multiplies)
+* $M-1$ complex adds ($2M-2$ real adds)
+
+To process $N$ outputs then takes $N\cdot (6M-2)$ real operations.
+
+Compare this to the overlap-save method, where each block of $L$ output samples requires an N-point DFT, N complex multiples ($4N$ real multiplies), and an N-point IDFT. The naive DFT implementation takes $N$ complex multiples and $N-1$ adds to give a total of $L\cdot(16N-4)$ real operations. Or in terms of $N$ and $M$, $(N-M + 1)\cdot(16N-4)$ real operations.
+
+Thus we see the overlap-save method becomes comparable only if the filter length is quite high, or if the computation time of the DFT is shortened. As we will see in detail next time, the radix-2 FFT algorithm allows us to compute the N-point DFT in $\frac{N}{2}\log_2(N)$ multiplications and $N\log_2(N)$ additions. This make the overlap-save method faster even for moderate values of $N,M$.
+
+# Spectral Estimation
+
+Another important application of the DFT is the estimation of spectral content in a CT signal from samples, i.e. an approximation of the CTFT.
+
+Consider instrumentation that includes an anti-aliasing filter and ADC to record samples of a continuous-time signal, with sample time $T$ and stop-band frequency of $\frac{\pi}{T}$.
+
+We wish to know how long to sample for, and what sample interval to use to be able to resolve or distinquish between two frequencies $\omega_0$ and $\omega_1$.
+
+If we record for $T_0 = L\cdot T$ seconds to form a finite-length sequence $X_L[n]$ and take the DFT then the resolution is
+
+$$
+|\omega_0 -\omega_1| = \frac{2\pi}{T_0} = \frac{2\pi}{L\cdot T} 
+$$
+
+Note as the recording time increases, the resolution improves.
+
+## Spectrogram
+
+In some cases we want to estimate the spectrum over time. However these the ability to resolve frequency components and the amount of time between estimation of the spectrum are in conflict.
+
+Define the time-windowed CT Fourier Transform as
+
+$$
+X(f,\tau) = \int\limits_{-\infty|^{\infty} x(t) w(t-\tau) e^{-j2\pi f t}\; dt
+$$
+where $w(t-\tau)$ is a delayed window function, e.g.
+
+$$
+w(t-\tau) = u(t-\tau) - u(t-T_0 = \tau)
+$$
+
+We can then form the spectrogram by recording $L$ samples at a rate of $\frac{1}{T}$ samples per second and performing the DFT. This is usually displayed as an image, with the horizontal axis being $\tau$ and the vertical axis being frequincy bin, and the pixel colored by the power $|X_L[k]|^2$. This is animated by shifting the image to the left as each new spectrum is estimated.
+
+TODO: FIGURE
+
+The spectrogram is a common input to signal detection or classification, using machine learning algorithms. It also forms the basis of tuning applications for musical instruments. Again we see the speed at which we can estimate the spectrum, and thus the update rate of the spectrogram for a fixed window width, is limited by the time required to compute the DFT.
+
+# DFT as a linear filter
+
+Before looking at efficiently computing the DFT using the FFT, it is worth considering applications when not all $N$ frequencies ($X[k]$) are needed. For example if the input sequence is real, we only need compute the DFT for half the values because of the symmetry property. In addition some spectrum applications want to estimate the spectrum or spectral power at only a subset of frequencies, e.g. in signal detection. In these cases we can get speedups by using the Goertzel algorithm, which treats the DFT as itself a linear filter.
+
+The DFT can be written as
+$$
+X[k] = \sum\limits_{n = 0}^{N-1}\mathcal{W}_N^{kn} x[n]
+$$
+where $\mathcal{W}_N = e^{-j\frac{2\pi}{N}}$.
+
+Noting $\mathcal{W}_N^{-kN} = 1$, we can multiply through
+
+$$
+\mathcal{W}_N^{-kN} X[k] = \mathcal{W}_N^{-kN} \sum\limits_{n = 0}^{N-1} \mathcal{W}_N^{kn} x[n] = \sum\limits_{n = 0}^{N-1}x[n] \mathcal{W}_N^{-k(N-n)}
+$$
+
+Note the right hand side is equvalent to a convolution in the variables $N$ and $n$. Defining the output of this convolution as
+
+$$
+y_k[n] = \sum\limits_{n = 0}^{N-1}x[n] \mathcal{W}_N^{-k(N-n)}
+$$
+
+we can see the DFT at a given value of $k$ is the convolution of a finite length signal $x[n]$ and a system with impulse response
+
+$$
+h[n] = \mathcal{W}_N^{-kn}u[n]
+$$
+evaluated at the last index $n = N$
+
+$$
+X[k] = y_k[N]
+$$
+
+This gives the DFT at the frequency content at $\frac{2\pi k}{N}$.
+
+Taking the Z-transform, the corresponding transfer function is
+
+$$
+H_k(z) = \frac{z}{z-\mathcal{W}_N^{-k}}
+$$
+
+which has a pole on the unit circle at $\mathcal{W}_N^{-k}$. Converting this to an LCCDE we get
+
+$$
+y_k[n] = \mathcal{W}_N^{-k} y_k[n-1] + x[n]
+$$
+
+which can be implemented as a first-order IIR filter. If we put several of these in parallel we can compute $y_k[N] = X[k]$ for those desired values of $k$.
+
+To prevent the need for complex arithmetic we can use a two-pole resonator with complex congugate poles, i.e.
+
+$$
+H_k(z) = \frac{z^2-\mathcal{W}_N^k z}{z^2-2\cos\left( \frac{2\pi}{N}\right)z + 1}
+$$
+
+This leads to a second order IIR system in direct form II whose internal state requires only one real multiplication and two real adds.
+
+TODO: FIGURE
+
+The final output is then computed from the last and previous value of the internal state and gives both $X[k]$ and $X[N-k]$ due to symmetry.
+
+This approach is popular in embedded applications where only a few frequencies (less than $\log_2(N)$) are needed. If you need all of the frequencies you need to use an FFT, in the absense of hardware parallelism. However accelerators such as GPUs can implement the filters in parallel, giving a fast computation for relatively low values of $N$.
+
+
+
+
+
+
+
