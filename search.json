@@ -490,452 +490,424 @@
     "text": "This work is licensed under a Creative Commons Attribution 4.0 International License."
   },
   {
-    "objectID": "lecture-11-notes.html",
-    "href": "lecture-11-notes.html",
-    "title": "ECE 4624: Meeting 11",
+    "objectID": "lecture-12-notes.html",
+    "href": "lecture-12-notes.html",
+    "title": "ECE 4624: Meeting 12",
     "section": "",
-    "text": "See the corresponding ECE 2714 Supplementary Notes."
+    "text": "While the Z-transform and DTFT are useful for analytically/symbolically analyzing signals and LTI systems, they require mathematical models. This makes them less useful for experimental or computational analysis of either recorded signals or system approximation. This is what the DFT/FFT is best suited for.\nIn this lecture we consider some important applications of the DFT. This also provides motivation for effort to improve the computational complexity of the associated algorithms (forward and inverse transforms), which we will cover next.\n\n\nSome notation used in this section.\n\n\\(x[n]\\) is a discrete time signal\n\\(x_N[n]\\) is a finite length DT signal of \\(N\\) samples\n\\(X_N[k]\\) is the DFT of \\(x_N[n]\\)\n\n\\[\nX_N[k] = \\operatorname{DFT} \\{ x_N[n] \\} = \\sum_{n = 0}^{N-1}  x_N[n] e^{-j \\frac{2\\pi}{N}k n}\n\\]"
   },
   {
-    "objectID": "lecture-05-slides.html#section",
-    "href": "lecture-05-slides.html#section",
-    "title": "ECE 4624: Meeting 5",
+    "objectID": "lecture-12-notes.html#notation",
+    "href": "lecture-12-notes.html#notation",
+    "title": "ECE 4624: Meeting 12",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+    "text": "Some notation used in this section.\n\n\\(x[n]\\) is a discrete time signal\n\\(x_N[n]\\) is a finite length DT signal of \\(N\\) samples\n\\(X_N[k]\\) is the DFT of \\(x_N[n]\\)\n\n\\[\nX_N[k] = \\operatorname{DFT} \\{ x_N[n] \\} = \\sum_{n = 0}^{N-1}  x_N[n] e^{-j \\frac{2\\pi}{N}k n}\n\\]"
   },
   {
-    "objectID": "lecture-05-slides.html#dsp-hardware-platforms",
-    "href": "lecture-05-slides.html#dsp-hardware-platforms",
-    "title": "ECE 4624: Meeting 5",
-    "section": "DSP Hardware Platforms",
-    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
+    "objectID": "lecture-12-notes.html#overlap-and-save",
+    "href": "lecture-12-notes.html#overlap-and-save",
+    "title": "ECE 4624: Meeting 12",
+    "section": "Overlap and Save",
+    "text": "Overlap and Save\nDefine the size of the input block as \\(N = L + M - 1\\), with \\(L &gt; M\\) with the first \\(M-1\\) entries consisting of the previous \\(M-1\\) inputs follwed by the next \\(L\\) new inputs. We take the DFT of this block, multiply by the precomputed DFT of the \\(N\\) extended filter coefficients, and then take the IDFT to get the resulting block. Only the last \\(L\\) values are then output (the first part of the block is just dropped).\nTODO: FIGURE"
   },
   {
-    "objectID": "lecture-05-slides.html#dsp-programming-models-and-languages",
-    "href": "lecture-05-slides.html#dsp-programming-models-and-languages",
-    "title": "ECE 4624: Meeting 5",
-    "section": "DSP Programming Models and Languages",
-    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
+    "objectID": "lecture-12-notes.html#overlap-and-add",
+    "href": "lecture-12-notes.html#overlap-and-add",
+    "title": "ECE 4624: Meeting 12",
+    "section": "Overlap and Add",
+    "text": "Overlap and Add\nDefine the size of the input block as \\(L\\) with \\(L &gt; M\\) and \\(N = L + M -1\\) as before. Form a block consisting of the \\(L\\) input samples, zero-extended to legth \\(N\\) (append M-1 zeros). We take the DFT of this block, multiply by the precomputed DFT of the \\(N\\) extended filter coefficients, and then take the IDFT to get the resulting block. We save the last \\(M-1\\) values from this result. We add the first \\(L\\) values of the result to the previously saved block, to obtain the \\(L\\) output values.\nTODO: FIGURE"
   },
   {
-    "objectID": "lecture-05-slides.html#factors-when-choosing-hardware",
-    "href": "lecture-05-slides.html#factors-when-choosing-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Factors when Choosing Hardware",
-    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
+    "objectID": "lecture-12-notes.html#spectrogram",
+    "href": "lecture-12-notes.html#spectrogram",
+    "title": "ECE 4624: Meeting 12",
+    "section": "Spectrogram",
+    "text": "Spectrogram\nIn some cases we want to estimate the spectrum over time. However these the ability to resolve frequency components and the amount of time between estimation of the spectrum are in conflict.\nDefine the time-windowed CT Fourier Transform as\n\\[\nX(f,\\tau) = \\int\\limits_{-\\infty|^{\\infty} x(t) w(t-\\tau) e^{-j2\\pi f t}\\; dt\n\\] where \\(w(t-\\tau)\\) is a delayed window function, e.g.\n\\[\nw(t-\\tau) = u(t-\\tau) - u(t-T_0 = \\tau)\n\\]\nWe can then form the spectrogram by recording \\(L\\) samples at a rate of \\(\\frac{1}{T}\\) samples per second and performing the DFT. This is usually displayed as an image, with the horizontal axis being \\(\\tau\\) and the vertical axis being frequincy bin, and the pixel colored by the power \\(|X_L[k]|^2\\). This is animated by shifting the image to the left as each new spectrum is estimated.\nTODO: FIGURE\nThe spectrogram is a common input to signal detection or classification, using machine learning algorithms. It also forms the basis of tuning applications for musical instruments. Again we see the speed at which we can estimate the spectrum, and thus the update rate of the spectrogram for a fixed window width, is limited by the time required to compute the DFT."
   },
   {
-    "objectID": "lecture-05-slides.html#architectures",
-    "href": "lecture-05-slides.html#architectures",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Architectures",
-    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
-  },
-  {
-    "objectID": "lecture-05-slides.html#basic-computational-elements",
-    "href": "lecture-05-slides.html#basic-computational-elements",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Basic computational elements",
-    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
-  },
-  {
-    "objectID": "lecture-05-slides.html#fixed-point-representation-and-hardware",
-    "href": "lecture-05-slides.html#fixed-point-representation-and-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point Representation and Hardware",
-    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
-  },
-  {
-    "objectID": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
-    "href": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point Representation and Qm.n format",
-    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
-  },
-  {
-    "objectID": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
-    "href": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point representation of negative numbers",
-    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
-  },
-  {
-    "objectID": "lecture-05-slides.html#floating-point-representation-and-hardware",
-    "href": "lecture-05-slides.html#floating-point-representation-and-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Floating-Point Representation and Hardware",
-    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
-  },
-  {
-    "objectID": "lecture-05-slides.html#quantization-errors",
-    "href": "lecture-05-slides.html#quantization-errors",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Quantization Errors",
-    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
-  },
-  {
-    "objectID": "lecture-05-slides.html#arithmetic-errors",
-    "href": "lecture-05-slides.html#arithmetic-errors",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Arithmetic Errors",
-    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
-  },
-  {
-    "objectID": "lecture-05-slides.html#course-development-system",
-    "href": "lecture-05-slides.html#course-development-system",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Course Development System",
-    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
-  },
-  {
-    "objectID": "lecture-05-slides.html#lab-1",
-    "href": "lecture-05-slides.html#lab-1",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Lab 1",
-    "text": "Lab 1"
-  },
-  {
-    "objectID": "lecture-05-notes.html",
-    "href": "lecture-05-notes.html",
-    "title": "ECE 4624: Meeting 5",
+    "objectID": "lecture-06-slides.html#section",
+    "href": "lecture-06-slides.html#section",
+    "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
   },
   {
-    "objectID": "lecture-05-notes.html#section",
-    "href": "lecture-05-notes.html#section",
-    "title": "ECE 4624: Meeting 5",
+    "objectID": "lecture-06-slides.html#dt-system-representations",
+    "href": "lecture-06-slides.html#dt-system-representations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "DT system representations",
+    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
+  },
+  {
+    "objectID": "lecture-06-slides.html#system-properties-and-classification",
+    "href": "lecture-06-slides.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 6",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
+  },
+  {
+    "objectID": "lecture-06-slides.html#memory",
+    "href": "lecture-06-slides.html#memory",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Memory",
+    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#invertability",
+    "href": "lecture-06-slides.html#invertability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Invertability",
+    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#causality",
+    "href": "lecture-06-slides.html#causality",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Causality",
+    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#stability",
+    "href": "lecture-06-slides.html#stability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Stability",
+    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
+  },
+  {
+    "objectID": "lecture-06-slides.html#time-invariance",
+    "href": "lecture-06-slides.html#time-invariance",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Time-invariance",
+    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
+  },
+  {
+    "objectID": "lecture-06-slides.html#linearity",
+    "href": "lecture-06-slides.html#linearity",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Linearity",
+    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
+  },
+  {
+    "objectID": "lecture-06-slides.html#difference-equations",
+    "href": "lecture-06-slides.html#difference-equations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Difference Equations",
+    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
+  },
+  {
+    "objectID": "lecture-06-slides.html#lccde",
+    "href": "lecture-06-slides.html#lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE",
+    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#advance-and-delay-operators",
+    "href": "lecture-06-slides.html#advance-and-delay-operators",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Advance and Delay Operators",
+    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#iterative-solution-of-lccdes",
+    "href": "lecture-06-slides.html#iterative-solution-of-lccdes",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Iterative solution of LCCDEs",
+    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
+    "href": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Solution of the homogeneous LCCDE",
+    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
+  },
+  {
+    "objectID": "lecture-06-slides.html#section-1",
+    "href": "lecture-06-slides.html#section-1",
+    "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
   },
   {
-    "objectID": "lecture-05-notes.html#dsp-hardware-platforms",
-    "href": "lecture-05-notes.html#dsp-hardware-platforms",
-    "title": "ECE 4624: Meeting 5",
-    "section": "DSP Hardware Platforms",
-    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
+    "objectID": "lecture-06-slides.html#example",
+    "href": "lecture-06-slides.html#example",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Example:",
+    "text": "Example:"
   },
   {
-    "objectID": "lecture-05-notes.html#dsp-programming-models-and-languages",
-    "href": "lecture-05-notes.html#dsp-programming-models-and-languages",
-    "title": "ECE 4624: Meeting 5",
-    "section": "DSP Programming Models and Languages",
-    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
+    "objectID": "lecture-06-slides.html#impulse-response-from-lccde",
+    "href": "lecture-06-slides.html#impulse-response-from-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Impulse response from LCCDE",
+    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
   },
   {
-    "objectID": "lecture-05-notes.html#factors-when-choosing-hardware",
-    "href": "lecture-05-notes.html#factors-when-choosing-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Factors when Choosing Hardware",
-    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
+    "objectID": "lecture-06-slides.html#examples",
+    "href": "lecture-06-slides.html#examples",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
   },
   {
-    "objectID": "lecture-05-notes.html#architectures",
-    "href": "lecture-05-notes.html#architectures",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Architectures",
-    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
+    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
+    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for IIR filters",
+    "text": "LCCDE and impulse response for IIR filters"
   },
   {
-    "objectID": "lecture-05-notes.html#basic-computational-elements",
-    "href": "lecture-05-notes.html#basic-computational-elements",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Basic computational elements",
-    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
+    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
+    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for FIR filters",
+    "text": "LCCDE and impulse response for FIR filters"
   },
   {
-    "objectID": "lecture-05-notes.html#fixed-point-representation-and-hardware",
-    "href": "lecture-05-notes.html#fixed-point-representation-and-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point Representation and Hardware",
-    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
+    "objectID": "lecture-06-slides.html#examples-1",
+    "href": "lecture-06-slides.html#examples-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
   },
   {
-    "objectID": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
-    "href": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point Representation and Qm.n format",
-    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
-  },
-  {
-    "objectID": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
-    "href": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Fixed-Point representation of negative numbers",
-    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
-  },
-  {
-    "objectID": "lecture-05-notes.html#floating-point-representation-and-hardware",
-    "href": "lecture-05-notes.html#floating-point-representation-and-hardware",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Floating-Point Representation and Hardware",
-    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
-  },
-  {
-    "objectID": "lecture-05-notes.html#quantization-errors",
-    "href": "lecture-05-notes.html#quantization-errors",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Quantization Errors",
-    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
-  },
-  {
-    "objectID": "lecture-05-notes.html#arithmetic-errors",
-    "href": "lecture-05-notes.html#arithmetic-errors",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Arithmetic Errors",
-    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
-  },
-  {
-    "objectID": "lecture-05-notes.html#course-development-system",
-    "href": "lecture-05-notes.html#course-development-system",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Course Development System",
-    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
-  },
-  {
-    "objectID": "lecture-05-notes.html#lab-1",
-    "href": "lecture-05-notes.html#lab-1",
-    "title": "ECE 4624: Meeting 5",
-    "section": "Lab 1",
-    "text": "Lab 1"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Table of Contents",
+    "objectID": "lecture-06-notes.html",
+    "href": "lecture-06-notes.html",
+    "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT System Analysis using Z-Transform\nDT Frequency Response and Frequency Selective Filters\nDT Block Diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
   },
   {
-    "objectID": "lecture-03-slides.html#section",
-    "href": "lecture-03-slides.html#section",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-06-notes.html#section",
+    "href": "lecture-06-notes.html#section",
+    "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
+    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
   },
   {
-    "objectID": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
-    "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Series: Synthesis and Analysis Equations",
-    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+    "objectID": "lecture-06-notes.html#dt-system-representations",
+    "href": "lecture-06-notes.html#dt-system-representations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "DT system representations",
+    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
   },
   {
-    "objectID": "lecture-03-slides.html#fourier-series-spectrum",
-    "href": "lecture-03-slides.html#fourier-series-spectrum",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Series: Spectrum",
-    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
+    "objectID": "lecture-06-notes.html#system-properties-and-classification",
+    "href": "lecture-06-notes.html#system-properties-and-classification",
+    "title": "ECE 4624: Meeting 6",
+    "section": "System properties and classification",
+    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
   },
   {
-    "objectID": "lecture-03-slides.html#example-of-the-fourier-series",
-    "href": "lecture-03-slides.html#example-of-the-fourier-series",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example of the Fourier series",
-    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\nPlot of the example signal."
+    "objectID": "lecture-06-notes.html#memory",
+    "href": "lecture-06-notes.html#memory",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Memory",
+    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
   },
   {
-    "objectID": "lecture-03-slides.html#section-1",
-    "href": "lecture-03-slides.html#section-1",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-06-notes.html#invertability",
+    "href": "lecture-06-notes.html#invertability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Invertability",
+    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#causality",
+    "href": "lecture-06-notes.html#causality",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Causality",
+    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#stability",
+    "href": "lecture-06-notes.html#stability",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Stability",
+    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
+  },
+  {
+    "objectID": "lecture-06-notes.html#time-invariance",
+    "href": "lecture-06-notes.html#time-invariance",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Time-invariance",
+    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
+  },
+  {
+    "objectID": "lecture-06-notes.html#linearity",
+    "href": "lecture-06-notes.html#linearity",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Linearity",
+    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
+  },
+  {
+    "objectID": "lecture-06-notes.html#difference-equations",
+    "href": "lecture-06-notes.html#difference-equations",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Difference Equations",
+    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
+  },
+  {
+    "objectID": "lecture-06-notes.html#lccde",
+    "href": "lecture-06-notes.html#lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE",
+    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#advance-and-delay-operators",
+    "href": "lecture-06-notes.html#advance-and-delay-operators",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Advance and Delay Operators",
+    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#iterative-solution-of-lccdes",
+    "href": "lecture-06-notes.html#iterative-solution-of-lccdes",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Iterative solution of LCCDEs",
+    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
+    "href": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Solution of the homogeneous LCCDE",
+    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
+  },
+  {
+    "objectID": "lecture-06-notes.html#section-1",
+    "href": "lecture-06-notes.html#section-1",
+    "title": "ECE 4624: Meeting 6",
     "section": "",
-    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
+    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
   },
   {
-    "objectID": "lecture-03-slides.html#section-2",
-    "href": "lecture-03-slides.html#section-2",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-06-notes.html#example",
+    "href": "lecture-06-notes.html#example",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Example:",
+    "text": "Example:"
+  },
+  {
+    "objectID": "lecture-06-notes.html#impulse-response-from-lccde",
+    "href": "lecture-06-notes.html#impulse-response-from-lccde",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Impulse response from LCCDE",
+    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
+  },
+  {
+    "objectID": "lecture-06-notes.html#examples",
+    "href": "lecture-06-notes.html#examples",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
+  },
+  {
+    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
+    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for IIR filters",
+    "text": "LCCDE and impulse response for IIR filters"
+  },
+  {
+    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
+    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
+    "title": "ECE 4624: Meeting 6",
+    "section": "LCCDE and impulse response for FIR filters",
+    "text": "LCCDE and impulse response for FIR filters"
+  },
+  {
+    "objectID": "lecture-06-notes.html#examples-1",
+    "href": "lecture-06-notes.html#examples-1",
+    "title": "ECE 4624: Meeting 6",
+    "section": "Examples:",
+    "text": "Examples:"
+  },
+  {
+    "objectID": "lecture-09-notes.html",
+    "href": "lecture-09-notes.html",
+    "title": "ECE 4624: Meeting 9",
     "section": "",
-    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
+    "text": "The Z-transform is a powerful tool for analysis of DT LTI systems but\nIn this lecture we review Fourier analysis of DT Signals and Systems, its relationship to the Z-transform, and the real frequency response of DT filters."
   },
   {
-    "objectID": "lecture-03-slides.html#section-3",
-    "href": "lecture-03-slides.html#section-3",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-09-notes.html#two-pole-resonator",
+    "href": "lecture-09-notes.html#two-pole-resonator",
+    "title": "ECE 4624: Meeting 9",
+    "section": "two-pole resonator",
+    "text": "two-pole resonator\nA common bandpass filter is the two-pole resonator\n\\[\nH(z) = \\frac{Kz^2}{\\left(z-re^{j\\omega_0} \\right)\\left(z-re^{-j\\omega_0} \\right)} = \\frac{K z^2}{z^2 - 2r\\cos(\\omega_0)z + r^2}\n\\]\nwhere \\(r &lt; 1\\) and \\(\\omega_0\\) determines the center frequency. We see it has two zeros at the origin and two complex conjugate poles. This systems is real, stable and the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = \\frac{K e^{j2\\omega}}{e^{2j\\omega} - 2r\\cos(\\omega_0)e^{j\\omega} + r^2}\n\\]\nWe choose the \\(K\\) so that \\(\\left| H\\left(e^{j\\omega}\\right) \\right\\| \\approx 1\\) and the center frequency."
+  },
+  {
+    "objectID": "lecture-09-notes.html#inverse-two-pole-resonator",
+    "href": "lecture-09-notes.html#inverse-two-pole-resonator",
+    "title": "ECE 4624: Meeting 9",
+    "section": "inverse two pole resonator",
+    "text": "inverse two pole resonator\nA common band-stop filter is the notch. It is the inverse of the two-pole resonator. The zeros at the origin become poles and the conjugate poles become zeros, but now \\(r = 1\\). The transfer function is then\n\\[\nH(z) = \\frac{K\\left(z-e^{j\\omega_0} \\right)\\left(z-e^{-j\\omega_0}\\right)}{z^2} = K \\frac{z^2 - 2\\cos(\\omega_0)z + 1}{z^2}\n\\]\nwhere \\(\\omega_0\\) determines the notch frequency.\nWe can see this corresponds to an FIR filter by doing the power series expansion\n\\[\nH(z) = K\\left(1-2\\cos(\\omega_0)z^{-1} + z^{-2} \\right)\n\\]\nSince this filter is always stable (ROC is \\(|z| &gt; 0\\)) the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = K\\left(1-2\\cos(\\omega_0)e^{-j\\omega} + e^{-j2\\omega} \\right)\n\\]\nBy moving the poles closer to the zeros we improve the filter sharpness. By placement of additional zeros and poles in the same pattern at different center frequencies that are harmonics of one another we get a comb filter."
+  },
+  {
+    "objectID": "lecture-10-notes.html",
+    "href": "lecture-10-notes.html",
+    "title": "ECE 4624: Meeting 10",
     "section": "",
-    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
+    "text": "Everything in DSP could be expressed purely as equations (difference equations, convolution sums, z-transforms). But graphical approaches, block diagrams and signal flow graphs in particular, provide structural clarity, implementation insight, and intuition that math alone hides.\nIn this lecture we review the basics of block diagrams, a more compact version called signal-flow graphs, and discuss system realization (which may or may not be review).\nAs we will see, FIR and IIR filters are often designed and implemented via SFGs, which reveal multiplier counts, delay elements, and numerical sensitivity. They are often referred to as the schematics or circuits of signal processing."
   },
   {
-    "objectID": "lecture-03-slides.html#section-4",
-    "href": "lecture-03-slides.html#section-4",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-10-notes.html#direct-form-i",
+    "href": "lecture-10-notes.html#direct-form-i",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Direct Form I",
+    "text": "Direct Form I"
+  },
+  {
+    "objectID": "lecture-10-notes.html#direct-form-ii",
+    "href": "lecture-10-notes.html#direct-form-ii",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Direct Form II",
+    "text": "Direct Form II"
+  },
+  {
+    "objectID": "lecture-10-notes.html#transposed-direct-form-ii",
+    "href": "lecture-10-notes.html#transposed-direct-form-ii",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Transposed Direct Form II",
+    "text": "Transposed Direct Form II"
+  },
+  {
+    "objectID": "lecture-10-notes.html#parallel-form",
+    "href": "lecture-10-notes.html#parallel-form",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Parallel Form",
+    "text": "Parallel Form"
+  },
+  {
+    "objectID": "lecture-10-notes.html#cascade-of-second-order-stages-sos",
+    "href": "lecture-10-notes.html#cascade-of-second-order-stages-sos",
+    "title": "ECE 4624: Meeting 10",
+    "section": "Cascade of Second-Order Stages (SOS)",
+    "text": "Cascade of Second-Order Stages (SOS)"
+  },
+  {
+    "objectID": "lecture-A1-slides.html#section",
+    "href": "lecture-A1-slides.html#section",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
-    "objectID": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
-    "href": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Convergence of the CT Fourier Series",
-    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#ct-fourier-transform",
-    "href": "lecture-03-slides.html#ct-fourier-transform",
-    "title": "ECE 4624: Meeting 3",
-    "section": "CT Fourier Transform",
-    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-5",
-    "href": "lecture-03-slides.html#section-5",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-A1-notes.html",
+    "href": "lecture-A1-notes.html",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
-    "objectID": "lecture-03-slides.html#section-6",
-    "href": "lecture-03-slides.html#section-6",
-    "title": "ECE 4624: Meeting 3",
+    "objectID": "lecture-A1-notes.html#section",
+    "href": "lecture-A1-notes.html#section",
+    "title": "ECE 4624: Meeting 7",
     "section": "",
-    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-7",
-    "href": "lecture-03-slides.html#section-7",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
-  },
-  {
-    "objectID": "lecture-03-slides.html#fourier-transform-pair",
-    "href": "lecture-03-slides.html#fourier-transform-pair",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Fourier Transform Pair",
-    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
-  },
-  {
-    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
-    "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example: Fourier Transform of the impulse.",
-    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
-    "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example: Fourier transform of the causal real exponential.",
-    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
-    "href": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Existence of the CT Fourier Transform",
-    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft",
-    "href": "lecture-03-slides.html#properties-of-ctft",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-1",
-    "href": "lecture-03-slides.html#properties-of-ctft-1",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-2",
-    "href": "lecture-03-slides.html#properties-of-ctft-2",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#properties-of-ctft-3",
-    "href": "lecture-03-slides.html#properties-of-ctft-3",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Properties of CTFT",
-    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
-  },
-  {
-    "objectID": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
-    "href": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Frequency Response of CT LTI Systems",
-    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-8",
-    "href": "lecture-03-slides.html#section-8",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
-  },
-  {
-    "objectID": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
-    "href": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Magnitude-phase representation of the CTFR",
-    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
-    "href": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
-    "title": "ECE 4624: Meeting 3",
-    "section": "CTFR acting on sinusoids",
-    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#section-9",
-    "href": "lecture-03-slides.html#section-9",
-    "title": "ECE 4624: Meeting 3",
-    "section": "",
-    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
-  },
-  {
-    "objectID": "lecture-03-slides.html#bode-plots",
-    "href": "lecture-03-slides.html#bode-plots",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Bode plots",
-    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
-  },
-  {
-    "objectID": "lecture-03-slides.html#example",
-    "href": "lecture-03-slides.html#example",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Example",
-    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
-  },
-  {
-    "objectID": "lecture-03-slides.html#filters-in-ct",
-    "href": "lecture-03-slides.html#filters-in-ct",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Filters in CT",
-    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-ct-filters",
-    "href": "lecture-03-slides.html#lowpass-ct-filters",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass CT Filters",
-    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
-  },
-  {
-    "objectID": "lecture-03-slides.html#practical-lowpass-filters",
-    "href": "lecture-03-slides.html#practical-lowpass-filters",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Practical Lowpass Filters",
-    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-filter-specification",
-    "href": "lecture-03-slides.html#lowpass-filter-specification",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass Filter Specification",
-    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
-  },
-  {
-    "objectID": "lecture-03-slides.html#lowpass-filter-specification-1",
-    "href": "lecture-03-slides.html#lowpass-filter-specification-1",
-    "title": "ECE 4624: Meeting 3",
-    "section": "Lowpass Filter Specification",
-    "text": "Lowpass Filter Specification"
+    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
   },
   {
     "objectID": "lecture-03-notes.html",
@@ -1176,389 +1148,452 @@
     "text": "Lowpass Filter Specification\n\n\n/home/clwyatt/.local/lib/python3.10/site-packages/scipy/signal/_ltisys.py:599: BadCoefficients: Badly conditioned filter coefficients (numerator): the results may be meaningless\n  self.num, self.den = normalize(*system)"
   },
   {
-    "objectID": "lecture-A1-notes.html",
-    "href": "lecture-A1-notes.html",
-    "title": "ECE 4624: Meeting 7",
+    "objectID": "lecture-03-slides.html#section",
+    "href": "lecture-03-slides.html#section",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "In the last lecture we defined a CT signal and saw how to build up models of such signals from mathematical primitives. Today we review how to do the opposite, decompose a given signal into primitives, namely complex exponentials (sinusoids). We also review how CT LTI systems affect signals via the frequency response and define a frequency selective filter we will use in the next lecture, the low-pass filter. Note: today’s lecture is a review of material from ECE 2714.\nREADINGS:\n\nPM 4.1.1 and 4.2\nChapter 14 ECE 2714 Supplementary Notes\nChapter 16 ECE 2714 Supplementary Notes\nChapter 18 ECE 2714 Supplementary Notes\nChapter 20 ECE 2714 Supplementary Notes"
   },
   {
-    "objectID": "lecture-A1-notes.html#section",
-    "href": "lecture-A1-notes.html#section",
-    "title": "ECE 4624: Meeting 7",
+    "objectID": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "href": "lecture-03-slides.html#fourier-series-synthesis-and-analysis-equations",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Synthesis and Analysis Equations",
+    "text": "Fourier Series: Synthesis and Analysis Equations\nSuppose we can approximate a periodic function \\(x(t)\\) with period \\(T_0\\) by the sum \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\;.\\] This is called the synthesis equation of the CT Fourier series.\nNote \\(k\\) is an integer and the fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\).\nThe Fourier series coefficients, \\(a_k\\), are determined by the analysis equation: \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] where the integration can be over any interval of length \\(T_0\\) that is equal to the period."
+  },
+  {
+    "objectID": "lecture-03-slides.html#fourier-series-spectrum",
+    "href": "lecture-03-slides.html#fourier-series-spectrum",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Series: Spectrum",
+    "text": "Fourier Series: Spectrum\nThe CT Fourier Series coefficients are also called the spectrum of the signal.\nIn general the \\(a_k\\) are complex.\nThe function of \\(k\\), \\(|a_k|\\) is called the amplitude spectrum.\nThe function of \\(k\\), \\(\\angle a_k\\) is called the phase spectrum.\nWhen plotting the coefficients it is common to plot the amplitude and phase spectrum together."
+  },
+  {
+    "objectID": "lecture-03-slides.html#example-of-the-fourier-series",
+    "href": "lecture-03-slides.html#example-of-the-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example of the Fourier series",
+    "text": "Example of the Fourier series\nConsider the signal \\[x_p(t) = \\left\\{ \\begin{array}{lc}\n    t^2 & -1 &lt; t &lt; 1\\\\\n    0 & \\mbox{else}\n  \\end{array}\n\\right.\\] periodically extended with period \\(T_0 = 2\\) \\[x(t) = \\sum\\limits_{i = -\\infty}^{\\infty} x_p(t - 2i)\\]\n\nPlot of the example signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-1",
+    "href": "lecture-03-slides.html#section-1",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "To find the Fourier Series approximation of \\(x(t)\\), \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t}\\; ,\\] we need to find the coefficients \\[a_k = \\frac{1}{T_0} \\int\\limits_{0}^{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\]\nSince the integration can be over any period, we can use the limits \\([-1,1]\\) and note that \\(T_0 = 2\\) so that \\(\\omega_0 = \\pi\\), \\[\n  a_k = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\n\\]"
   },
   {
-    "objectID": "lecture-A1-slides.html#section",
-    "href": "lecture-A1-slides.html#section",
-    "title": "ECE 4624: Meeting 7",
+    "objectID": "lecture-03-slides.html#section-2",
+    "href": "lecture-03-slides.html#section-2",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we see how the recursive LCCDE gives a straightforward way to implement DT LTI systems using a digital computer and how modern hardware make this very efficient. We will also discuss Lab 1.\nREADING: ?"
+    "text": "\\[\\begin{align*}\n  a_k &= \\frac{1}{2} \\int\\limits_{-1}^{1} t^2\\,e^{-jk\\pi t} \\; dt\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(-k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} t^2\\,\\sin(-k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\left[ \\int\\limits_{-1}^{1} t^2\\,\\cos(k\\pi t) \\; dt + j \\int\\limits_{-1}^{1} - t^2\\,\\sin(k\\pi t) \\; dt \\right]\\\\\n  &= \\frac{1}{2} \\frac{4k\\pi\\overbrace{\\cos(k\\pi)}^{(-1)^k} + 2(k^2\\pi^2-2)\\overbrace{\\sin(k\\pi)}^{\\text{always = 0}}}{k^3\\pi^3}\\\\\na_k &= \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\end{align*}\\]"
   },
   {
-    "objectID": "lecture-10-notes.html",
-    "href": "lecture-10-notes.html",
-    "title": "ECE 4624: Meeting 10",
+    "objectID": "lecture-03-slides.html#section-3",
+    "href": "lecture-03-slides.html#section-3",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Everything in DSP could be expressed purely as equations (difference equations, convolution sums, z-transforms). But graphical approaches, block diagrams and signal flow graphs in particular, provide structural clarity, implementation insight, and intuition that math alone hides.\nIn this lecture we review the basics of block diagrams, a more compact version called signal-flow graphs, and discuss system realization (which may or may not be review).\nAs we will see, FIR and IIR filters are often designed and implemented via SFGs, which reveal multiplier counts, delay elements, and numerical sensitivity. They are often referred to as the schematics or circuits of signal processing."
+    "text": "\\[\na_k = \\frac{2}{k^2\\pi^2}\\left(-1\\right)^k\n\\]\nThis result is undefined for when \\(k=0\\). In that case note the original integral is \\[a_0 = \\frac{1}{2} \\int\\limits_{-1}^{1} t^2 \\; dt = \\frac{1}{6}t^3 \\Big|_{-1}^{1} = \\frac{1}{3}\\] Thus the final approximation is \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} \\underbrace{\\frac{2}{k^2\\pi^2}\\left(-1\\right)^k}_{a_k} \\, e^{j k\\pi t} \\;.\\]"
   },
   {
-    "objectID": "lecture-10-notes.html#direct-form-i",
-    "href": "lecture-10-notes.html#direct-form-i",
-    "title": "ECE 4624: Meeting 10",
-    "section": "Direct Form I",
-    "text": "Direct Form I"
-  },
-  {
-    "objectID": "lecture-10-notes.html#direct-form-ii",
-    "href": "lecture-10-notes.html#direct-form-ii",
-    "title": "ECE 4624: Meeting 10",
-    "section": "Direct Form II",
-    "text": "Direct Form II"
-  },
-  {
-    "objectID": "lecture-10-notes.html#transposed-direct-form-ii",
-    "href": "lecture-10-notes.html#transposed-direct-form-ii",
-    "title": "ECE 4624: Meeting 10",
-    "section": "Transposed Direct Form II",
-    "text": "Transposed Direct Form II"
-  },
-  {
-    "objectID": "lecture-10-notes.html#parallel-form",
-    "href": "lecture-10-notes.html#parallel-form",
-    "title": "ECE 4624: Meeting 10",
-    "section": "Parallel Form",
-    "text": "Parallel Form"
-  },
-  {
-    "objectID": "lecture-10-notes.html#cascade-of-second-order-stages-sos",
-    "href": "lecture-10-notes.html#cascade-of-second-order-stages-sos",
-    "title": "ECE 4624: Meeting 10",
-    "section": "Cascade of Second-Order Stages (SOS)",
-    "text": "Cascade of Second-Order Stages (SOS)"
-  },
-  {
-    "objectID": "lecture-09-notes.html",
-    "href": "lecture-09-notes.html",
-    "title": "ECE 4624: Meeting 9",
+    "objectID": "lecture-03-slides.html#section-4",
+    "href": "lecture-03-slides.html#section-4",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "The Z-transform is a powerful tool for analysis of DT LTI systems but\nIn this lecture we review Fourier analysis of DT Signals and Systems, its relationship to the Z-transform, and the real frequency response of DT filters."
+    "text": "The corresponding amplitude and phase spectrum plot:\n\n\n\n\n\nAmplitude and phase spectrum plot for the example."
   },
   {
-    "objectID": "lecture-09-notes.html#two-pole-resonator",
-    "href": "lecture-09-notes.html#two-pole-resonator",
-    "title": "ECE 4624: Meeting 9",
-    "section": "two-pole resonator",
-    "text": "two-pole resonator\nA common bandpass filter is the two-pole resonator\n\\[\nH(z) = \\frac{Kz^2}{\\left(z-re^{j\\omega_0} \\right)\\left(z-re^{-j\\omega_0} \\right)} = \\frac{K z^2}{z^2 - 2r\\cos(\\omega_0)z + r^2}\n\\]\nwhere \\(r &lt; 1\\) and \\(\\omega_0\\) determines the center frequency. We see it has two zeros at the origin and two complex conjugate poles. This systems is real, stable and the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = \\frac{K e^{j2\\omega}}{e^{2j\\omega} - 2r\\cos(\\omega_0)e^{j\\omega} + r^2}\n\\]\nWe choose the \\(K\\) so that \\(\\left| H\\left(e^{j\\omega}\\right) \\right\\| \\approx 1\\) and the center frequency."
+    "objectID": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "href": "lecture-03-slides.html#convergence-of-the-ct-fourier-series",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Convergence of the CT Fourier Series",
+    "text": "Convergence of the CT Fourier Series\nAs mentioned above the Fourier Series is strictly speaking an approximation \\[x(t) \\approx \\sum\\limits_{k = -\\infty}^{\\infty} a_k \\, e^{j k\\omega_0 t} \\mbox{ where } a_k = \\frac{1}{T_0} \\int\\limits_{T_0} x(t)e^{-jk\\omega_0 t} \\; dt\\] to determine when this approximation is an equivalence (and in what sense) we need to establish the existence and convergence of the integral and summation respectively.\nThe CTFS exists if the Dirichlet Conditions hold for the signal:\n\nThe signal has a finite number of discontinuities per period.\nThe signal has a finite number of maxima and minima per period.\nThe signal is bounded, i.e. \\[\\int_{T_0} |x(t)| \\;dt &lt; \\infty\\]"
   },
   {
-    "objectID": "lecture-09-notes.html#inverse-two-pole-resonator",
-    "href": "lecture-09-notes.html#inverse-two-pole-resonator",
-    "title": "ECE 4624: Meeting 9",
-    "section": "inverse two pole resonator",
-    "text": "inverse two pole resonator\nA common band-stop filter is the notch. It is the inverse of the two-pole resonator. The zeros at the origin become poles and the conjugate poles become zeros, but now \\(r = 1\\). The transfer function is then\n\\[\nH(z) = \\frac{K\\left(z-e^{j\\omega_0} \\right)\\left(z-e^{-j\\omega_0}\\right)}{z^2} = K \\frac{z^2 - 2\\cos(\\omega_0)z + 1}{z^2}\n\\]\nwhere \\(\\omega_0\\) determines the notch frequency.\nWe can see this corresponds to an FIR filter by doing the power series expansion\n\\[\nH(z) = K\\left(1-2\\cos(\\omega_0)z^{-1} + z^{-2} \\right)\n\\]\nSince this filter is always stable (ROC is \\(|z| &gt; 0\\)) the frequency response is\n\\[\nH\\left(e^{j\\omega}\\right) = K\\left(1-2\\cos(\\omega_0)e^{-j\\omega} + e^{-j2\\omega} \\right)\n\\]\nBy moving the poles closer to the zeros we improve the filter sharpness. By placement of additional zeros and poles in the same pattern at different center frequencies that are harmonics of one another we get a comb filter."
+    "objectID": "lecture-03-slides.html#ct-fourier-transform",
+    "href": "lecture-03-slides.html#ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CT Fourier Transform",
+    "text": "CT Fourier Transform\nConsider the aperiodic signal \\[x(t) = \\begin{cases}\n  p(t) & A &lt; t &lt; B\\\\\n  0 & \\text{else}\n\\end{cases}\\] and it’s periodic extension with fundamental frequency \\(\\omega_0 = \\frac{2\\pi}{T_0}\\) \\[x_p(t) = \\sum\\limits_{m = -\\infty}^{\\infty} x(t-mT_0)\\] where \\(T_0 &gt; B-A\\).\nThe CT Fourier series coefficients are \\[\n  a_k = \\frac{1}{T_0} \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-jk\\omega_0 t}\\; dt\n\\] since \\(x(t) = 0\\) outside the interval \\((A,B)\\)."
   },
   {
-    "objectID": "lecture-06-notes.html",
-    "href": "lecture-06-notes.html",
-    "title": "ECE 4624: Meeting 6",
+    "objectID": "lecture-03-slides.html#section-5",
+    "href": "lecture-03-slides.html#section-5",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
+    "text": "Define the CT Fourier Transform of \\(x(t)\\) as \\[X(\\omega) = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\] so that \\[a_k = \\frac{1}{T_0} X(k\\omega_0)\\] are samples of \\(X(\\omega)\\) spaced at frequencies \\(\\omega_0\\)."
   },
   {
-    "objectID": "lecture-06-notes.html#section",
-    "href": "lecture-06-notes.html#section",
-    "title": "ECE 4624: Meeting 6",
+    "objectID": "lecture-03-slides.html#section-6",
+    "href": "lecture-03-slides.html#section-6",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
+    "text": "By the CT Fourier series synthesis equation \\[x(t) = \\sum\\limits_{k = -\\infty}^{\\infty} \\frac{1}{T_0} X(k\\omega_0) e^{jk\\omega_0 t}\\] Now, let \\(T_0 \\rightarrow \\infty\\) so that the periodic copies move toward \\(\\infty\\) and \\(x_p(t) \\rightarrow x(t)\\). At the same time the frequency sample spacing becomes infinitesimal and \\[X(k\\omega_0) e^{jk\\omega_0 t} \\rightarrow X(\\omega) e^{j\\omega t}\\; d\\omega\\] To give the Inverse Fourier Transform \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega\\]"
   },
   {
-    "objectID": "lecture-06-notes.html#dt-system-representations",
-    "href": "lecture-06-notes.html#dt-system-representations",
-    "title": "ECE 4624: Meeting 6",
-    "section": "DT system representations",
-    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
-  },
-  {
-    "objectID": "lecture-06-notes.html#system-properties-and-classification",
-    "href": "lecture-06-notes.html#system-properties-and-classification",
-    "title": "ECE 4624: Meeting 6",
-    "section": "System properties and classification",
-    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
-  },
-  {
-    "objectID": "lecture-06-notes.html#memory",
-    "href": "lecture-06-notes.html#memory",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Memory",
-    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#invertability",
-    "href": "lecture-06-notes.html#invertability",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Invertability",
-    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#causality",
-    "href": "lecture-06-notes.html#causality",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Causality",
-    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#stability",
-    "href": "lecture-06-notes.html#stability",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Stability",
-    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
-  },
-  {
-    "objectID": "lecture-06-notes.html#time-invariance",
-    "href": "lecture-06-notes.html#time-invariance",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Time-invariance",
-    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
-  },
-  {
-    "objectID": "lecture-06-notes.html#linearity",
-    "href": "lecture-06-notes.html#linearity",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Linearity",
-    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
-  },
-  {
-    "objectID": "lecture-06-notes.html#difference-equations",
-    "href": "lecture-06-notes.html#difference-equations",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Difference Equations",
-    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
-  },
-  {
-    "objectID": "lecture-06-notes.html#lccde",
-    "href": "lecture-06-notes.html#lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE",
-    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#advance-and-delay-operators",
-    "href": "lecture-06-notes.html#advance-and-delay-operators",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Advance and Delay Operators",
-    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#iterative-solution-of-lccdes",
-    "href": "lecture-06-notes.html#iterative-solution-of-lccdes",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Iterative solution of LCCDEs",
-    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
-    "href": "lecture-06-notes.html#solution-of-the-homogeneous-lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Solution of the homogeneous LCCDE",
-    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
-  },
-  {
-    "objectID": "lecture-06-notes.html#section-1",
-    "href": "lecture-06-notes.html#section-1",
-    "title": "ECE 4624: Meeting 6",
+    "objectID": "lecture-03-slides.html#section-7",
+    "href": "lecture-03-slides.html#section-7",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
+    "text": "This gives the Fourier Transform Pair: \\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse\nTransform / Synthesis Equation}}\\]\nNote: The difference in notation between \\(X(\\omega)\\) and \\(X(j\\omega)\\) is superficial. They generally are the same function. For example \\[X(j\\omega) = \\frac{1}{1+(j\\omega)^2} = \\frac{1}{1-\\omega^2} = X(\\omega)\\] are the same function since \\(j^2 = -1\\)."
   },
   {
-    "objectID": "lecture-06-notes.html#example",
-    "href": "lecture-06-notes.html#example",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Example:",
-    "text": "Example:"
+    "objectID": "lecture-03-slides.html#fourier-transform-pair",
+    "href": "lecture-03-slides.html#fourier-transform-pair",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Fourier Transform Pair",
+    "text": "Fourier Transform Pair\n\\[\\underbrace{X(\\omega) = \\mathcal{F}\\{x(t)\\} = \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt}_{\\text{Forward Transform / Analysis Equation}}\n\\hspace{3em}\n\\underbrace{x(t) = \\mathcal{F}^{-1}\\{X(\\omega)\\} = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(\\omega)e^{j\\omega t}\\; d\\omega}_{\\text{Inverse Transform / Synthesis Equation}}\\]\nThe forward transform decomposes \\(x(t)\\) into an infinite number of complex sinusoids.\nThe inverse transform synthesizes a signal as an infinite sum of the sinusoids.\nNote the signal \\(x(t)\\) and \\(X(\\omega)\\) are the same signal, just represented in different domains, the time-domain and frequency-domain respectively.\nSimilar to the CT Fourier series, the function \\(X(\\omega)\\) is called the spectrum of the signal \\(x(t)\\). The magnitude spectrum is the function \\(|X(\\omega)|\\) and the phase spectrum is the function \\(\\angle X(\\omega)\\). It is common to plot the spectrum as the combination of the magnitude and phase spectrum."
   },
   {
-    "objectID": "lecture-06-notes.html#impulse-response-from-lccde",
-    "href": "lecture-06-notes.html#impulse-response-from-lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Impulse response from LCCDE",
-    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-impulse.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier Transform of the impulse.",
+    "text": "Example: Fourier Transform of the impulse.\nConsider the signal \\(x(t) = \\delta(t)\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt\\\\\n    &= \\int\\limits_{-\\infty}^{\\infty} \\delta(t) e^{-j\\omega t}\\; dt\\\\\n    &= e^{-j\\omega (0)} \\mbox{ by the sifting property}\\\\\n    &= 1  \n\\end{align*}\\]"
   },
   {
-    "objectID": "lecture-06-notes.html#examples",
-    "href": "lecture-06-notes.html#examples",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Examples:",
-    "text": "Examples:"
+    "objectID": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "href": "lecture-03-slides.html#example-fourier-transform-of-the-causal-real-exponential.",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example: Fourier transform of the causal real exponential.",
+    "text": "Example: Fourier transform of the causal real exponential.\nConsider the signal \\(x(t) = e^{at}u(t)\\) for \\(a\\in \\mathbb{R}\\). The Fourier transform is \\[\\begin{align*}\n    X(\\omega) &= \\int\\limits_{-\\infty}^{\\infty} x(t) e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{at} \\, e^{-j\\omega t}\\; dt = \\int\\limits_{0}^{\\infty}  e^{(a-j\\omega) t}\\; dt\\\\\n    &= \\frac{1}{a-j\\omega } e^{(a-j\\omega) t} \\Big|_{0}^{\\infty} = \\frac{1}{a-j\\omega } \\left[ \\lim_{T\\rightarrow\\infty} e^{(a-j\\omega) T} - \\underbrace{e^{(a-j\\omega) (0)}}_{1}\\right]  \n\\end{align*}\\] This converges if \\(a &lt; 0\\) and\n\\[X(\\omega) = \\frac{-1}{a-j\\omega } = \\frac{1}{j\\omega-a} \\mbox{ for } a &lt; 0\\;.\\]"
   },
   {
-    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
-    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-iir-filters",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE and impulse response for IIR filters",
-    "text": "LCCDE and impulse response for IIR filters"
+    "objectID": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "href": "lecture-03-slides.html#existence-of-the-ct-fourier-transform",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Existence of the CT Fourier Transform",
+    "text": "Existence of the CT Fourier Transform\nThe example of the real exponential above showed that for the Fourier transform to exist, the Fourier (analysis) integral must exist. Similar to the Fourier series some mild conditions, again called the Dirichlet conditions, are a sufficient prerequisite for the Fourier transform of a signal \\(x(t)\\) to exist:\n\n\\(x(t)\\) is absolutely integrable \\[x(t) = \\int\\limits_{-\\infty}^{\\infty} |x(t)|\\; dt &lt; \\infty\\]\n\\(x(t)\\) has a finite number of minima and maxima over any finite interval\n\\(x(t)\\) has a finite number of finite-valued discontinuities over any finite interval\n\nThese conditions are not necessary however, and we can extend the Fourier transform to a broader class of signals, if we allow delta functions in the transform"
   },
   {
-    "objectID": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
-    "href": "lecture-06-notes.html#lccde-and-impulse-response-for-fir-filters",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE and impulse response for FIR filters",
-    "text": "LCCDE and impulse response for FIR filters"
+    "objectID": "lecture-03-slides.html#properties-of-ctft",
+    "href": "lecture-03-slides.html#properties-of-ctft",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nLinearity: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[ax_1(t) + bx_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} aX_1(\\omega) + bX_2(\\omega)\\]\nConvolution: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) * x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)X_2(\\omega)\\] Note in particular if one signal is the system input and the other is the impulse response, the output is the product of the Fourier transforms of each, where the Fourier transform of \\(h(t)\\) is \\(H(\\omega)\\), the frequency response.\nDifferentiation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\frac{dx}{dt}(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} j\\omega X(\\omega)\\] This allows us to easily determine the frequency response from a stable differential equation."
   },
   {
-    "objectID": "lecture-06-notes.html#examples-1",
-    "href": "lecture-06-notes.html#examples-1",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Examples:",
-    "text": "Examples:"
+    "objectID": "lecture-03-slides.html#properties-of-ctft-1",
+    "href": "lecture-03-slides.html#properties-of-ctft-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nMultiplication: if \\(x_1(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_1(\\omega)\\) and \\(x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X_2(\\omega)\\) then \\[x_1(t) \\cdot x_2(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{2\\pi} X_1(\\omega)*X_2(\\omega)\\] where \\(X_1(\\omega)*X_2(\\omega)\\) is convolution in the frequency domain \\[X_1(\\omega)*X_2(\\omega) = \\int\\limits_{-\\infty}^{\\infty} X_1(\\gamma)\\cdot X_2(\\omega-\\gamma)\\;d\\gamma\\]\nTime-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x(t-t_0) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)e^{-j\\omega t_0}\\]\nFrequency-Shift: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega-\\omega_o)\\]"
   },
   {
-    "objectID": "lecture-06-slides.html#section",
-    "href": "lecture-06-slides.html#section",
-    "title": "ECE 4624: Meeting 6",
+    "objectID": "lecture-03-slides.html#properties-of-ctft-2",
+    "href": "lecture-03-slides.html#properties-of-ctft-2",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nConjugate Symmetry: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[x^*(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X^*(-\\omega)\\] This implies that if \\(x(t)\\) is real, then the magnitude spectrum is an even function, and the phase spectrum is an odd function.\nIntegration: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{-\\infty}^t x(\\tau)\\; d\\tau \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{j\\omega} X(\\omega) + \\pi X(0) \\delta(\\omega)\\]\nTime and Frequency Scaling: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then if \\(a\\) is a real constant \\[x(at) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{\\omega}{a}\\right)\\]"
+  },
+  {
+    "objectID": "lecture-03-slides.html#properties-of-ctft-3",
+    "href": "lecture-03-slides.html#properties-of-ctft-3",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Properties of CTFT",
+    "text": "Properties of CTFT\n\nParseval’s Relation: if \\(x(t) \\stackrel{\\mathcal{F}}{\\longleftrightarrow} X(\\omega)\\) then \\[\\int\\limits_{0-\\infty}^{\\infty} |x(t)|^2\\; dt =  \\frac{1}{2\\pi}\\int\\limits_{0-\\infty}^{\\infty} |X(\\omega)|^2\\;d\\omega\\]\n\nThe plot of \\(|X(\\omega)|^2\\) as a function of frequency is called the power spectrum of the signal."
+  },
+  {
+    "objectID": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "href": "lecture-03-slides.html#frequency-response-of-ct-lti-systems",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Frequency Response of CT LTI Systems",
+    "text": "Frequency Response of CT LTI Systems\nThe input-output relationship for a stable LTI system is \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j\\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} H(j\\omega) X(j\\omega) \\, e^{j \\omega t}\\; d\\omega\\] where \\(H(j \\omega)\\) are the Eigenvalues, called the frequency response.\nThe frequency response of a CT LTI system can be thought of as arising in several equivalent ways.\n\nUsing the Eigenvalues / Transfer Function\nUsing the CTFT of the impulse responsr \\(h(t)\\)\nDirectly from a linear, constant-coefficient differential equation"
+  },
+  {
+    "objectID": "lecture-03-slides.html#section-8",
+    "href": "lecture-03-slides.html#section-8",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Today we look at DT systems as difference equations and define the correspondence between linear, constant-coefficient difference equations (LCCDE) and linear, time-invariant (LTI) DT systems. We then see how to determine the impulse response of DT LTI systems. Today’s lecture is a review of prerequisite material from ECE 2714.\nREADING:\n\nPM 4.1.4 and Chapter 6\n2714 Supplementary Notes 5 and 7\n\nTopics:\n\nProperties and Classification of DT systems\nDifference Equations\nImpulse Response of LCCDE"
+    "text": "Schematic depiction of analysis of continuous-time systems using Fourier techniques."
   },
   {
-    "objectID": "lecture-06-slides.html#dt-system-representations",
-    "href": "lecture-06-slides.html#dt-system-representations",
-    "title": "ECE 4624: Meeting 6",
-    "section": "DT system representations",
-    "text": "DT system representations\nWe can mathematically represent, or model, DT systems multiple ways.\n\npurely mathematically - in time domain we will use\n\nlinear, constant coefficient difference equations, e.g. \\[y[n] = a y[n-1] + b y[n-2] + x[n]\\]\nDT impulse response \\(h[n]\\)\n\npurely mathematically - in frequency domain we will use\n\nfrequency response\ntransfer function (complex frequency, covered in ECE 3704)\n\ngraphically, using a mixture of math and block diagrams"
+    "objectID": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "href": "lecture-03-slides.html#magnitude-phase-representation-of-the-ctfr",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Magnitude-phase representation of the CTFR",
+    "text": "Magnitude-phase representation of the CTFR\nNote that any complex valued function can be expressed in polar form using the magnitude and phase. Specifically the input and output can be put into this form \\[X(j\\omega) = |X(j\\omega)|e^{\\angle X(j\\omega)}\\] \\[Y(j\\omega) = |Y(j\\omega)|e^{\\angle Y(j\\omega)}\\]\nBy the convolution theorem then \\[H(j\\omega) = \\frac{Y(j\\omega)}{X(j\\omega)} = \\frac{|Y(j\\omega)|e^{\\angle Y(j\\omega)}}{|X(j\\omega)|e^{\\angle X(j\\omega)}} = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}e^{\\angle Y(j\\omega) - \\angle X(j\\omega)} = |H(j\\omega)|e^{\\angle H(j\\omega)}\\] This gives the magnitude and phase representation of the frequency response\n\\[\n|H(j\\omega)| = \\frac{|Y(j\\omega)|}{|X(j\\omega)|}\n\\]\nand\n\\[\n\\angle H(j\\omega) = \\angle Y(j\\omega) - \\angle X(j\\omega)\n\\]"
   },
   {
-    "objectID": "lecture-06-slides.html#system-properties-and-classification",
-    "href": "lecture-06-slides.html#system-properties-and-classification",
-    "title": "ECE 4624: Meeting 6",
-    "section": "System properties and classification",
-    "text": "System properties and classification\nChoosing the right kind of system model is important. Here are some important properties that allow us to broadly classify systems.\n\nMemory\nInvertability\nCausality\nStability\nTime-invariance\nLinearity"
+    "objectID": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "href": "lecture-03-slides.html#ctfr-acting-on-sinusoids",
+    "title": "ECE 4624: Meeting 3",
+    "section": "CTFR acting on sinusoids",
+    "text": "CTFR acting on sinusoids\nThe advantage of the magnitude and phase representation of the frequency response, is the ease with which we can find the output due to a sinusoidal input. If we apply a sinusoidal input \\(x(t) = A e^{j\\omega t}\\), the output is a the same sinusoid scaled by the frequency response \\(y(t) = H(j\\omega) A e^{j\\omega t}\\).\nNow using the magnitude and phase representation \\[y(t) = H(j\\omega) A e^{j\\omega t} = |H(j\\omega)|e^{\\angle H(j\\omega)} A e^{j\\omega t} = A |H(j\\omega)| e^{j\\omega t + \\angle H(j\\omega)}\\] Thus we can interpret the frequency response as telling us how the input sinsusoids are scaled in magnitude and phase shifted as they pass through the system.\nBy the linearity property this extends to real sinusoidal inputs \\[\n  \\cos(\\omega t + \\theta) \\longrightarrow |H(j\\omega)|\\cos(\\omega t + \\theta + \\angle H(j\\omega))  \n\\]"
   },
   {
-    "objectID": "lecture-06-slides.html#memory",
-    "href": "lecture-06-slides.html#memory",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Memory",
-    "text": "Memory\n\nThe output of a DT system with memory depends on previous or future inputs and is said to be dynamic.\nOtherwise the system is memoryless or instantaneous, and the output \\(y[n]\\) at index \\(n\\) depends only on \\(x[n]\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#invertability",
-    "href": "lecture-06-slides.html#invertability",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Invertability",
-    "text": "Invertability\n\nA system is invertible if there exists a system that when placed in series with the original recovers the input.\n\n\\[x[n] \\mapsto{T} y[n] \\mapsto{T^{-1}} x[n]\\] where \\(T^{-1}\\) is the inverse system of \\(T\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#causality",
-    "href": "lecture-06-slides.html#causality",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Causality",
-    "text": "Causality\n\nA DT system is causal if the output at index \\(n\\) depends on the input for index values at or before \\(n\\): \\[y[n] \\;\\text{depends on}\\; x[m] \\;\\text{for} \\; m \\leq n\\]\nWhile all physical CT systems are causal, practical DT systems may not be since we can use memory to \"shift time\".\nFor CT systems we cannot store the infinite number of values between two time points \\(t_1\\) and \\(t_2\\), but we can store the \\(n_2-n_1\\) values of a DT system between between two indices \\(n_1\\) and \\(n_2\\) (assuming infinite precision)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#stability",
-    "href": "lecture-06-slides.html#stability",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Stability",
-    "text": "Stability\n\nA DT system is (BIBO) stable if applying a bounded-input (BI) \\[\\left|x[n]\\right| &lt; \\infty \\; \\forall \\; n\\] results in a bounded-output (BO) \\(x[n] \\mapsto y[n]\\) and \\[\\left|y[n]\\right| &lt; \\infty \\; \\forall \\; n\\]\nNote, bounded in practice is limited by the physical situation, e.g. the number of bits used to store values."
-  },
-  {
-    "objectID": "lecture-06-slides.html#time-invariance",
-    "href": "lecture-06-slides.html#time-invariance",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Time-invariance",
-    "text": "Time-invariance\n\nA DT system is time(index)-invariant if, given \\[x[n] \\mapsto y[n]\\] then an index-shift of the input leads to the same index-shift in the output \\[x[n-m] \\mapsto y[n-m]\\]"
-  },
-  {
-    "objectID": "lecture-06-slides.html#linearity",
-    "href": "lecture-06-slides.html#linearity",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Linearity",
-    "text": "Linearity\n\nA DT system is linear if the output due to a sum of scaled individual inputs is the same as the scaled sum of the individual outputs with respect to those inputs.\n\nIf \\[x_1[n] \\mapsto y_1[n] \\;\\text{and}\\; x_2[n] \\mapsto y_2[n]\\] then \\[a x_1[n] + b x_2[n] \\mapsto a y_1[n] + b y_2[n]\\] for constants \\(a\\) and \\(b\\).\n\nNote this property extends to sums of arbitrary signals, e.g. if \\[x_i[n] \\mapsto y_i[n] \\; \\forall\\; i \\in [1 \\cdots N]\\] then given \\(N\\) constants \\(a_i\\), if the system is linear \\[\\sum\\limits_{i = 1}^N a_i x_i[n] \\mapsto \\sum\\limits_{i = 1}^N a_i y_i[n]\\]\nThis is a very important property, called superposition, and it simplifies the analysis of systems greatly."
-  },
-  {
-    "objectID": "lecture-06-slides.html#difference-equations",
-    "href": "lecture-06-slides.html#difference-equations",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Difference Equations",
-    "text": "Difference Equations\n\nA difference equation is a relation among combinations of two DT functions and shifted versions of them.\nSimilar to differential equations where the solution is a CT function, the solution to a difference equation is a DT function."
-  },
-  {
-    "objectID": "lecture-06-slides.html#lccde",
-    "href": "lecture-06-slides.html#lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE",
-    "text": "LCCDE\nA linear, constant-coefficient, difference equation (LCCDE) comes in three equivalent forms.\n\nDelay form. \\[\\sum\\limits_{k = 0}^N a_k y[n-k] = \\sum\\limits_{k = 0}^M b_k x[n-k]\\] or \\[a_0y[n] + a_1y[n-1] + \\cdots a_N y[n-N] = b_0 x[n] + \\cdots b_Mx[n-M]\\]\nAdvance form. Let \\(n\\rightarrow n+N\\), then the delay form becomes \\[\\sum\\limits_{k = 0}^N a_k y[n+N-k] = \\sum\\limits_{k = 0}^M b_k x[n+N-k]\\] or \\[a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = b_0 x[n+N] + \\cdots b_Mx[n+N-M]\\]\nRecursive form. \\[y[n] = - \\frac{a_1}{a_0} y[n-1] - \\cdots -\\frac{a_N}{a_0} y[n-N] + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0} x[n-M]\\]\n\nThe order of the system is given by max of \\(N\\) and \\(M\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#advance-and-delay-operators",
-    "href": "lecture-06-slides.html#advance-and-delay-operators",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Advance and Delay Operators",
-    "text": "Advance and Delay Operators\n\nDefine the advance operator \\(E^m\\) as shifting a DT function by positive \\(m\\), i.e. \\(E^m x[n] = x[n+m]\\)\nDefine the delay operator \\(D^m\\) as shifting a DT function by negative \\(m\\), i.e. \\(D^m x[n] = x[n-m]\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#iterative-solution-of-lccdes",
-    "href": "lecture-06-slides.html#iterative-solution-of-lccdes",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Iterative solution of LCCDEs",
-    "text": "Iterative solution of LCCDEs\nTo perform an iterative solution we need the difference equation in delay form\n\\[y[n] =  - \\left(\\frac{a_1}{a_0}y[n-1] + \\cdots \\frac{a_N}{a_0} y[n-N]\\right) + \\frac{b_0}{a_0} x[n] + \\cdots \\frac{b_M}{a_0}x[n-M]\\]\nGiven an input and initial conditions for \\(y[n_0 - 1] \\cdots y[n_0 - N]\\) we can simulate \\(y[n]\\) for \\(n \\geq n_0\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
-    "href": "lecture-06-slides.html#solution-of-the-homogeneous-lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Solution of the homogeneous LCCDE",
-    "text": "Solution of the homogeneous LCCDE\n\nThe iterative solution does not give us (directly) an analytical expression for the output at arbitrary \\(n\\). We have to start at the initial conditions and compute our way up to \\(n\\).\nWe now consider an analytical solution when the input is zero, the solution to the homogeneous difference equation \\[Q(E)\\, y = a_0y[n+N] + a_1y[n+N-1] + \\cdots a_N y[n] = 0 \\; .\\] given \\(N\\) sequential auxiliary conditions on \\(y\\)."
-  },
-  {
-    "objectID": "lecture-06-slides.html#section-1",
-    "href": "lecture-06-slides.html#section-1",
-    "title": "ECE 4624: Meeting 6",
+    "objectID": "lecture-03-slides.html#section-9",
+    "href": "lecture-03-slides.html#section-9",
+    "title": "ECE 4624: Meeting 3",
     "section": "",
-    "text": "Similar to differential equations, the homogeneous solution depends on the roots of the characteristic equation \\(Q(E)=0\\) whose roots are either real or occur in complex conjugate pairs.\nLet \\(\\lambda_i\\) be the \\(i\\)-th root of \\(Q(E) = 0\\), then the solution is of the form \\[y[n] = \\sum\\limits_{i=1}^N C_i \\lambda_i^{n}\\] where the parameters \\(C_i\\) are determined from the auxiliary conditions.\nFor a real system (when the coefficients of the difference equation are real) and when the roots are complex \\(\\lambda_{1,2} = |\\lambda|e^{\\pm j\\beta}\\), it is cleaner to assume a form for those terms as \\[y[n] = C |\\lambda|^n\\cos(\\beta n + \\theta)\\] for constants \\(C\\) and \\(\\theta\\)."
+    "text": "Also by the linearity property this analysis extends to the CT Fourier representation of a signal (an infinite sum of sinusoids): \\[x(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} X(j \\omega) \\, e^{j \\omega t}\\; d\\omega \\;\\longrightarrow\\; y(t) = \\frac{1}{2\\pi}\\int\\limits_{-\\infty}^{\\infty} \\left| H(j \\omega)\\right| X(j \\omega) \\, e^{j \\omega t + \\angle H(j \\omega)}\\; d\\omega\\]\nThus we arrive at the reason for the name Frequency Response – it specifies the the response of a stable system to any linear combination of sinusoidal inputs, i.e. any signal with a Fourier Transform."
   },
   {
-    "objectID": "lecture-06-slides.html#example",
-    "href": "lecture-06-slides.html#example",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Example:",
-    "text": "Example:"
+    "objectID": "lecture-03-slides.html#bode-plots",
+    "href": "lecture-03-slides.html#bode-plots",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Bode plots",
+    "text": "Bode plots\nWe can visualize the frequency response as a plot of the real and imaginary part, or, of the magnitude and phase. Since the magnitude and phase allow us to directly see the system behavior at a given frequency, those plots are much more useful.\nRather than simply plot the magnitude and phase as a function of \\(\\omega\\), it is common to change the abscissa (horizontal / \\(\\omega\\)-axis) to be on a logarithmic scale and so only plot the positive frequency portion of the spectrum.\nPlotting on a log-scale compresses this information horizontally so that we can see how a wide range of frequency content is scaled. When plotting the magnitude spectrum it is also common to make the ordinate (vertical / gain axis) to be in decibels (dB).\nThus the magnitude of the frequency response in dB is \\(20 \\log_{10} |H(j\\omega)|\\). When the frequency response is plotted this particular way we get what is called a Bode plot."
   },
   {
-    "objectID": "lecture-06-slides.html#impulse-response-from-lccde",
-    "href": "lecture-06-slides.html#impulse-response-from-lccde",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Impulse response from LCCDE",
-    "text": "Impulse response from LCCDE\nTo find the solution to \\(Q(E)y=P(E)x\\) when \\(x[n] = \\delta[n]\\) assuming \\(y[n] = 0\\) for \\(n &lt; 0\\), giving the impulse response \\(y[n] = h[n]\\).\nStep 1: Let \\(y_h\\) be the homogeneous solution to \\(Q(E)y_h=0\\) for \\(n &gt; N\\).\nStep 2: Assume a form for \\(h[n]\\) given by \\[h[n] = \\frac{b_N}{a_N}\\delta[n] + y_h[n]u[n]\\]\nStep 3: Using the iterative procedure above find the \\(N\\) auxiliary conditions we need by,\n\nfirst, rewrite the equation in delay form and solve for \\(y[n]\\),\nthen let \\(x[n] = \\delta[n]\\) and manually compute \\(h[0]\\) assuming \\(h[n] = 0\\) for \\(n &lt; 0\\),\nrepeating the previous step for \\(h[1]\\), continuing up to \\(h[N-1]\\).\n\nStep 4: Using the auxillary conditions in step 3, solve for the constants in the solution \\(h[n]\\) from step 2.\nNote we can check our solution for as many \\(n\\) values as desired using the recursive form."
+    "objectID": "lecture-03-slides.html#example",
+    "href": "lecture-03-slides.html#example",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Example",
+    "text": "Example\n\\[H(j\\omega) = \\frac{20000}{(j\\omega)^2 + 300(j\\omega) + 20000}\\]"
   },
   {
-    "objectID": "lecture-06-slides.html#examples",
-    "href": "lecture-06-slides.html#examples",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Examples:",
-    "text": "Examples:"
+    "objectID": "lecture-03-slides.html#filters-in-ct",
+    "href": "lecture-03-slides.html#filters-in-ct",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Filters in CT",
+    "text": "Filters in CT\nGiven a stable LTI system with frequency response \\(H(j\\omega)\\) \\[x(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) e^{j\\omega t}\\; d\\omega \\longrightarrow y(t) = \\frac{1}{2\\pi} \\int\\limits_{-\\infty}^{\\infty} X(j\\omega) H(j\\omega) e^{j\\omega t}\\; d\\omega\\]\nNote the output is equivalent to a signal with Fourier Transform \\(Y(j\\omega) = X(j\\omega) H(jk\\omega_0)\\). That is the Fourier transform at each continuous frequency \\(\\omega\\) is scaled by the frequency response at that frequency.\nWe can use this behavior to our advantage. In many applications we want to modify the values of \\(a_k\\) or \\(X(j\\omega)\\) selectively, passing them unmodified, increasing (amplifying) them, or decreasing (attenuating) them. This is accomplished by designing a frequency response. Such systems are called frequency selective filters and come in 4 basic types.\nWe will be discussing filters in much more detail later. For now we just need to define one of the types, the lowpass filter."
   },
   {
-    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
-    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-iir-filters",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE and impulse response for IIR filters",
-    "text": "LCCDE and impulse response for IIR filters"
+    "objectID": "lecture-03-slides.html#lowpass-ct-filters",
+    "href": "lecture-03-slides.html#lowpass-ct-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass CT Filters",
+    "text": "Lowpass CT Filters\nLow-pass Filters attenuate high frequencies while passing through lower frequencies. They are often used to reduce the effects of high-frequency noise in a signal and to prepare it for sampling (anti-aliasing filters). They are the most common filter.\nLow-pass filters remove frequency content above a threshold, \\(\\omega_c\\), called the cutoff frequency. They have an ideal (although unrealizable) frequency response \\[H(j\\omega) = \\left\\{ \\begin{array}{lc}\n  1 & -\\omega_c &lt; \\omega &lt; \\omega_c\\\\\n  0 & \\text{else}\n\\end{array}\n\\right.\\]\nThe range of frequencies below \\(|\\omega_c|\\) are called the pass-band. The range of frequencies above \\(|\\omega_c|\\) are called the stop-band."
   },
   {
-    "objectID": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
-    "href": "lecture-06-slides.html#lccde-and-impulse-response-for-fir-filters",
-    "title": "ECE 4624: Meeting 6",
-    "section": "LCCDE and impulse response for FIR filters",
-    "text": "LCCDE and impulse response for FIR filters"
+    "objectID": "lecture-03-slides.html#practical-lowpass-filters",
+    "href": "lecture-03-slides.html#practical-lowpass-filters",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Practical Lowpass Filters",
+    "text": "Practical Lowpass Filters\nIdeal CT filters cannot be implemented in practice because they are non-causal and thus physically impossible.\nPractical filters are described by a frequency response that is a ratio of two polynomials in \\(j\\omega\\), i.e. \\[H(j\\omega) = \\frac{K \\cdot(j\\omega - \\beta_1)\\cdot(j\\omega - \\beta_2)\\cdots (j\\omega - \\beta_M)}{(j\\omega - \\alpha_1)\\cdot(j\\omega - \\alpha_2)\\cdots (j\\omega - \\alpha_N)}\\] where \\(K\\) is a constant that controls the gain at DC, and the zero or more complex coefficients \\(\\beta_k\\) and the one or more complex coefficients \\(\\alpha_k\\) are called the zeros and poles of the filter respectively.\nPractical filters differ from ideal filters in that they cannot be zero over any finite range of frequencies and cannot transition discontinuously between stop and pass bands. Instead they must vary over the bands and transition smoothly, with a degree of variation and sharpness that is a function of the order of the filter and the exact form of the frequency response polynomials. Thus practical filters are described by additional parameters that define the stop and pass-bands."
   },
   {
-    "objectID": "lecture-06-slides.html#examples-1",
-    "href": "lecture-06-slides.html#examples-1",
-    "title": "ECE 4624: Meeting 6",
-    "section": "Examples:",
-    "text": "Examples:"
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification",
+    "href": "lecture-03-slides.html#lowpass-filter-specification",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification\nThe overall gain of the filter is the magnitude of the frequency response at a frequency that depends on the filter type, zero for a low-pass filter.\nThe pass-band is defined by the frequency at which the magnitude of the frequency response drops below the overall gain, often -3dB = \\(\\frac{\\sqrt{2}}{2}\\).\nThe stop-band is defined similarly, as the frequency at which the magnitude of the frequency response drops further below the overall gain, often -20dB = 0.1 or -40dB = 0.01.\nThe transition bandwidth is defined as the difference in the stop-band and pass-band frequencies.\nThe pass-band ripple is defined as the maximum deviation from the overall gain, over the pass-band."
+  },
+  {
+    "objectID": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "href": "lecture-03-slides.html#lowpass-filter-specification-1",
+    "title": "ECE 4624: Meeting 3",
+    "section": "Lowpass Filter Specification",
+    "text": "Lowpass Filter Specification"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Table of Contents",
+    "section": "",
+    "text": "Course Introduction\nCT and DT Signals\nCT Fourier Transform\nSampling and Reconstruction\nMicrocontroller Programming for DSP\nDT Systems as LCCDE and Impulse Response\nTime Domain Analysis of DT LTI Systems\nDT System Analysis using Z-Transform\nDT Frequency Response and Frequency Selective Filters\nDT Block Diagrams and Signal Flow Graphs\nThe Discrete Fourier Transform\nApplications of DFT"
+  },
+  {
+    "objectID": "lecture-05-notes.html",
+    "href": "lecture-05-notes.html",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+  },
+  {
+    "objectID": "lecture-05-notes.html#section",
+    "href": "lecture-05-notes.html#section",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+  },
+  {
+    "objectID": "lecture-05-notes.html#dsp-hardware-platforms",
+    "href": "lecture-05-notes.html#dsp-hardware-platforms",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DSP Hardware Platforms",
+    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
+  },
+  {
+    "objectID": "lecture-05-notes.html#dsp-programming-models-and-languages",
+    "href": "lecture-05-notes.html#dsp-programming-models-and-languages",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DSP Programming Models and Languages",
+    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
+  },
+  {
+    "objectID": "lecture-05-notes.html#factors-when-choosing-hardware",
+    "href": "lecture-05-notes.html#factors-when-choosing-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Factors when Choosing Hardware",
+    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
+  },
+  {
+    "objectID": "lecture-05-notes.html#architectures",
+    "href": "lecture-05-notes.html#architectures",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Architectures",
+    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
+  },
+  {
+    "objectID": "lecture-05-notes.html#basic-computational-elements",
+    "href": "lecture-05-notes.html#basic-computational-elements",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Basic computational elements",
+    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
+  },
+  {
+    "objectID": "lecture-05-notes.html#fixed-point-representation-and-hardware",
+    "href": "lecture-05-notes.html#fixed-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Hardware",
+    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
+  },
+  {
+    "objectID": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
+    "href": "lecture-05-notes.html#fixed-point-representation-and-qm.n-format",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Qm.n format",
+    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
+  },
+  {
+    "objectID": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
+    "href": "lecture-05-notes.html#fixed-point-representation-of-negative-numbers",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point representation of negative numbers",
+    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
+  },
+  {
+    "objectID": "lecture-05-notes.html#floating-point-representation-and-hardware",
+    "href": "lecture-05-notes.html#floating-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Floating-Point Representation and Hardware",
+    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
+  },
+  {
+    "objectID": "lecture-05-notes.html#quantization-errors",
+    "href": "lecture-05-notes.html#quantization-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Quantization Errors",
+    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
+  },
+  {
+    "objectID": "lecture-05-notes.html#arithmetic-errors",
+    "href": "lecture-05-notes.html#arithmetic-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Arithmetic Errors",
+    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
+  },
+  {
+    "objectID": "lecture-05-notes.html#course-development-system",
+    "href": "lecture-05-notes.html#course-development-system",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Course Development System",
+    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
+  },
+  {
+    "objectID": "lecture-05-notes.html#lab-1",
+    "href": "lecture-05-notes.html#lab-1",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Lab 1",
+    "text": "Lab 1"
+  },
+  {
+    "objectID": "lecture-05-slides.html#section",
+    "href": "lecture-05-slides.html#section",
+    "title": "ECE 4624: Meeting 5",
+    "section": "",
+    "text": "Today we look at DSP hardware and focus on the use of general-purpose and microcontroller-based computers for implementing DSP systems. Today’s lecture reviews some prerequisite material from ECE 2564 (Embedded Systems).\n\nDSP Hardware\nDSP Software\nArduino Uno R4 Minima\nLab 1"
+  },
+  {
+    "objectID": "lecture-05-slides.html#dsp-hardware-platforms",
+    "href": "lecture-05-slides.html#dsp-hardware-platforms",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DSP Hardware Platforms",
+    "text": "DSP Hardware Platforms\n\nASICS\nFPGAs\nDSP Processors\nGeneral-Purpose CPU and \\(\\mu\\)C\nGPUs and other accelerators"
+  },
+  {
+    "objectID": "lecture-05-slides.html#dsp-programming-models-and-languages",
+    "href": "lecture-05-slides.html#dsp-programming-models-and-languages",
+    "title": "ECE 4624: Meeting 5",
+    "section": "DSP Programming Models and Languages",
+    "text": "DSP Programming Models and Languages\n\nnon-realtime\nsoft realtime and audio-video processing\nhard realtime and digital control"
+  },
+  {
+    "objectID": "lecture-05-slides.html#factors-when-choosing-hardware",
+    "href": "lecture-05-slides.html#factors-when-choosing-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Factors when Choosing Hardware",
+    "text": "Factors when Choosing Hardware\n\nflexibility\ndesign time\npower consumption\nperformance\ndevelopment cost\nproduction cost"
+  },
+  {
+    "objectID": "lecture-05-slides.html#architectures",
+    "href": "lecture-05-slides.html#architectures",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Architectures",
+    "text": "Architectures\n\nHarvard (most DSPs)\nvon Neumann (most GPCPU and \\(\\mu\\)C)"
+  },
+  {
+    "objectID": "lecture-05-slides.html#basic-computational-elements",
+    "href": "lecture-05-slides.html#basic-computational-elements",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Basic computational elements",
+    "text": "Basic computational elements\n\nmultiply \\[\ny[n] = \\alpha x[n]\n\\]\naccumulate (add in place) \\[\ny[n] = x_1[n] + x_2[n]\n\\]\ndelay \\[\ny[n] = x[n-1]\n\\]\n\nWhile these are simple operations in theory, and in practice using floating-point, they take more care in fixed-point."
+  },
+  {
+    "objectID": "lecture-05-slides.html#fixed-point-representation-and-hardware",
+    "href": "lecture-05-slides.html#fixed-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Hardware",
+    "text": "Fixed-Point Representation and Hardware\n\nGiven a value \\(x\\), the fixed-point representation is\n\\[\nx = (b_{-A}, b_{-A+1}, \\ldots, b_{-1}, b_0, b_1, \\ldots, b_B)_r\n\\] where \\(r\\) is the radix and \\(b_i\\in[0,(r-1)]\\) is a digit.\n\\[\nx = \\sum\\limits_{i = -A}^B b_i\\, r^{-i}\n\\]\nwe are interested in base 2 (\\(r=2\\)) where digits \\((0,1)\\) are called bits.\n\n\\(b_{-A}\\) is the most-significant bit (MSB)\n\\(b_{B}\\) is the least-significant bit (LSB)\nthe location of the point is implied\n\nunsigned N-bit numbers where \\(A = N-1\\) and \\(B = 0\\) can store positive integers \\([0,2^N-1]\\)"
+  },
+  {
+    "objectID": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
+    "href": "lecture-05-slides.html#fixed-point-representation-and-qm.n-format",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point Representation and Qm.n format",
+    "text": "Fixed-Point Representation and Qm.n format\n\nIn DSP our values are often less than 1 in magnitude, thus we generally use the fractional format where \\(A = 0\\), \\(B=N-1\\)\n\\[\nx = 2^A \\sum\\limits_{i = 0}^{N-1} b_i\\, 2^{-i}\n\\] and assume \\(2^A = 1\\). This is called the Q1.n format.\nIn general the Qm.n format uses m bits for the integer part and n bits for the fractional part\nwhen multiplying and adding numbers the formats need to match\nto convert between formats use the shifting operators (&lt;&lt; and &gt;&gt;) in C"
+  },
+  {
+    "objectID": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
+    "href": "lecture-05-slides.html#fixed-point-representation-of-negative-numbers",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Fixed-Point representation of negative numbers",
+    "text": "Fixed-Point representation of negative numbers\n\nsign magnitude \\[\nx \\geq 0 \\qquad (0.b_1,b_2,\\ldots,b_B)_2\n\\] \\[\nx &lt; 0 \\qquad (1.b_1,b_2,\\ldots,b_B)_2\n\\]\nones-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2\n\\] \\[\nx \\geq 0 \\qquad \\text{bitwise complement}\n\\]\ntwos-complement \\[\nx &lt; 0 \\qquad (1.\\bar{b}_1,\\bar{b}_2,\\ldots,\\bar{b}_B)_2 + (0.0,0,0,\\ldots,1)_2  \n\\] modulo-2 and ignore the carry.\n\nMost ALU, including those in DSPs use twos-complement."
+  },
+  {
+    "objectID": "lecture-05-slides.html#floating-point-representation-and-hardware",
+    "href": "lecture-05-slides.html#floating-point-representation-and-hardware",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Floating-Point Representation and Hardware",
+    "text": "Floating-Point Representation and Hardware\nThe alternative to fractional fixed-point arithmetic is floating point.\n\nin fixed point the resolution is fixed (distande between numbers) \\[\n\\Delta = \\frac{x_{max} - x_{min}}{2^N}\n\\]\nfloating point representations increase the dynamic range at cost of varying resolution and significant hardware complexity \\[\nx = M\\cdot2^E\n\\] where \\(M\\) is a sign-magnitude fraction and \\(E\\) is a signed integer.\nthere are many floating-point formats (number of bits for M and E, how to handle \\(0,\\infty\\), NAN etc)\nIEEE 754 is a widespread standard\nusing floating point is a cost/performance tradeoff"
+  },
+  {
+    "objectID": "lecture-05-slides.html#quantization-errors",
+    "href": "lecture-05-slides.html#quantization-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Quantization Errors",
+    "text": "Quantization Errors\n\nsignal quantization\ncoefficient quantization"
+  },
+  {
+    "objectID": "lecture-05-slides.html#arithmetic-errors",
+    "href": "lecture-05-slides.html#arithmetic-errors",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Arithmetic Errors",
+    "text": "Arithmetic Errors\n\nroundoff or truncation\noverflow and underflow\nlimit cycles"
+  },
+  {
+    "objectID": "lecture-05-slides.html#course-development-system",
+    "href": "lecture-05-slides.html#course-development-system",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Course Development System",
+    "text": "Course Development System\n\nboard description\nPlatformIO IDE\nevent loop\nADC Setup\nDAC Setup\nresources"
+  },
+  {
+    "objectID": "lecture-05-slides.html#lab-1",
+    "href": "lecture-05-slides.html#lab-1",
+    "title": "ECE 4624: Meeting 5",
+    "section": "Lab 1",
+    "text": "Lab 1"
+  },
+  {
+    "objectID": "lecture-11-notes.html",
+    "href": "lecture-11-notes.html",
+    "title": "ECE 4624: Meeting 11",
+    "section": "",
+    "text": "See the corresponding ECE 2714 Supplementary Notes."
   },
   {
     "objectID": "lecture-07-notes.html",

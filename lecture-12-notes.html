@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Chris Wyatt">
+<meta name="dcterms.date" content="2025-09-29">
 
-<title>Table of Contents – ECE 4624: DSP and Filter Design – Fall 2025</title>
+<title>ECE 4624: Meeting 12 – ECE 4624: DSP and Filter Design – Fall 2025</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,10 +70,39 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -89,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -103,20 +134,62 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation-for-dftfft" id="toc-motivation-for-dftfft" class="nav-link active" data-scroll-target="#motivation-for-dftfft">Motivation for DFT/FFT</a>
+  <ul class="collapse">
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation">Notation</a></li>
+  </ul></li>
+  <li><a href="#linear-fir-filtering" id="toc-linear-fir-filtering" class="nav-link" data-scroll-target="#linear-fir-filtering">Linear FIR Filtering</a>
+  <ul class="collapse">
+  <li><a href="#overlap-and-save" id="toc-overlap-and-save" class="nav-link" data-scroll-target="#overlap-and-save">Overlap and Save</a></li>
+  <li><a href="#overlap-and-add" id="toc-overlap-and-add" class="nav-link" data-scroll-target="#overlap-and-add">Overlap and Add</a></li>
+  </ul></li>
+  <li><a href="#comparison-to-the-lccde" id="toc-comparison-to-the-lccde" class="nav-link" data-scroll-target="#comparison-to-the-lccde">Comparison to the LCCDE</a></li>
+  <li><a href="#spectral-estimation" id="toc-spectral-estimation" class="nav-link" data-scroll-target="#spectral-estimation">Spectral Estimation</a>
+  <ul class="collapse">
+  <li><a href="#spectrogram" id="toc-spectrogram" class="nav-link" data-scroll-target="#spectrogram">Spectrogram</a></li>
+  </ul></li>
+  <li><a href="#dft-as-a-linear-filter" id="toc-dft-as-a-linear-filter" class="nav-link" data-scroll-target="#dft-as-a-linear-filter">DFT as a linear filter</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Table of Contents</h1>
+<h1 class="title">ECE 4624: Meeting 12</h1>
+<p class="subtitle lead">Applications of the DFT</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Chris Wyatt <a href="mailto:clwyatt@vt.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            ECE@Virginia Tech
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 29, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -126,37 +199,189 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<ol type="1">
-<li><a href="lecture-01-notes.html">Course Introduction</a></li>
-<li><a href="lecture-02-notes.html">CT and DT Signals</a></li>
-<li><a href="lecture-03-notes.html">CT Fourier Transform</a></li>
-<li><a href="lecture-04-notes.html">Sampling and Reconstruction</a></li>
-<li><a href="lecture-05-notes.html">Microcontroller Programming for DSP</a></li>
-<li><a href="lecture-06-notes.html">DT Systems as LCCDE and Impulse Response</a></li>
-<li><a href="lecture-07-notes.html">Time Domain Analysis of DT LTI Systems</a></li>
-<li><a href="lecture-08-notes.html">DT System Analysis using Z-Transform</a></li>
-<li><a href="lecture-09-notes.html">DT Frequency Response and Frequency Selective Filters</a></li>
-<li><a href="lecture-10-notes.html">DT Block Diagrams and Signal Flow Graphs</a></li>
-<li><a href="lecture-11-notes.html">The Discrete Fourier Transform</a></li>
-<li><a href="lecture-12-notes.html">Applications of DFT</a> <!--
-13. 
-14. Applications of DFT
-15. Fast Fourier Transform
+<section id="motivation-for-dftfft" class="level1">
+<h1>Motivation for DFT/FFT</h1>
+<p>While the Z-transform and DTFT are useful for analytically/symbolically analyzing signals and LTI systems, they require mathematical models. This makes them less useful for experimental or computational analysis of either recorded signals or system approximation. This is what the DFT/FFT is best suited for.</p>
+<p>In this lecture we consider some important applications of the DFT. This also provides motivation for effort to improve the computational complexity of the associated algorithms (forward and inverse transforms), which we will cover next.</p>
+<section id="notation" class="level2">
+<h2 class="anchored" data-anchor-id="notation">Notation</h2>
+<p>Some notation used in this section.</p>
+<ul>
+<li><span class="math inline">\(x[n]\)</span> is a discrete time signal</li>
+<li><span class="math inline">\(x_N[n]\)</span> is a finite length DT signal of <span class="math inline">\(N\)</span> samples</li>
+<li><span class="math inline">\(X_N[k]\)</span> is the DFT of <span class="math inline">\(x_N[n]\)</span></li>
+</ul>
+<p><span class="math display">\[
+X_N[k] = \operatorname{DFT} \{ x_N[n] \} = \sum_{n = 0}^{N-1}  x_N[n] e^{-j \frac{2\pi}{N}k n}
+\]</span></p>
+</section>
+</section>
+<section id="linear-fir-filtering" class="level1">
+<h1>Linear FIR Filtering</h1>
+<p>Consider an FIR filter with impulse response</p>
+<p><span class="math display">\[
+h[n] = \sum\limits_{m = 0}^{N-1} a_m\delta[m-m]
+\]</span> with the <span class="math inline">\(N\)</span> non-zero samples denoted <span class="math inline">\(h_N[n]\)</span>.</p>
+<p><span class="math display">\[
+h[n] = \left\{ \begin{array}{cc}
+h_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right.
+\]</span></p>
+<p>Further consider an input <span class="math inline">\(x[n]\)</span> so that</p>
+<p><span class="math display">\[
+y[n] = h[n] * x[n] \stackrel{\mathcal{F}}{\longleftrightarrow} H\left(e^{j\omega}\right)\cdot X\left(e^{j\omega}\right)
+\]</span></p>
+<p>Supppose the input is of finite length, i.e</p>
+<p><span class="math display">\[
+x[n] = \left\{ \begin{array}{cc}
+x_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right.
+\]</span></p>
+<p>Then define the finite length signal</p>
+<p><span class="math display">\[
+y_N[n] = \operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}
+\]</span></p>
+<p>Is this the output of the system</p>
+<p><span class="math display">\[
+y[n] = \left\{ \begin{array}{cc}
+y_N[n] &amp; 0 \leq n &lt; N\\
+0 &amp; \text{else}
+\end{array}\right. \quad ?
+\]</span></p>
+<p>No.&nbsp;To see this consider the definition of <em>circular</em> convolution that is consistent with <span class="math inline">\(\operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}\)</span></p>
+<p><span class="math display">\[
+y_N[n] = \sum\limits_{m=0}^{N-1} x_N[m]\cdot h_N[(n-m) \% N] \equiv x_N[n] \underset{N}{\circledast} h_N[n]
+\]</span></p>
+<p>where the signed modulus operator is defined as</p>
+<p><span class="math display">\[
+n \% N = \operatorname{remainder} \frac{|n|}{N}
+\]</span></p>
+<p>So in general <span class="math inline">\(x_N[n] \underset{N}{\circledast} h_N[n] \neq x[n] \ast h[n]\)</span>.</p>
+<p>To make them equivalent can define the <em>zero-padded</em> or zero-extended signals. Consider the finite-length sequences <span class="math inline">\(x_L[n]\)</span> and <span class="math inline">\(h_M[n]\)</span> and let <span class="math inline">\(N = L + M - 1\)</span>, so that</p>
+<p><span class="math display">\[
+x_N[n] = \left\{ \begin{array}{cc}
+x_L[n] &amp; 0 \leq n &lt; L\\
+0 &amp; L \leq n &lt; N
+\end{array}\right.
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+h_N[n] = \left\{ \begin{array}{cc}
+h_M[n] &amp; 0 \leq n &lt; M\\
+0 &amp; M \leq n &lt; N
+\end{array}\right.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+y_N[n] = x_N[n] \underset{N}{\circledast} h_N[n] = x[n] \ast h[n] = y[n]
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y[n] = \operatorname{IDFT}\left\{H_N[k]\cdot X_N[k]\right\}
+\]</span></p>
+<p>Note this is an offline approach to filtering, assuming that the entire input length is available for computation, i.e taking DFT of input, multiplkicationm then taking the inverse DFT (the DFT of the filter impulse response could be precomputed). What if</p>
+<ul>
+<li>the sequence <span class="math inline">\(x_N[n]\)</span> does not fit into memory, or</li>
+<li>the output is needed in pseudo-real-time (with fixed delay) ?</li>
+</ul>
+<p>The solution is streaming, where the input is broken into blocks or frames</p>
+<p>TODO: FIGURE</p>
+<p>There are two possible implementations: overlap-save and overlap-add.</p>
+<section id="overlap-and-save" class="level2">
+<h2 class="anchored" data-anchor-id="overlap-and-save">Overlap and Save</h2>
+<p>Define the size of the input block as <span class="math inline">\(N = L + M - 1\)</span>, with <span class="math inline">\(L &gt; M\)</span> with the first <span class="math inline">\(M-1\)</span> entries consisting of the previous <span class="math inline">\(M-1\)</span> inputs follwed by the next <span class="math inline">\(L\)</span> new inputs. We take the DFT of this block, multiply by the precomputed DFT of the <span class="math inline">\(N\)</span> extended filter coefficients, and then take the IDFT to get the resulting block. Only the last <span class="math inline">\(L\)</span> values are then output (the first part of the block is just dropped).</p>
+<p>TODO: FIGURE</p>
+</section>
+<section id="overlap-and-add" class="level2">
+<h2 class="anchored" data-anchor-id="overlap-and-add">Overlap and Add</h2>
+<p>Define the size of the input block as <span class="math inline">\(L\)</span> with <span class="math inline">\(L &gt; M\)</span> and <span class="math inline">\(N = L + M -1\)</span> as before. Form a block consisting of the <span class="math inline">\(L\)</span> input samples, zero-extended to legth <span class="math inline">\(N\)</span> (append M-1 zeros). We take the DFT of this block, multiply by the precomputed DFT of the <span class="math inline">\(N\)</span> extended filter coefficients, and then take the IDFT to get the resulting block. We save the last <span class="math inline">\(M-1\)</span> values from this result. We add the first <span class="math inline">\(L\)</span> values of the result to the <em>previously</em> saved block, to obtain the <span class="math inline">\(L\)</span> output values.</p>
+<p>TODO: FIGURE</p>
+</section>
+</section>
+<section id="comparison-to-the-lccde" class="level1">
+<h1>Comparison to the LCCDE</h1>
+<p>Recall the FIR filter output can be computed directly using the recursive LCCDE</p>
+<p><span class="math display">\[
+y[n] = a_0 x[n] + a_1 x[n-1] + \cdots + a_{M-1} x[n-M-1]
+\]</span></p>
+<p>which requires for each output</p>
+<ul>
+<li><span class="math inline">\(M\)</span> complex multiplies (<span class="math inline">\(4M\)</span> real multiplies)</li>
+<li><span class="math inline">\(M-1\)</span> complex adds (<span class="math inline">\(2M-2\)</span> real adds)</li>
+</ul>
+<p>To process <span class="math inline">\(N\)</span> outputs then takes <span class="math inline">\(N\cdot (6M-2)\)</span> real operations.</p>
+<p>Compare this to the overlap-save method, where each block of <span class="math inline">\(L\)</span> output samples requires an N-point DFT, N complex multiples (<span class="math inline">\(4N\)</span> real multiplies), and an N-point IDFT. The naive DFT implementation takes <span class="math inline">\(N\)</span> complex multiples and <span class="math inline">\(N-1\)</span> adds to give a total of <span class="math inline">\(L\cdot(16N-4)\)</span> real operations. Or in terms of <span class="math inline">\(N\)</span> and <span class="math inline">\(M\)</span>, <span class="math inline">\((N-M + 1)\cdot(16N-4)\)</span> real operations.</p>
+<p>Thus we see the overlap-save method becomes comparable only if the filter length is quite high, or if the computation time of the DFT is shortened. As we will see in detail next time, the radix-2 FFT algorithm allows us to compute the N-point DFT in <span class="math inline">\(\frac{N}{2}\log_2(N)\)</span> multiplications and <span class="math inline">\(N\log_2(N)\)</span> additions. This make the overlap-save method faster even for moderate values of <span class="math inline">\(N,M\)</span>.</p>
+</section>
+<section id="spectral-estimation" class="level1">
+<h1>Spectral Estimation</h1>
+<p>Another important application of the DFT is the estimation of spectral content in a CT signal from samples, i.e.&nbsp;an approximation of the CTFT.</p>
+<p>Consider instrumentation that includes an anti-aliasing filter and ADC to record samples of a continuous-time signal, with sample time <span class="math inline">\(T\)</span> and stop-band frequency of <span class="math inline">\(\frac{\pi}{T}\)</span>.</p>
+<p>We wish to know how long to sample for, and what sample interval to use to be able to resolve or distinquish between two frequencies <span class="math inline">\(\omega_0\)</span> and <span class="math inline">\(\omega_1\)</span>.</p>
+<p>If we record for <span class="math inline">\(T_0 = L\cdot T\)</span> seconds to form a finite-length sequence <span class="math inline">\(X_L[n]\)</span> and take the DFT then the resolution is</p>
+<p><span class="math display">\[
+|\omega_0 -\omega_1| = \frac{2\pi}{T_0} = \frac{2\pi}{L\cdot T}
+\]</span></p>
+<p>Note as the recording time increases, the resolution improves.</p>
+<section id="spectrogram" class="level2">
+<h2 class="anchored" data-anchor-id="spectrogram">Spectrogram</h2>
+<p>In some cases we want to estimate the spectrum over time. However these the ability to resolve frequency components and the amount of time between estimation of the spectrum are in conflict.</p>
+<p>Define the time-windowed CT Fourier Transform as</p>
+<p><span class="math display">\[
+X(f,\tau) = \int\limits_{-\infty|^{\infty} x(t) w(t-\tau) e^{-j2\pi f t}\; dt
+\]</span> where <span class="math inline">\(w(t-\tau)\)</span> is a delayed window function, e.g.</p>
+<p><span class="math display">\[
+w(t-\tau) = u(t-\tau) - u(t-T_0 = \tau)
+\]</span></p>
+<p>We can then form the spectrogram by recording <span class="math inline">\(L\)</span> samples at a rate of <span class="math inline">\(\frac{1}{T}\)</span> samples per second and performing the DFT. This is usually displayed as an image, with the horizontal axis being <span class="math inline">\(\tau\)</span> and the vertical axis being frequincy bin, and the pixel colored by the power <span class="math inline">\(|X_L[k]|^2\)</span>. This is animated by shifting the image to the left as each new spectrum is estimated.</p>
+<p>TODO: FIGURE</p>
+<p>The spectrogram is a common input to signal detection or classification, using machine learning algorithms. It also forms the basis of tuning applications for musical instruments. Again we see the speed at which we can estimate the spectrum, and thus the update rate of the spectrogram for a fixed window width, is limited by the time required to compute the DFT.</p>
+</section>
+</section>
+<section id="dft-as-a-linear-filter" class="level1">
+<h1>DFT as a linear filter</h1>
+<p>Before looking at efficiently computing the DFT using the FFT, it is worth considering applications when not all <span class="math inline">\(N\)</span> frequencies (<span class="math inline">\(X[k]\)</span>) are needed. For example if the input sequence is real, we only need compute the DFT for half the values because of the symmetry property. In addition some spectrum applications want to estimate the spectrum or spectral power at only a subset of frequencies, e.g.&nbsp;in signal detection. In these cases we can get speedups by using the Goertzel algorithm, which treats the DFT as itself a linear filter.</p>
+<p>The DFT can be written as <span class="math display">\[
+X[k] = \sum\limits_{n = 0}^{N-1}\mathcal{W}_N^{kn} x[n]
+\]</span> where <span class="math inline">\(\mathcal{W}_N = e^{-j\frac{2\pi}{N}}\)</span>.</p>
+<p>Noting <span class="math inline">\(\mathcal{W}_N^{-kN} = 1\)</span>, we can multiply through</p>
+<p><span class="math display">\[
+\mathcal{W}_N^{-kN} X[k] = \mathcal{W}_N^{-kN} \sum\limits_{n = 0}^{N-1} \mathcal{W}_N^{kn} x[n] = \sum\limits_{n = 0}^{N-1}x[n] \mathcal{W}_N^{-k(N-n)}
+\]</span></p>
+<p>Note the right hand side is equvalent to a convolution in the variables <span class="math inline">\(N\)</span> and <span class="math inline">\(n\)</span>. Defining the output of this convolution as</p>
+<p><span class="math display">\[
+y_k[n] = \sum\limits_{n = 0}^{N-1}x[n] \mathcal{W}_N^{-k(N-n)}
+\]</span></p>
+<p>we can see the DFT at a given value of <span class="math inline">\(k\)</span> is the convolution of a finite length signal <span class="math inline">\(x[n]\)</span> and a system with impulse response</p>
+<p><span class="math display">\[
+h[n] = \mathcal{W}_N^{-kn}u[n]
+\]</span> evaluated at the last index <span class="math inline">\(n = N\)</span></p>
+<p><span class="math display">\[
+X[k] = y_k[N]
+\]</span></p>
+<p>This gives the DFT at the frequency content at <span class="math inline">\(\frac{2\pi k}{N}\)</span>.</p>
+<p>Taking the Z-transform, the corresponding transfer function is</p>
+<p><span class="math display">\[
+H_k(z) = \frac{z}{z-\mathcal{W}_N^{-k}}
+\]</span></p>
+<p>which has a pole on the unit circle at <span class="math inline">\(\mathcal{W}_N^{-k}\)</span>. Converting this to an LCCDE we get</p>
+<p><span class="math display">\[
+y_k[n] = \mathcal{W}_N^{-k} y_k[n-1] + x[n]
+\]</span></p>
+<p>which can be implemented as a first-order IIR filter. If we put several of these in parallel we can compute <span class="math inline">\(y_k[N] = X[k]\)</span> for those desired values of <span class="math inline">\(k\)</span>.</p>
+<p>To prevent the need for complex arithmetic we can use a two-pole resonator with complex congugate poles, i.e.</p>
+<p><span class="math display">\[
+H_k(z) = \frac{z^2-\mathcal{W}_N^k z}{z^2-2\cos\left( \frac{2\pi}{N}\right)z + 1}
+\]</span></p>
+<p>This leads to a second order IIR system in direct form II whose internal state requires only one real multiplication and two real adds.</p>
+<p>TODO: FIGURE</p>
+<p>The final output is then computed from the last and previous value of the internal state and gives both <span class="math inline">\(X[k]\)</span> and <span class="math inline">\(X[N-k]\)</span> due to symmetry.</p>
+<p>This approach is popular in embedded applications where only a few frequencies (less than <span class="math inline">\(\log_2(N)\)</span>) are needed. If you need all of the frequencies you need to use an FFT, in the absense of hardware parallelism. However accelerators such as GPUs can implement the filters in parallel, giving a fast computation for relatively low values of <span class="math inline">\(N\)</span>.</p>
 
-18. FIR Filter Structures
-19. IIR Filter Structures
-20. Quantization and Round-Off Effects
-21. FIR Filter Design
-22. Lowpass IIR Filter Design
-23. Transformations of IIR Filters
-24. Probability Primer
-25. Stationary Random Processes
-26. Wiener Filter
-27. Adaptive Filtering using LMS
---></li>
-</ol>
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
