@@ -15,11 +15,8 @@ toc: false
 10. [DT Block Diagrams and Signal Flow Graphs](lecture-10-notes.html)
 11. [The Discrete Fourier Transform](lecture-11-notes.html)
 12. [Applications of DFT](lecture-12-notes.html)
+13. [Fast Fourier Transform](lecture-13-notes.html)
 <!--
-13. 
-14. Applications of DFT
-15. Fast Fourier Transform
-
 18. FIR Filter Structures
 19. IIR Filter Structures
 20. Quantization and Round-Off Effects

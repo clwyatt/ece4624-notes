@@ -1,0 +1,316 @@
+---
+title: "ECE 4624: Meeting 13"
+subtitle: "Fast Fourier Transform"
+date: last-modified
+author:
+  - name: Chris Wyatt
+    email: clwyatt@vt.edu
+    affiliations: ECE@Virginia Tech
+
+format: 
+    
+  html:
+    default-image-extension: svg
+    toc: true
+    echo: false
+    format-links: false
+
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+---
+
+# Review DFT
+
+Recall the DFT
+
+$$
+X[k] = \sum\limits_{n = 0}^{N-1}\mathcal{W}_N^{kn} x[n]
+$$
+where $\mathcal{W}_N = e^{-j\frac{2\pi}{N}}$.
+
+TODO: FIGURE
+
+Writing the signal in terms of its real and imaginary components
+
+$$
+x[n] = x_r[n] + j x_i[n]
+$$
+
+then
+
+$$
+X[k] = X_r[k] + jX_i[k]
+$$
+
+where
+
+$$
+X_r[k] = \sum\limits_{n = 0}^{N-1} \left[ x_r[n]\cos\left(\frac{2\pi}{N} k n \right) + x_i[n]\sin\left(\frac{2\pi}{N} k n \right) \right]
+$$
+
+$$
+X_i[k] = \sum\limits_{n = 0}^{N-1} \left[ x_r[n]\sin\left(\frac{2\pi}{N} k n \right) - x_i[n]\cos\left(\frac{2\pi}{N} k n \right) \right]
+$$
+
+There are
+
+- $2N^2$ trig evaluations (that can be precomputed)
+- $4N^2$ real multiplications
+- $2N(N-1)$ real adds
+- indexing operations (copy to/from registers)
+
+This makes the naive DFT have $O(N^2)$ complexity.
+
+# Divide and Conquer (Recursion)
+
+The basic approach to improving on the DFT algorithm above is to divide the problem into successively smaller problems.
+
+Let $N = LM$, $L\neq 1, M\neq 1$, and $N$ not prime. Then $M = \frac{N}{L}$ and $L = \frac{N}{M}$.
+
+Store $x[n]$ as a 2D array with row $l$ and column $m$: $x[n] = x[l,m]$ where
+
+- $n = Ml+m$ if stored row-wise
+- $n = mL+l$ if stored column-wise
+
+Similarly, store $X[k]$ as a 2D array with row $p$ and column $q$: $X[k] = X[p,q]$ where
+
+- $k = Mp+q$ if stored row-wise
+- $k = qL+p$ if stored column-wise
+
+Now consider the DFT summation where $k$ is computed row-wise and $n$ is computed column-wise
+
+$$
+\mathcal{W}_N^{kn} = \mathcal{W}_N^{(Mp+q)(mL+l)} 
+$$
+
+Multiplying out the power
+
+$$
+(Mp+q)(mL+l) = MmpL + Mpl + qmL + lq
+$$
+
+Using the relationship $M = \frac{N}{L}$ above
+
+$$
+(Mp+q)(mL+l) = \frac{N}{L}mpL + \frac{N}{L}pl + qmL + lq = Nmp + \frac{N}{L}pl + qmL + lq 
+$$
+
+and
+
+$$
+\mathcal{W}_N^{kn} = \mathcal{W}_N^{Nmp} \cdot \mathcal{W}_N^{\frac{N}{L}pl} \cdot \mathcal{W}_N^{qmL} \cdot \mathcal{W}_N^{lq} 
+$$
+
+Now note:
+
+- $\mathcal{W}_N^{Nmp} = 1$
+- $\mathcal{W}_N^{qmL} = \mathcal{W}_{\frac{N}{L}}^{mq} = \mathcal{W}_M^{mq}$
+- $\mathcal{W}_N^{Mpl} = \mathcal{W}_{\frac{N}{M}}^{pl} = \mathcal{L}_M^{pl}$
+
+Then
+
+$$
+\mathcal{W}_N^{kn} = \mathcal{W}_M^{mq} \cdot \mathcal{W}_L^{pl} \cdot \mathcal{W}_N^{lq} 
+$$
+
+We now split the sum over $n$ into the sum over the row $l$ and column $m$.
+
+$$
+X[k] = X[p,q] = \sum\limits_{l=0}^{L-1} \sum\limits_{m=0}^{M-1} x[l,m] \mathcal{W}_M^{mq} \cdot \mathcal{W}_L^{pl} \cdot \mathcal{W}_N^{lq}
+$$
+
+Noting $\mathcal{W}_N^{lq}$ and $\mathcal{W}_L^{lp}$ has no dependency on $m$  we can rearrange this as
+
+$$
+X[k] = X[p,q] = \sum\limits_{l=0}^{L-1} \left\{  \mathcal{W}_N^{lq} \cdot \left[\sum\limits_{m=0}^{M-1} x[l,m] \mathcal{W}_M^{mq}\right]\right\} \cdot \mathcal{W}_L^{pl}
+$$
+
+We can then see the term in square brackets is an $M$-point DFT, $F[l,q]$
+
+$$
+F[l,q] = \sum\limits_{m=0}^{M-1} x[l,m] \mathcal{W}_M^{mq}
+$$
+
+Substituting back into the original equation
+
+$$
+X[k] = X[p,q] = \sum\limits_{l=0}^{L-1} \left\{  \mathcal{W}_N^{lq} \cdot F[l,q] \right\} \cdot \mathcal{W}_L^{pl}
+$$
+
+we see the final result is the $L$-point DFT of $\mathcal{W}_N^{lq} \cdot F[l,q]$.
+
+This gives the observation that an $N$-point DFT can be divided into a row-wise $M$-point DFT, followed by $N$ complex multiplications, followed by a column-wise $L$-point DFT.
+
+---
+
+To see what savings this provides we note this approach requires
+
+- $M^2 + L^2 + ML$ complex multiplies
+- $M^2 + L^2 - M - L$ complex adds
+
+versus for the naive algorithm
+
+- $N^2$ complex multiplies
+- $N(N-1)$ complex adds
+
+For example, suppose $N = 1000$ and $L=10$, $M=100$, then the recursive approach requires 11,100 complex multiplies plus 9,990 compex adds for 21,080 total operations. Compare this to the naive algorithm requiring 1 million complex multiples and 1,999,000 complex adds for a total of 1,999,000 operations. 
+
+---
+
+To get even bigger gains, this can be repeated recursively, breaking each DFT down into smaller and smaller lengths, until reaching the trivial (base) case requiring a fixed number of operations.
+
+For this to work out $N$ needs to be of the factored form
+
+$$
+N = r_1 \cdot r_2 \cdot r_3 \cdots r_v
+$$
+
+When $r_1 = r_2 = \cdots = r_v = r$ we have a radix-r FFT algorithm. When $r = 2$, $N = 2^v$ we have a radix-2 FFT.
+
+TODO: FIGURE
+
+At the bottom level of the tree we have $log_2(N) = v$ DFT's of length 2 requiring 4 complex adds (since $\mathcal{W}_2^0 = 1$ and $\mathcal{W}_2^1 = -1$). Each non-leaf node in the tree requires a number of complex multiplies equal to its length. This gives an overall complexity of $O(N\log_2(N))$.
+
+## Manual example
+
+To better see this, consider the case when $N = 4$ and $M = L = 2$ and there is only one level of recursion.
+
+$$
+\begin{aligned}
+F[0,0] & = x[0,0] + x[0,1] = x[0] + x[2]\\
+F[0,1] & = x[0,0] - x[0,1] = x[0] - x[2]\\
+F[1,0] & = x[1,0] + x[1,1] = x[1] + x[3]\\
+F[1,1] & = x[1,0] - x[1,1] = x[1] - x[3]\\
+\end{aligned}
+$$
+
+Then
+
+$$
+\begin{aligned}
+\mathcal{W}_4^{0} \cdot F[0,0] & = F[0,0]\\
+\mathcal{W}_4^{0} \cdot F[0,1] & = F[0,1]\\
+\mathcal{W}_4^{1} \cdot F[1,0] & = j \cdot F[1,0]\\
+\mathcal{W}_4^{1} \cdot F[1,1] & = j \cdot F[1,1]\\ 
+\end{aligned}
+$$
+
+and finally
+
+$$
+\begin{aligned}
+X[0] = X[0,0] & = \mathcal{W}_4^0 F[0,0]\mathcal{W}_2^0 + \mathcal{W}_4^0 F[1,0]\mathcal{W}_2^0 = F[0,0] + F[1,0]\\
+X[1] = X[0,1] & = \mathcal{W}_4^0 F[0,1]\mathcal{W}_2^0 + \mathcal{W}_4^1 F[1,1]\mathcal{W}_2^0 = F[0,1] + jF[1,1]\\
+X[2] = X[1,0] & = \mathcal{W}_4^0 F[0,0]\mathcal{W}_2^0 + \mathcal{W}_4^0 F[1,0]\mathcal{W}_2^1 = F[0,0] - F[1,0]\\
+X[3] = X[1,1] & = \mathcal{W}_4^0 F[0,1]\mathcal{W}_2^0 + \mathcal{W}_4^1 F[1,1]\mathcal{W}_2^1 = F[0,1] -j F[1,1]\\
+\end{aligned}
+$$
+
+When all substitutions are made and the resulting computation drawn as a graph,
+
+TODO: FIGURE
+
+For perhaps obvious reasons, each level of the recursion is called a butterfly, where each two output values are a linear combination of two input values.
+
+# The Inverse DFT
+
+The above algorithm was derived from the forward DFT. However recall the inverse DFT is
+
+$$
+x[n] = \frac{1}{N}\sum\limits_{k = 0}^{N-1} X[k] W_N^{-nk}
+$$
+
+Thus we can use the same FFT algorithm simply by changing the phase sign on the complex multiplies and dividing the end result by $N$. 
+
+# Optimizations and Major Variants of the FFT
+
+The FFT is one of the most studied and optimized algorithms. There are many optimizations that can be applied to the above algorithm, as well as many variants. Just a few are:
+
+- In the above example we considered the time domain value stored column-wise and the frequency domain value stored row-wise. This can be reversed. The algorithm is the same, but the data are accessed on a different order.
+
+- The pattern of indexing is such that the index values at each level are bit-reversed. This leads to faster computation of indices.
+
+- The radix can be changed to 4 or a mixture of radix 2 and 4 can be used (split-radix). This can give further optimizations in parallel implementations.
+
+- The above algorithm is called decimation in time. The choice of $M=2$ and $L = \frac{N}{2}$ leads to the decimation in frequency algorithm. If you take the computation graph of the decimation in time algorithm and takes its transpose you get a decimation the frequency algorithm.
+
+# Cooley--Tukey algorithm
+
+The radix-2, decimation in time algorithm with index optimizations is commonly called the Cooley--Tukey algorithm. This can be implemented using C++ as follows.
+
+```{.cpp}
+#include <vector>
+typedef Signal std::vector< std::complex<double> >;
+```
+
+```{.cpp}
+    Signal fft(const Signal & in){
+
+      Signal out;
+
+      std::size_t n = in.size();
+      double logn = log2(n);
+
+      for (unsigned int i = 0; i < n; ++i) {
+        int rev = bitReverse(i, logn);
+        out[i] = in[rev];
+      }
+
+      // make sure logn is positive integer > 1
+      std::size_t temp = static_cast<std::size_t>(logn);
+      assert(static_cast<double>(temp) == logn);
+
+      for(std::size_t s = 1; s <= logn; ++s){
+        std::complex<double> w(1,0);
+
+        int m = 1 << s; // 2 power s
+        int m2 = m >> 1; // m2 = m/2 -1
+
+        std::complex<double> wm = exp(-PI*j/static_cast<double>(m2));
+
+        for(std::size_t j = 0; j < m2; ++j){
+          for(std::size_t k = j; k < n; k+=m){
+            std::complex<double> t = w*out[k+m2];
+            std::complex<double> u = out[k];
+            out[k] = u + t;
+            out[k+m2] = u - t;
+          }
+          w = w*wm;
+        }
+      }
+
+      return out;
+    }
+```
+
+where the function `bitReverse` reverses the bitwise representation of
+the index argument
+
+```{.cpp}
+    unsigned int bitReverse(unsigned int x, int log2n){
+      int n = 0;
+      for (int i = 0; i < log2n; i++){
+        n <<= 1;
+        n |= (x & 1);
+        x >>= 1;
+      }
+     return n;
+    }
+```
+
+
+# Fixed-point FFT
+
+The above algorithms are floating-point. What happens if we use fixed point representations and computations?
+
+
+
+
+
+
+
+
+
+
+
