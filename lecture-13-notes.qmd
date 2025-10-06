@@ -300,7 +300,7 @@ the index argument
 ```
 
 
-# Fixed-point FFT
+# Fixed-point DFT/FFT
 
 The above algorithms are floating-point. What happens if we use fixed point representations and computations?
 
